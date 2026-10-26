@@ -1,0 +1,27 @@
+name: Polygon Arbitrage Cloud Runner
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  run-arbitrage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests
+
+      - name: Jalankan Radar Arbitrase Polygon Real-Time
+        run: |
+          python -u realita_murni_tanpa_rekayasa.py
