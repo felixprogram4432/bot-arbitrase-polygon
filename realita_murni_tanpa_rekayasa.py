@@ -98,7 +98,7 @@ POOLS = {
 }
 
 # Parameter Pertahanan & Eksekusi MEV
-PRIORITY_FEE_GWEI = 42.0   # Tip khusus validator agar transaksi diselipkan di barisan terdepan (+Rp 30)
+PRIORITY_FEE_GWEI = 210.0   # Tip khusus validator agar transaksi diselipkan di barisan terdepan (+Rp 30)
 MAX_SLIPPAGE_PCT = 0.50    # Gembok anti-sandwich (batal jika harga bergeser >0.5%)
 TOTAL_FEE_PCT = 0.44       # Aave 0.09% + DEX 0.35%
 FLASHLOAN_SELECTOR = keccak(b"requestFlashLoan(address,uint256,bytes)")[:4]
@@ -309,7 +309,7 @@ def main():
         f"🎯 *Mode:* {'🔥 LIVE INSTANT SNIPER' if is_live_ready else '🔍 RADAR PEMANTAU & ALERT AKTIF'}\n"
         "⚡ *Kecepatan:* 0-Delay (Langsung Tembak Seketika!)\n"
         "📊 *Target:* DAI/USDT, MATIC/USDT, ETH/USDT, MATIC/USDC, ETH/USDC\n"
-        "🛡️ *Shield:* 1RPC Encrypted + Priority Tip 42 Gwei (Barisan Depan Blok)\n"
+        "🛡️ *Shield:* 1RPC Encrypted + Priority Tip 210 Gwei (Barisan Depan Blok)\n"
         "📱 *Laporan:* Cuan & Kerugian Bensin Otomatis Dilaporkan ke Telegram!\n"
         "⏰ *Status:* Siaga Nonstop 24 Jam di Cloud!"
     )
