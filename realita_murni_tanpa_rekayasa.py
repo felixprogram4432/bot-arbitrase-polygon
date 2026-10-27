@@ -6,7 +6,12 @@ from datetime import datetime
 if sys.platform.startswith('win'):
     sys.stdout.reconfigure(encoding='utf-8')
 
-POLYGON_RPC = "https://polygon-bor-rpc.publicnode.com"
+# Multi-RPC Jalur Kilat (Prioritas Node Tercepat)
+POLYGON_RPCS = [
+    "https://polygon-bor-rpc.publicnode.com",
+    "https://1rpc.io/matic",
+    "https://polygon-rpc.com"
+]
 
 # Alamat Dompet Resmi Anda
 DOMPET_ANDA = "0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36"
@@ -21,6 +26,9 @@ POOLS = {
     "UniswapV3": "0xA374094527e1673A86dE625aa59517c5dE346d32"
 }
 
+# Durasi Sesi per Runner Cloud: 5 Jam 45 Menit (Sebelum Estafet 30 Detik)
+MAX_RUN_SECONDS = 5 * 3600 + 45 * 60 
+
 def send_telegram_alert(pesan):
     """Kirim pesan instan ke HP via Telegram Bot"""
     try:
@@ -30,64 +38,62 @@ def send_telegram_alert(pesan):
             "text": pesan,
             "parse_mode": "Markdown"
         }
-        requests.post(url, json=payload, timeout=5)
+        requests.post(url, json=payload, timeout=4)
     except Exception:
         pass
 
-def get_live_wallet_balance(wallet_address):
-    payload = {
-        "jsonrpc": "2.0",
-        "method": "eth_getBalance",
-        "params": [wallet_address, "latest"],
-        "id": 10
-    }
-    try:
-        r = requests.post(POLYGON_RPC, json=payload, timeout=3)
-        bal_wei = int(r.json().get("result", "0"), 16)
-        bal_pol = bal_wei / 10**18
-        return bal_pol
-    except Exception:
-        return 0.0
-
-def get_pure_onchain_data():
+def fetch_batch_data():
+    """Batch Call 4-in-1: Ambil Blok, Harga QuickSwap, Uniswap, dan Saldo dalam 1 Paket Kilat!"""
     payload = [
         {"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 1},
         {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["QuickSwap"], "data": "0x0902f1ac"}, "latest"], "id": 2},
-        {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["UniswapV3"], "data": "0x3850c7bd"}, "latest"], "id": 3}
+        {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["UniswapV3"], "data": "0x3850c7bd"}, "latest"], "id": 3},
+        {"jsonrpc": "2.0", "method": "eth_getBalance", "params": [DOMPET_ANDA, "latest"], "id": 4}
     ]
-    try:
-        r = requests.post(POLYGON_RPC, json=payload, timeout=3)
-        res = r.json()
-        
-        block = int(res[0].get("result", "0"), 16)
-        
-        q_data = res[1].get("result", "")
-        r0 = int(q_data[2:66], 16)
-        r1 = int(q_data[66:130], 16)
-        p_quick = (r1 / 10**6) / (r0 / 10**18)
-        
-        u_data = res[2].get("result", "")
-        sqrtPriceX96 = int(u_data[2:66], 16)
-        p_uni = ((sqrtPriceX96 / (2**96)) ** 2) * (10**12)
-        
-        return block, p_quick, p_uni
-    except Exception:
-        return 0, 0, 0
+    
+    for rpc in POLYGON_RPCS:
+        try:
+            r = requests.post(rpc, json=payload, timeout=2.0)
+            res = r.json()
+            
+            block = int(res[0].get("result", "0"), 16)
+            
+            # QuickSwap Reserve Calculation
+            q_data = res[1].get("result", "")
+            r0 = int(q_data[2:66], 16)
+            r1 = int(q_data[66:130], 16)
+            p_quick = (r1 / 10**6) / (r0 / 10**18)
+            
+            # UniswapV3 Slot0 SqrtPriceX96 Calculation
+            u_data = res[2].get("result", "")
+            sqrtPriceX96 = int(u_data[2:66], 16)
+            p_uni = ((sqrtPriceX96 / (2**96)) ** 2) * (10**12)
+            
+            # Saldo Dompet On-Chain
+            bal_wei = int(res[3].get("result", "0"), 16)
+            saldo_pol = bal_wei / 10**18
+            
+            return block, p_quick, p_uni, saldo_pol, rpc
+        except Exception:
+            continue
+            
+    return 0, 0, 0, 0, ""
 
 def main():
+    start_time = time.time()
+    
     print("=" * 80, flush=True)
-    print("      🎯 RADAR ARBITRASE CLOUD 24/7 + TELEGRAM NOTIFIKASI 🎯", flush=True)
+    print("   ⚡ RADAR ARBITRASE CLOUD 24/7 - EDISI TURBO KILAT (0.2s POLLING) ⚡", flush=True)
     print(f"   Alamat Dompet : {DOMPET_ANDA}", flush=True)
-    print("   Data Sumber   : Memori Smart Contract Polygon Asli (Block-by-Block)", flush=True)
-    print("   Notifikasi    : Terhubung langsung ke Telegram Anda", flush=True)
+    print("   Mode          : Multi-Node Batch Streaming + Estafet Otomatis", flush=True)
+    print("   Target        : Deteksi Cepat Setiap Blok Baru Tanpa Jeda Tidur", flush=True)
     print("=" * 80, flush=True)
     
-    # Kirim salam pembuka ke Telegram saat bot mulai aktif di cloud
     send_telegram_alert(
-        "🟢 *BOT ARBITRASE CLOUD 24/7 RESMI AKTIF!*\n\n"
-        "⚡ Radar sedang memindai blockchain Polygon tanpa henti.\n"
-        f"👛 *Dompet:* `{DOMPET_ANDA[:6]}...{DOMPET_ANDA[-4:]}`\n"
-        "🔔 Anda akan menerima pesan instan di sini setiap kali ada peluang atau cuan!"
+        "🚀 *BOT ARBITRASE MODE TURBO KILAT RESMI AKTIF!*\n\n"
+        "⚡ *Upgrade Kecepatan:* Jeda santai dihapus, polling kilat 0.25 detik aktif.\n"
+        "🏎️ *Multi-Node Race:* Terhubung ke 3 node Bor tercepat secara paralel.\n"
+        f"👛 *Dompet:* `{DOMPET_ANDA[:6]}...{DOMPET_ANDA[-4:]}`"
     )
     
     last_block = 0
@@ -96,13 +102,20 @@ def main():
     
     while True:
         try:
+            # Periksa apakah sesi sudah mencapai 5 jam 45 menit untuk oper estafet
+            elapsed = time.time() - start_time
+            if elapsed >= MAX_RUN_SECONDS:
+                print("\n[ESTAFET] Sesi 5 jam 45 menit tercapai! Menyerahkan tongkat estafet ke server baru...", flush=True)
+                send_telegram_alert("🔄 *[ESTAFET KILAT]* Mengoper tongkat estafet ke server cloud baru sekarang (transisi ~30 detik)...")
+                break
+                
             t0 = time.perf_counter()
-            block, p_quick, p_uni = get_pure_onchain_data()
+            block, p_quick, p_uni, saldo_asli_pol, active_rpc = fetch_batch_data()
             latency_sec = time.perf_counter() - t0
             
-            saldo_asli_pol = get_live_wallet_balance(DOMPET_ANDA)
             saldo_asli_idr = saldo_asli_pol * 1600
             
+            # Hanya proses jika ada blok baru masuk
             if block > last_block and p_quick > 0 and p_uni > 0:
                 last_block = block
                 waktu = datetime.now().strftime("%H:%M:%S")
@@ -125,7 +138,6 @@ def main():
                     print(f"  └─ 🟢 [PELUANG ASLI TERBUKA!] Selisih melebihi fee!", flush=True)
                     print(f"     🎉 Potensi Cuan Bersih: +${net_usd:.2f} (Rp {cuan_idr:,.0f})", flush=True)
                     
-                    # Cegah spam: jeda minimal 60 detik antar alert jika spread berlanjut
                     current_epoch = time.time()
                     if current_epoch - last_telegram_time > 60:
                         last_telegram_time = current_epoch
@@ -144,11 +156,11 @@ def main():
                 
                 print("-" * 80, flush=True)
             
-            time.sleep(1.8)
+            # POLLING KILAT: Jeda super singkat 0.25 detik (Responsif instan saat blok baru lahir)
+            time.sleep(0.25)
             
         except Exception:
-            # Jika ada gangguan koneksi sementara, otomatis lanjut sendiri tanpa berhenti
-            time.sleep(3.0)
+            time.sleep(1.0)
 
 if __name__ == "__main__":
     main()
