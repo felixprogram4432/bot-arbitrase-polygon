@@ -3,7 +3,11 @@ name: Polygon Arbitrage Cloud Runner
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '*/30 * * * *'
+
+concurrency:
+  group: arbitrage-runner
+  cancel-in-progress: false
 
 jobs:
   run-arbitrage:
@@ -25,3 +29,11 @@ jobs:
       - name: Jalankan Radar Arbitrase Polygon Real-Time
         run: |
           python -u realita_murni_tanpa_rekayasa.py
+
+      - name: Oper Tongkat Estafet ke Sesi Baru (Instan ~30 Detik)
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.MY_PAT }}
+        run: |
+          echo "Memulai estafet sesi baru secara otomatis..."
+          gh workflow run bot.yml --repo felixprogram4432/bot-arbitrase-polygon --ref main
