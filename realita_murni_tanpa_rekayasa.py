@@ -97,8 +97,8 @@ POOLS = {
     }
 }
 
-# Parameter Pertahanan & Eksekusi MEV
-PRIORITY_FEE_GWEI = 210.0   # Tip khusus validator agar transaksi diselipkan di barisan terdepan (+Rp 30)
+# Parameter Pertahanan & Eksekusi MEV (TOP 5% VIP TIER POLYGON)
+PRIORITY_FEE_GWEI = 210.0  # Tip Monster 210 Gwei: Mengalahkan 95% transaksi di Polygon (~Rp 150 perak)
 MAX_SLIPPAGE_PCT = 0.50    # Gembok anti-sandwich (batal jika harga bergeser >0.5%)
 TOTAL_FEE_PCT = 0.44       # Aave 0.09% + DEX 0.35%
 FLASHLOAN_SELECTOR = keccak(b"requestFlashLoan(address,uint256,bytes)")[:4]
@@ -215,7 +215,7 @@ def monitor_transaction_receipt(tx_hash, pool_name, est_cuan_usd, est_cuan_idr, 
                 gas_used = int(receipt.get("gasUsed", "0x0"), 16)
                 effective_gas_price = int(receipt.get("effectiveGasPrice", "0x0"), 16)
                 cost_pol = (gas_used * effective_gas_price) / 10**18
-                cost_idr = cost_pol * 1620 # harga koin POL saat ini
+                cost_idr = cost_pol * 1620 * 15600 # estimasi rupiah
 
                 if status == "0x1":
                     # SUKSES CUAN ON-CHAIN!
@@ -261,7 +261,7 @@ def execute_onchain_sniper_instant(contract_addr, calldata_hex, rpc_url):
         priority_fee = int(PRIORITY_FEE_GWEI * 10**9)
         max_fee = int(base_fee * 1.5) + priority_fee
         
-        # 3. Transaksi EIP-1559 VIP 42 Gwei
+        # 3. Transaksi EIP-1559 VIP 210 Gwei
         tx_dict = {
             "chainId": 137,
             "nonce": nonce,
@@ -291,7 +291,7 @@ def main():
     print("=" * 80)
     print(" 🚀 RADAR CLOUD 24/7 - EDISI LAUTAN BIRU & SNIPER AGRESIF (0-DELAY)")
     print(" ⚡ Mode Tempur: INSTANT EXECUTION (Langsung Tembak On-Chain Tanpa Nunggu!)")
-    print(" 🛡️  Jalur MEV Shield: 1RPC Encrypted + Bor Priority Tip 42 Gwei")
+    print(" 🛡️  Jalur MEV Shield: 1RPC Encrypted + Bor Priority Tip 210 Gwei")
     print(" 💳 Dompet Pengawas:", DOMPET_ANDA)
     
     is_live_ready = bool(SMART_CONTRACT_ADDRESS and METAMASK_PRIVATE_KEY)
@@ -309,7 +309,8 @@ def main():
         f"🎯 *Mode:* {'🔥 LIVE INSTANT SNIPER' if is_live_ready else '🔍 RADAR PEMANTAU & ALERT AKTIF'}\n"
         "⚡ *Kecepatan:* 0-Delay (Langsung Tembak Seketika!)\n"
         "📊 *Target:* DAI/USDT, MATIC/USDT, ETH/USDT, MATIC/USDC, ETH/USDC\n"
-        "🛡️ *Shield:* 1RPC Encrypted + Priority Tip 210 Gwei (Barisan Depan Blok)\n"
+        "🛡️ *Shield:* 1RPC Encrypted + Priority Tip 210 Gwei (Top 5% VIP Tier Polygon)\n"
+        "💵 *Target Scalping:* Minimal +$2.00 (~Rp 31.200) Langsung Sikat!\n"
         "📱 *Laporan:* Cuan & Kerugian Bensin Otomatis Dilaporkan ke Telegram!\n"
         "⏰ *Status:* Siaga Nonstop 24 Jam di Cloud!"
     )
@@ -355,47 +356,49 @@ def main():
 
                     print(f"  • {cfg['nama']:<20}: {format_str}")
 
-                    # JIKA SPREAD MENUTUPI BIAYA FEE (Spread > 0.75%)
-                    if spread_pct > 0.75:
+                    # JIKA SPREAD MENUTUPI BIAYA FEE + TARGET CUAN MINIMAL $2.00 (~Rp 31.200)
+                    if spread_pct > TOTAL_FEE_PCT:
                         net_profit_pct = spread_pct - TOTAL_FEE_PCT
                         loan = cfg["loan_usd"]
                         est_cuan_usd = (net_profit_pct / 100.0) * loan
                         est_cuan_idr = est_cuan_usd * 15600
 
-                        print(f"    🔥 [PELUANG CUAN!] {arah} | Net: +{net_profit_pct:.2f}% (~Rp {est_cuan_idr:,.0f})")
+                        # Sikat peluang mulai dari $2.00 ke atas!
+                        if est_cuan_usd >= 2.0:
+                            print(f"    🔥 [PELUANG CUAN!] {arah} | Net: +{net_profit_pct:.2f}% (~Rp {est_cuan_idr:,.0f})")
 
-                        # Rancang Calldata Flash Loan
-                        calldata_hex, min_profit_raw = build_flashloan_calldata(k, direction, est_cuan_usd)
+                            # Rancang Calldata Flash Loan
+                            calldata_hex, min_profit_raw = build_flashloan_calldata(k, direction, est_cuan_usd)
 
-                        # JIKA LIVE READY -> TEMBAK LANGSUNG ON-CHAIN (0-DELAY)!
-                        if is_live_ready:
-                            print(f"    ⚡ [AGRESIF: TEMBAK LANGSUNG ON-CHAIN!]")
-                            tx_ok, tx_res = execute_onchain_sniper_instant(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc)
-                            if tx_ok:
-                                print(f"    🚀 [SNIPER BERHASIL DIKIRIM!] Tx Hash: {tx_res}")
-                                # Pantau status kemenangan/revert di background thread agar radar tidak berhenti!
-                                threading.Thread(
-                                    target=monitor_transaction_receipt,
-                                    args=(tx_res, cfg['nama'], est_cuan_usd, est_cuan_idr, active_rpc)
-                                ).start()
-                            else:
-                                print(f"    ⚠️ [Gagal Kirim Tx]: {tx_res}")
+                            # JIKA LIVE READY -> TEMBAK LANGSUNG ON-CHAIN (0-DELAY)!
+                            if is_live_ready:
+                                print(f"    ⚡ [AGRESIF: TEMBAK LANGSUNG ON-CHAIN!]")
+                                tx_ok, tx_res = execute_onchain_sniper_instant(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc)
+                                if tx_ok:
+                                    print(f"    🚀 [SNIPER BERHASIL DIKIRIM!] Tx Hash: {tx_res}")
+                                    # Pantau status kemenangan/revert di background thread agar radar tidak berhenti!
+                                    threading.Thread(
+                                        target=monitor_transaction_receipt,
+                                        args=(tx_res, cfg['nama'], est_cuan_usd, est_cuan_idr, active_rpc)
+                                    ).start()
+                                else:
+                                    print(f"    ⚠️ [Gagal Kirim Tx]: {tx_res}")
 
-                        # Notifikasi Deteksi ke Telegram (Throttle 60 detik)
-                        last_t = last_alert_time.get(k, 0)
-                        if (time.time() - last_t) > 60:
-                            last_alert_time[k] = time.time()
-                            cuan_msg = (
-                                f"🚨 *PELUANG ARBITRASE LAUTAN BIRU!* 🚨\n\n"
-                                f"🪙 *Pasangan:* {cfg['nama']}\n"
-                                f"📊 *Spread Kotor:* {spread_pct:.2f}%\n"
-                                f"💰 *Profit Bersih:* +{net_profit_pct:.2f}%\n"
-                                f"💵 *Estimasi Cuan:* ${est_cuan_usd:.2f} (~Rp {est_cuan_idr:,.0f})\n"
-                                f"🔄 *Jalur:* {arah}\n"
-                                f"⚡ *Mode:* 0-Delay Instant Sniper\n"
-                                f"🛡️ *Anti-Frontrunning:* Terenkripsi 1RPC"
-                            )
-                            send_telegram_alert(cuan_msg)
+                            # Notifikasi Deteksi ke Telegram (Throttle 60 detik)
+                            last_t = last_alert_time.get(k, 0)
+                            if (time.time() - last_t) > 60:
+                                last_alert_time[k] = time.time()
+                                cuan_msg = (
+                                    f"🚨 *PELUANG ARBITRASE LAUTAN BIRU!* 🚨\n\n"
+                                    f"🪙 *Pasangan:* {cfg['nama']}\n"
+                                    f"📊 *Spread Kotor:* {spread_pct:.2f}%\n"
+                                    f"💰 *Profit Bersih:* +{net_profit_pct:.2f}%\n"
+                                    f"💵 *Estimasi Cuan:* ${est_cuan_usd:.2f} (~Rp {est_cuan_idr:,.0f})\n"
+                                    f"🔄 *Jalur:* {arah}\n"
+                                    f"⚡ *Mode:* 0-Delay Instant Sniper (210 Gwei)\n"
+                                    f"🛡️ *Anti-Frontrunning:* Terenkripsi 1RPC"
+                                )
+                                send_telegram_alert(cuan_msg)
 
         time.sleep(0.25)
 
