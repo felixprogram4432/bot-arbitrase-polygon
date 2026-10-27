@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import requests
+import threading
 from datetime import datetime
 from eth_abi import encode
 from eth_utils import keccak
@@ -182,7 +183,6 @@ def build_flashloan_calldata(pool_key, direction, net_profit_usd):
     cfg = POOLS[pool_key]
     asset = cfg["asset"]
     amount = int(cfg["loan_usd"] * (10**cfg["asset_dec"]))
-    # Toleransi target keuntungan minimal
     min_profit_raw = int(max(net_profit_usd * 0.70, 1.0) * (10**cfg["asset_dec"]))
 
     # executeOperation params: (uint8 direction, address targetToken, uint24 uniFee, uint256 minProfit)
@@ -198,45 +198,62 @@ def build_flashloan_calldata(pool_key, direction, net_profit_usd):
     )
     return "0x" + outer_data.hex(), min_profit_raw
 
-def simulate_preflight(contract_addr, calldata_hex, rpc_url):
-    """
-    RAHASIA BOT INSTITUSI: PRE-FLIGHT SIMULATION VIA eth_call
-    Mensimulasikan eksekusi di node sebelum dikirim ke blockchain.
-    Jika simulasi revert (gagal / kalah cepat), transaksi DIBATALKAN.
-    BIAYA BENSIN GAGAL: 0 RUPIAH (Rp 0)!
-    """
-    try:
-        sim_payload = {
-            "jsonrpc": "2.0",
-            "id": 99,
-            "method": "eth_call",
-            "params": [
-                {
-                    "from": DOMPET_ANDA,
-                    "to": contract_addr,
-                    "data": calldata_hex
-                },
-                "latest"
-            ]
-        }
-        r = requests.post(rpc_url, json=sim_payload, timeout=3)
-        res = r.json()
-        if "error" in res:
-            return False, res["error"].get("message", "Revert")
-        return True, "Simulasi Sukses (Profit On-Chain Terverifikasi)"
-    except Exception as e:
-        return False, str(e)
+def monitor_transaction_receipt(tx_hash, pool_name, est_cuan_usd, est_cuan_idr, rpc_url):
+    """Memantau status transaksi on-chain secara mandiri di background & lapor ke Telegram"""
+    time.sleep(2.5) # Tunggu 1 blok
+    for _ in range(8):
+        try:
+            r = requests.post(rpc_url, json={
+                "jsonrpc": "2.0",
+                "id": 105,
+                "method": "eth_getTransactionReceipt",
+                "params": [tx_hash]
+            }, timeout=3).json()
+            receipt = r.get("result")
+            if receipt:
+                status = receipt.get("status")
+                gas_used = int(receipt.get("gasUsed", "0x0"), 16)
+                effective_gas_price = int(receipt.get("effectiveGasPrice", "0x0"), 16)
+                cost_pol = (gas_used * effective_gas_price) / 10**18
+                cost_idr = cost_pol * 1620 # harga koin POL saat ini
 
-def execute_onchain_sniper(contract_addr, calldata_hex, rpc_url):
-    """Menandatangani dan mengeksekusi transaksi via Private Key"""
+                if status == "0x1":
+                    # SUKSES CUAN ON-CHAIN!
+                    cuan_msg = (
+                        f"🎯 *EKSEKUSI FLASH LOAN BERHASIL (CUAN!)* 🎯\n\n"
+                        f"🪙 *Pasangan:* {pool_name}\n"
+                        f"💰 *Estimasi Cuan Bersih:* ${est_cuan_usd:.2f} (~Rp {est_cuan_idr:,.0f})\n"
+                        f"⛽ *Gas Fee Terpakai:* {cost_pol:.4f} POL\n"
+                        f"🔗 *Polygonscan:* https://polygonscan.com/tx/{tx_hash}\n"
+                        f"🚀 *Status:* Laba Resmi Mendarat di MetaMask!"
+                    )
+                    send_telegram_alert(cuan_msg)
+                else:
+                    # REVERT ON-CHAIN (Kalah Cepat) -> LAPOR KERUGIAN TRANSPARAN!
+                    rugi_msg = (
+                        f"⚠️ *EKSEKUSI REVERT (KALAH CEPAT)* ⚠️\n\n"
+                        f"🪙 *Pasangan:* {pool_name}\n"
+                        f"❌ *Penyebab:* Harga bergeser di blok (Gembok Revert Aktif)\n"
+                        f"💸 *Bensin Terpotong:* ~{cost_pol:.4f} POL (~Rp {cost_idr:,.0f})\n"
+                        f"🛡️ *Modal Flash Loan:* 100% AMAN (Batal Otomatis / Rp 0 Utang)\n"
+                        f"🔗 *Bukti Polygonscan:* https://polygonscan.com/tx/{tx_hash}"
+                    )
+                    send_telegram_alert(rugi_msg)
+                return
+            time.sleep(2.0)
+        except Exception:
+            time.sleep(2.0)
+
+def execute_onchain_sniper_instant(contract_addr, calldata_hex, rpc_url):
+    """MODE AGRESIF: Langsung Tembak On-Chain (0-Delay) Tanpa Tunggu Simulasi!"""
     try:
         from eth_account import Account
         
-        # 1. Cek Nonce
+        # 1. Nonce Pending
         r_nonce = requests.post(rpc_url, json={"jsonrpc":"2.0","id":100,"method":"eth_getTransactionCount","params":[DOMPET_ANDA,"pending"]}, timeout=3).json()
         nonce = int(r_nonce.get("result", "0x0"), 16)
         
-        # 2. Cek BaseFee
+        # 2. BaseFee
         r_block = requests.post(rpc_url, json={"jsonrpc":"2.0","id":101,"method":"eth_getBlockByNumber","params":["latest",False]}, timeout=3).json()
         base_fee_hex = r_block.get("result", {}).get("baseFeePerGas", "0x1dcd6500")
         base_fee = int(base_fee_hex, 16)
@@ -244,7 +261,7 @@ def execute_onchain_sniper(contract_addr, calldata_hex, rpc_url):
         priority_fee = int(PRIORITY_FEE_GWEI * 10**9)
         max_fee = int(base_fee * 1.5) + priority_fee
         
-        # 3. Bentuk Transaksi EIP-1559
+        # 3. Transaksi EIP-1559 VIP 42 Gwei
         tx_dict = {
             "chainId": 137,
             "nonce": nonce,
@@ -261,11 +278,10 @@ def execute_onchain_sniper(contract_addr, calldata_hex, rpc_url):
         signed_tx = account.sign_transaction(tx_dict)
         raw_hex = "0x" + signed_tx.raw_transaction.hex()
         
-        # 4. Tembakkan ke Jalur Privat 1RPC
+        # 4. Tembakkan Seketika (0-Delay) ke Jalur 1RPC
         r_send = requests.post(rpc_url, json={"jsonrpc":"2.0","id":102,"method":"eth_sendRawTransaction","params":[raw_hex]}, timeout=4).json()
         if "result" in r_send:
-            tx_hash = r_send["result"]
-            return True, tx_hash
+            return True, r_send["result"]
         else:
             return False, r_send.get("error", {}).get("message", "Gagal broadcast")
     except Exception as e:
@@ -273,28 +289,29 @@ def execute_onchain_sniper(contract_addr, calldata_hex, rpc_url):
 
 def main():
     print("=" * 80)
-    print(" 🚀 RADAR CLOUD 24/7 - EDISI LAUTAN BIRU & SNIPER INSTITUSI V2")
+    print(" 🚀 RADAR CLOUD 24/7 - EDISI LAUTAN BIRU & SNIPER AGRESIF (0-DELAY)")
+    print(" ⚡ Mode Tempur: INSTANT EXECUTION (Langsung Tembak On-Chain Tanpa Nunggu!)")
     print(" 🛡️  Jalur MEV Shield: 1RPC Encrypted + Bor Priority Tip 42 Gwei")
-    print(" 🎯 Bebas HFT Raksasa: Kolam Ramping & Arbitrase Stablecoin")
     print(" 💳 Dompet Pengawas:", DOMPET_ANDA)
     
     is_live_ready = bool(SMART_CONTRACT_ADDRESS and METAMASK_PRIVATE_KEY)
     if is_live_ready:
-        print(" ⚡ STATUS EKSEKUTOR: 🔥 LIVE SNIPER AKTIF (Siap Eksekusi On-Chain)")
+        print(" ⚡ STATUS EKSEKUTOR: 🔥 LIVE SNIPER AGRESIF (Peluru On-Chain Siap Sambar!)")
         print(" 🏛️  Smart Contract:", SMART_CONTRACT_ADDRESS)
     else:
-        print(" 🔍 STATUS EKSEKUTOR: 🛡️ DRY-RUN PRE-FLIGHT (Simulasi 100% Bebas Risiko)")
-        print(" ℹ️  Smart contract / Private Key belum dipasang. Berjalan dalam mode radar simulasi.")
+        print(" 🔍 STATUS EKSEKUTOR: 🛡️ RADAR SIAGA (Menunggu Deploy Smart Contract Besok Pagi)")
+        print(" ℹ️  Belum terpasang Private Key. Berjalan memantau & mengirim notifikasi live.")
     print("=" * 80)
 
     # Notifikasi Awal ke Telegram
     intro_msg = (
-        "🌊 *RADAR CLOUD LAUTAN BIRU & SNIPER V2 AKTIF!*\n\n"
-        f"🎯 *Mode:* {'🔥 LIVE ON-CHAIN SNIPER' if is_live_ready else '🛡️ PRE-FLIGHT DRY-RUN (Simulasi Bebas Risiko)'}\n"
+        "⚡ *RADAR CLOUD LAUTAN BIRU - MODE SNIPER AGRESIF (0-DELAY)!*\n\n"
+        f"🎯 *Mode:* {'🔥 LIVE INSTANT SNIPER' if is_live_ready else '🔍 RADAR PEMANTAU & ALERT AKTIF'}\n"
+        "⚡ *Kecepatan:* 0-Delay (Langsung Tembak Seketika!)\n"
         "📊 *Target:* DAI/USDT, MATIC/USDT, ETH/USDT, MATIC/USDC, ETH/USDC\n"
-        "🛡️ *Shield:* 1RPC Encrypted + Pre-Flight Check (0 Biaya Revert)\n"
-        "⚡ *Priority Tip:* 42 Gwei (Barisan Depan Blok)\n"
-        "⏰ *Status:* Berpatroli 24 Jam Nonstop di Cloud!"
+        "🛡️ *Shield:* 1RPC Encrypted + Priority Tip 42 Gwei (Barisan Depan Blok)\n"
+        "📱 *Laporan:* Cuan & Kerugian Bensin Otomatis Dilaporkan ke Telegram!\n"
+        "⏰ *Status:* Siaga Nonstop 24 Jam di Cloud!"
     )
     send_telegram_alert(intro_msg)
 
@@ -350,31 +367,21 @@ def main():
                         # Rancang Calldata Flash Loan
                         calldata_hex, min_profit_raw = build_flashloan_calldata(k, direction, est_cuan_usd)
 
-                        # UJI SIMULASI PRE-FLIGHT (Jika Smart Contract Terpasang)
-                        sim_ok = True
-                        sim_msg = "Dry-Run Simulator"
-                        if SMART_CONTRACT_ADDRESS:
-                            sim_ok, sim_msg = simulate_preflight(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc)
-                            print(f"    🔬 [Pre-Flight Simulation] Hasil: {sim_msg}")
-
-                        # JIKA SIMULASI SUKSES & LIVE READY -> TEMBAK ON-CHAIN!
-                        if is_live_ready and sim_ok:
-                            tx_ok, tx_res = execute_onchain_sniper(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc)
+                        # JIKA LIVE READY -> TEMBAK LANGSUNG ON-CHAIN (0-DELAY)!
+                        if is_live_ready:
+                            print(f"    ⚡ [AGRESIF: TEMBAK LANGSUNG ON-CHAIN!]")
+                            tx_ok, tx_res = execute_onchain_sniper_instant(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc)
                             if tx_ok:
                                 print(f"    🚀 [SNIPER BERHASIL DIKIRIM!] Tx Hash: {tx_res}")
-                                success_msg = (
-                                    f"🎯 *EKSEKUSI FLASH LOAN BERHASIL DITEMBAKKAN!* 🎯\n\n"
-                                    f"🪙 *Pasangan:* {cfg['nama']}\n"
-                                    f"💰 *Estimasi Cuan:* ${est_cuan_usd:.2f} (~Rp {est_cuan_idr:,.0f})\n"
-                                    f"🔗 *Polygonscan:* https://polygonscan.com/tx/{tx_res}\n"
-                                    f"⚡ *Priority Tip:* 42 Gwei\n"
-                                    f"🛡️ *Hasil Pre-Flight:* Lolos Verifikasi On-Chain"
-                                )
-                                send_telegram_alert(success_msg)
+                                # Pantau status kemenangan/revert di background thread agar radar tidak berhenti!
+                                threading.Thread(
+                                    target=monitor_transaction_receipt,
+                                    args=(tx_res, cfg['nama'], est_cuan_usd, est_cuan_idr, active_rpc)
+                                ).start()
                             else:
                                 print(f"    ⚠️ [Gagal Kirim Tx]: {tx_res}")
 
-                        # Throttle Alert Telegram biasa
+                        # Notifikasi Deteksi ke Telegram (Throttle 60 detik)
                         last_t = last_alert_time.get(k, 0)
                         if (time.time() - last_t) > 60:
                             last_alert_time[k] = time.time()
@@ -385,8 +392,7 @@ def main():
                                 f"💰 *Profit Bersih:* +{net_profit_pct:.2f}%\n"
                                 f"💵 *Estimasi Cuan:* ${est_cuan_usd:.2f} (~Rp {est_cuan_idr:,.0f})\n"
                                 f"🔄 *Jalur:* {arah}\n"
-                                f"⚡ *Loan:* ${loan:,.0f}\n"
-                                f"🔬 *Status Pre-Flight:* {sim_msg}\n"
+                                f"⚡ *Mode:* 0-Delay Instant Sniper\n"
                                 f"🛡️ *Anti-Frontrunning:* Terenkripsi 1RPC"
                             )
                             send_telegram_alert(cuan_msg)
