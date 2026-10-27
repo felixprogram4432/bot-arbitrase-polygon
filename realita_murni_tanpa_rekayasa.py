@@ -20,28 +20,53 @@ DOMPET_ANDA = "0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36"
 TELEGRAM_TOKEN = "8854612522:AAF5cczXAA8RsPNA1vvd93asDVaOXZQreu0"
 TELEGRAM_CHAT_ID = "5124389853"
 
-# TARGET IDEAL "TRIO RAKSASA": MATIC + ETHEREUM + BITCOIN DI POLYGON
+# TARGET PORTOFOLIO "LAUTAN BIRU" (5 TARGET CROSS-POOL TERPILIH)
+# Bebas dari HFT Raksasa, Mengincar Slippage Kolam Ramping & Stablecoin
 POOLS = {
-    "MATIC": {
+    "DAI_USDT": {
+        "nama": "DAI / USDT (Stable)",
+        "quick": "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88",
+        "uni": "0x254aa3a898071d6a2da0db11da73b02b4646078f",
+        "t0_dec": 18,
+        "t1_dec": 6,
+        "loan_usd": 3000.0,
+        "tipe": "stable"
+    },
+    "MATIC_USDT": {
+        "nama": "WMATIC / USDT",
+        "quick": "0x604229c960e5cacf2aaeac8be68ac07ba9df81c3",
+        "uni": "0x9b08288c3be4f62bbf8d1c20ac9c5e6f9467d8b7",
+        "t0_dec": 18,
+        "t1_dec": 6,
+        "loan_usd": 2000.0,
+        "tipe": "matic_usdt"
+    },
+    "ETH_USDT": {
+        "nama": "WETH / USDT",
+        "quick": "0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046",
+        "uni": "0xbb98b3d2b18aef63a3178023a920971cf5f29be4",
+        "t0_dec": 18,
+        "t1_dec": 6,
+        "loan_usd": 3000.0,
+        "tipe": "eth_usdt"
+    },
+    "MATIC_USDC": {
         "nama": "WMATIC / USDC",
         "quick": "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827",
         "uni": "0xa374094527e1673A86dE625aa59517c5de346d32",
+        "t0_dec": 18,
+        "t1_dec": 6,
         "loan_usd": 2500.0,
-        "type": "matic"
+        "tipe": "matic_usdc"
     },
-    "ETH": {
+    "ETH_USDC": {
         "nama": "WETH / USDC",
         "quick": "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d",
         "uni": "0x45dda9cb7c25131df268515131f647d726f50608",
+        "t0_dec": 6,
+        "t1_dec": 18,
         "loan_usd": 3500.0,
-        "type": "eth"
-    },
-    "BTC": {
-        "nama": "WBTC / USDC",
-        "quick": "0xf6a637525402643b0654a54bead2cb9a83c8b498",
-        "uni": "0x847b64f9d3a95e977d157866447a5c0a5dfa0ee5",
-        "loan_usd": 5000.0,
-        "type": "btc"
+        "tipe": "eth_usdc"
     }
 }
 
@@ -66,152 +91,150 @@ def send_telegram_alert(pesan):
     except Exception:
         pass
 
-def fetch_trio_batch():
-    """Batch Call 7-in-1 via Jalur Privat: Baca Blok, Saldo, dan 3 Koin Sekaligus!"""
+def fetch_blue_ocean_batch():
+    """Batch Call 12-in-1 via Jalur Privat: Blok, Saldo, dan 5 Target Kolam Sekaligus!"""
     payload = [
-        {"jsonrpc": "2.0", "method": "eth_blockNumber", "params": [], "id": 1},
-        {"jsonrpc": "2.0", "method": "eth_getBalance", "params": [DOMPET_ANDA, "latest"], "id": 2},
-        # MATIC
-        {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["MATIC"]["quick"], "data": "0x0902f1ac"}, "latest"], "id": 3},
-        {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["MATIC"]["uni"], "data": "0x3850c7bd"}, "latest"], "id": 4},
-        # ETH
-        {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["ETH"]["quick"], "data": "0x0902f1ac"}, "latest"], "id": 5},
-        {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["ETH"]["uni"], "data": "0x3850c7bd"}, "latest"], "id": 6},
-        # BTC
-        {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["BTC"]["quick"], "data": "0x0902f1ac"}, "latest"], "id": 7},
-        {"jsonrpc": "2.0", "method": "eth_call", "params": [{"to": POOLS["BTC"]["uni"], "data": "0x3850c7bd"}, "latest"], "id": 8}
+        {"jsonrpc": "2.0", "id": 1, "method": "eth_blockNumber", "params": []},
+        {"jsonrpc": "2.0", "id": 2, "method": "eth_getBalance", "params": [DOMPET_ANDA, "latest"]}
     ]
     
-    for rpc in POLYGON_RPCS:
+    req_id = 3
+    mapping = {}
+    for k, v in POOLS.items():
+        mapping[req_id] = (k, "quick")
+        payload.append({"jsonrpc": "2.0", "id": req_id, "method": "eth_call", "params": [{"to": v["quick"], "data": "0x0902f1ac"}, "latest"]})
+        req_id += 1
+        mapping[req_id] = (k, "uni")
+        payload.append({"jsonrpc": "2.0", "id": req_id, "method": "eth_call", "params": [{"to": v["uni"], "data": "0x3850c7bd"}, "latest"]})
+        req_id += 1
+
+    for rpc_url in POLYGON_RPCS:
         try:
-            r = requests.post(rpc, json=payload, timeout=2.2)
-            res = r.json()
-            
-            block = int(res[0].get("result", "0"), 16)
-            bal_wei = int(res[1].get("result", "0"), 16)
-            saldo_pol = bal_wei / 10**18
-            
-            # 1. MATIC Price
-            qm = res[2].get("result", "")
-            r0_m, r1_m = int(qm[2:66], 16), int(qm[66:130], 16)
-            p_matic_q = (r1_m / 10**6) / (r0_m / 10**18)
-            um = res[3].get("result", "")
-            sq_m = int(um[2:66], 16)
-            p_matic_u = ((sq_m / (2**96)) ** 2) * (10**12)
-            
-            # 2. ETH Price
-            qe = res[4].get("result", "")
-            r0_e, r1_e = int(qe[2:66], 16), int(qe[66:130], 16)
-            p_eth_q = (r0_e / 10**6) / (r1_e / 10**18)
-            ue = res[5].get("result", "")
-            sq_e = int(ue[2:66], 16)
-            p_eth_u = (1.0 / ((sq_e / (2**96)) ** 2)) * (10**12)
-            
-            # 3. BTC Price
-            qb = res[6].get("result", "")
-            r0_b, r1_b = int(qb[2:66], 16), int(qb[66:130], 16)
-            p_btc_q = (r1_b / 10**6) / (r0_b / 10**8)
-            ub = res[7].get("result", "")
-            sq_b = int(ub[2:66], 16)
-            p_btc_u = (((sq_b / (2**96)) ** 2)) * (10**2)
-            
-            prices = {
-                "MATIC": {"q": p_matic_q, "u": p_matic_u},
-                "ETH":   {"q": p_eth_q,   "u": p_eth_u},
-                "BTC":   {"q": p_btc_q,   "u": p_btc_u}
-            }
-            
-            return block, saldo_pol, prices, rpc
+            r = requests.post(rpc_url, json=payload, timeout=5)
+            if r.status_code == 200:
+                data = r.json()
+                res_map = {item["id"]: item.get("result", "0x") for item in data if "id" in item}
+                
+                # Blok
+                block_hex = res_map.get(1, "0x0")
+                block_num = int(block_hex, 16) if block_hex != "0x" else 0
+                
+                # Saldo POL
+                bal_hex = res_map.get(2, "0x0")
+                saldo_pol = int(bal_hex, 16) / 10**18 if bal_hex != "0x" else 0.0
+                
+                # Harga Tiap Pool
+                prices = {}
+                for k, v in POOLS.items():
+                    prices[k] = {"q": None, "u": None}
+                    
+                for id_num, (k, dex) in mapping.items():
+                    raw = res_map.get(id_num, "0x")
+                    cfg = POOLS[k]
+                    if dex == "quick" and len(raw) >= 130:
+                        r0 = int(raw[2:66], 16) / (10**cfg["t0_dec"])
+                        r1 = int(raw[66:130], 16) / (10**cfg["t1_dec"])
+                        if cfg["tipe"] == "eth_usdc":
+                            prices[k]["q"] = r0 / r1 if r1 > 0 else None
+                        else:
+                            prices[k]["q"] = r1 / r0 if r0 > 0 else None
+                    elif dex == "uni" and len(raw) >= 66:
+                        sqrtP = int(raw[2:66], 16)
+                        if cfg["tipe"] == "eth_usdc":
+                            prices[k]["u"] = (10**12) / (((sqrtP / (2**96)) ** 2))
+                        else:
+                            prices[k]["u"] = (((sqrtP / (2**96)) ** 2) * (10**(cfg["t0_dec"] - cfg["t1_dec"])))
+                
+                return block_num, saldo_pol, prices, rpc_url
         except Exception:
             continue
-            
-    return 0, 0, {}, ""
+    return 0, 0.0, {}, "None"
 
 def main():
-    start_time = time.time()
-    
-    print("=" * 80, flush=True)
-    print(" 🛡️ RADAR CLOUD 24/7 - EDISI ANTI-SEROBOT + TRIO RAKSASA 🛡️", flush=True)
-    print(f"   Alamat Dompet : {DOMPET_ANDA}", flush=True)
-    print("   Proteksi Jalur: 1RPC Encrypted Shield (Anti-Mempool Snooping)", flush=True)
-    print(f"   Priority Gas  : EIP-1559 Tip {PRIORITY_FEE_GWEI} Gwei (Prioritas Barisan Terdepan Blok)", flush=True)
-    print(f"   Gembok Slip   : Maksimal {MAX_SLIPPAGE_PCT}% (Anti-Sandwich Revert)", flush=True)
-    print("=" * 80, flush=True)
-    
-    send_telegram_alert(
-        "🛡️ *RADAR CLOUD EDISI ANTI-SEROBOT RESMI AKTIF!*\n\n"
-        "⚡ *3 Senjata Terpasang:*\n"
-        "1. 🕶️ *1RPC Privacy Shield:* Data terenkripsi (bot predator buta).\n"
-        "2. 🏁 *Priority Tip 42 Gwei:* Barisan terdepan blok validator.\n"
-        "3. 🔒 *Anti-Sandwich Gembok:* Maksimal slippage 0.5%.\n\n"
-        f"👛 *Dompet:* `{DOMPET_ANDA[:6]}...{DOMPET_ANDA[-4:]}`"
+    print("=" * 75)
+    print(" 🌊 RADAR CLOUD 24/7 - EDISI LAUTAN BIRU (5 TARGET CROSS-POOL)")
+    print(" 🛡️  Jalur Anti-Frontrunning: 1RPC Shield + Bor Priority Tip 42 Gwei")
+    print(" 🎯 Bebas dari HFT Raksasa: Kolam Ramping & Arbitrase Stablecoin")
+    print(" 💳 Dompet Pengawas:", DOMPET_ANDA)
+    print("=" * 75)
+
+    # Notifikasi Awal ke Telegram
+    intro_msg = (
+        "🌊 *RADAR CLOUD EDISI LAUTAN BIRU AKTIF!*\n\n"
+        "🎯 *Portofolio 5 Target:* DAI/USDT, MATIC/USDT, ETH/USDT, MATIC/USDC, ETH/USDC\n"
+        "🛡️ *Perisai:* 1RPC Shield (Anti-Intip)\n"
+        "⚡ *Priority Tip:* 42 Gwei (Barisan Depan Blok)\n"
+        "⏰ *Status:* Siaga 24 Jam Nonstop di Cloud!"
     )
-    
+    send_telegram_alert(intro_msg)
+
+    start_time = time.time()
     last_block = 0
-    last_telegram_time = {}
-    
+    scan_count = 0
+    last_alert_time = {}
+
     while True:
-        try:
-            elapsed = time.time() - start_time
-            if elapsed >= MAX_RUN_SECONDS:
-                print("\n[ESTAFET] Sesi 5 jam 45 menit tercapai! Menyerahkan tongkat estafet ke server baru...", flush=True)
-                send_telegram_alert("🔄 *[ESTAFET KILAT]* Mengoper tongkat estafet ke server cloud baru sekarang...")
-                break
-                
-            t0 = time.perf_counter()
-            block, saldo_asli_pol, prices, active_rpc = fetch_trio_batch()
-            latency_sec = time.perf_counter() - t0
-            
-            if block > last_block and len(prices) == 3:
-                last_block = block
-                waktu = datetime.now().strftime("%H:%M:%S")
-                saldo_asli_idr = saldo_asli_pol * 1600
-                
-                rpc_name = "1RPC Privacy Shield" if "1rpc" in active_rpc else "Bor Direct Node"
-                print(f"\n[BLOK #{block} | {waktu}] (Latency: {latency_sec:.4f}s | Node: {rpc_name})", flush=True)
-                
-                for koin_key, p_data in prices.items():
-                    pq = p_data["q"]
-                    pu = p_data["u"]
-                    koin_info = POOLS[koin_key]
-                    spread = (abs(pq - pu) / min(pq, pu)) * 100
+        elapsed = time.time() - start_time
+        if elapsed > MAX_RUN_SECONDS:
+            print("\n🔄 Sesi 5 jam 45 menit tercapai! Menyerahkan estafet ke sesi baru...")
+            break
+
+        block_num, saldo_pol, prices, active_rpc = fetch_blue_ocean_batch()
+        
+        if block_num != last_block and block_num > 0:
+            last_block = block_num
+            scan_count += 1
+            now = datetime.now().strftime("%H:%M:%S")
+
+            print(f"\n[Blok #{block_num} | {now} | Saldo: {saldo_pol:.3f} POL | Shield: {active_rpc}]")
+
+            for k, p in prices.items():
+                p_q = p.get("q")
+                p_u = p.get("u")
+                cfg = POOLS[k]
+
+                if p_q and p_u and p_q > 0 and p_u > 0:
+                    selisih = abs(p_q - p_u)
+                    spread_pct = (selisih / min(p_q, p_u)) * 100
                     
-                    simbol = "🟣" if koin_key == "MATIC" else ("🔵" if koin_key == "ETH" else "🟡")
-                    format_str = ".4f" if koin_key == "MATIC" else ".2f"
+                    arah = "QuickSwap ➡️ UniV3" if p_q < p_u else "UniV3 ➡️ QuickSwap"
                     
-                    print(f"  {simbol} {koin_info['nama']:<12} | Quick: ${pq:{format_str}} | Uni: ${pu:{format_str}} | Spread: {spread:.3f}%", flush=True)
-                    
-                    if spread > TOTAL_FEE_PCT:
-                        loan = koin_info["loan_usd"]
-                        gross_usd = loan * (spread / 100)
-                        fee_usd = loan * (TOTAL_FEE_PCT / 100)
-                        net_usd = gross_usd - fee_usd - 0.015
-                        cuan_idr = net_usd * 16000
-                        
-                        print(f"     🎉 [PELUANG CUAN DI {koin_key}!] Estimasi Bersih: +${net_usd:.2f} (+Rp {cuan_idr:,.0f})", flush=True)
-                        print(f"        🛡️ Mengunci rute via {rpc_name} | Priority Tip: {PRIORITY_FEE_GWEI} Gwei", flush=True)
-                        
-                        current_epoch = time.time()
-                        last_t = last_telegram_time.get(koin_key, 0)
-                        if current_epoch - last_t > 60:
-                            last_telegram_time[koin_key] = current_epoch
-                            msg = (
-                                f"🎉 *PELUANG ARBITRASE DI {koin_key}!* (Anti-Serobot)\n\n"
-                                f"🪙 *Pasangan:* `{koin_info['nama']}`\n"
-                                f"⚡ *Blok:* `#{block}` | Jam: `{waktu}`\n"
-                                f"📊 *Spread:* `{spread:.3f}%`\n"
-                                f"💰 *Estimasi Bersih:* `+Rp {cuan_idr:,.0f} (+${net_usd:.2f})`\n"
-                                f"🛡️ *Proteksi:* 1RPC Shield + 42 Gwei Priority\n"
-                                f"👛 *Saldo Bensin:* `{saldo_asli_pol:.4f} POL`"
+                    # Format tampilan harga
+                    if "DAI" in k:
+                        format_str = f"Quick: ${p_q:.4f} | Uni: ${p_u:.4f} | Spread: {spread_pct:.3f}%"
+                    elif "MATIC" in k:
+                        format_str = f"Quick: ${p_q:.4f} | Uni: ${p_u:.4f} | Spread: {spread_pct:.3f}%"
+                    else:
+                        format_str = f"Quick: ${p_q:.2f} | Uni: ${p_u:.2f} | Spread: {spread_pct:.3f}%"
+
+                    print(f"  • {cfg['nama']:<20}: {format_str}")
+
+                    # JIKA SPREAD MENUTUPI BIAYA FEE (Spread > 0.75%)
+                    if spread_pct > 0.75:
+                        net_profit_pct = spread_pct - TOTAL_FEE_PCT
+                        loan = cfg["loan_usd"]
+                        est_cuan_usd = (net_profit_pct / 100.0) * loan
+                        est_cuan_idr = est_cuan_usd * 15600
+
+                        print(f"    🔥 [PELUANG CUAN!] {arah} | Net: +{net_profit_pct:.2f}% (~Rp {est_cuan_idr:,.0f})")
+
+                        # Kirim Notifikasi Telegram (Throttle 60 detik per pool)
+                        last_t = last_alert_time.get(k, 0)
+                        if (time.time() - last_t) > 60:
+                            last_alert_time[k] = time.time()
+                            cuan_msg = (
+                                f"🚨 *PELUANG ARBITRASE LAUTAN BIRU!* 🚨\n\n"
+                                f"🪙 *Pasangan:* {cfg['nama']}\n"
+                                f"📊 *Spread Kotor:* {spread_pct:.2f}%\n"
+                                f"💰 *Profit Bersih:* +{net_profit_pct:.2f}%\n"
+                                f"💵 *Estimasi Cuan:* ${est_cuan_usd:.2f} (~Rp {est_cuan_idr:,.0f})\n"
+                                f"🔄 *Jalur:* {arah}\n"
+                                f"⚡ *Loan:* ${loan:,.0f}\n"
+                                f"🛡️ *Anti-Frontrunning:* Terenkripsi 1RPC"
                             )
-                            send_telegram_alert(msg)
-                
-                print("-" * 80, flush=True)
-            
-            time.sleep(0.25)
-            
-        except Exception:
-            time.sleep(1.0)
+                            send_telegram_alert(cuan_msg)
+
+        time.sleep(0.25)
 
 if __name__ == "__main__":
     main()
