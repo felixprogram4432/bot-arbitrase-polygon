@@ -24,9 +24,12 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install requests
+          pip install requests eth-account
 
       - name: Jalankan Radar Arbitrase Polygon Real-Time
+        env:
+          SMART_CONTRACT_ADDRESS: ${{ secrets.SMART_CONTRACT_ADDRESS }}
+          METAMASK_PRIVATE_KEY: ${{ secrets.METAMASK_PRIVATE_KEY }}
         run: |
           python -u realita_murni_tanpa_rekayasa.py
 
