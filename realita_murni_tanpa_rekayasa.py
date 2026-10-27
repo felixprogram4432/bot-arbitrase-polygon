@@ -98,7 +98,7 @@ POOLS = {
 }
 
 # Parameter Pertahanan & Eksekusi MEV (TOP 5% VIP TIER POLYGON)
-PRIORITY_FEE_GWEI = 210.0  # Tip Monster 210 Gwei: Mengalahkan 95% transaksi di Polygon (~Rp 150 perak)
+PRIORITY_FEE_GWEI = 210.0  # Tip Monster 210 Gwei: Mengalahkan 95% transaksi di Polygon (~Rp 138 perak)
 MAX_SLIPPAGE_PCT = 0.50    # Gembok anti-sandwich (batal jika harga bergeser >0.5%)
 TOTAL_FEE_PCT = 0.44       # Aave 0.09% + DEX 0.35%
 FLASHLOAN_SELECTOR = keccak(b"requestFlashLoan(address,uint256,bytes)")[:4]
@@ -183,7 +183,8 @@ def build_flashloan_calldata(pool_key, direction, net_profit_usd):
     cfg = POOLS[pool_key]
     asset = cfg["asset"]
     amount = int(cfg["loan_usd"] * (10**cfg["asset_dec"]))
-    min_profit_raw = int(max(net_profit_usd * 0.70, 1.0) * (10**cfg["asset_dec"]))
+    # Gembok pengaman: minimal 70% dari estimasi cuan, atau batas bawah $0.50 (~Rp 7.800)
+    min_profit_raw = int(max(net_profit_usd * 0.70, 0.50) * (10**cfg["asset_dec"]))
 
     # executeOperation params: (uint8 direction, address targetToken, uint24 uniFee, uint256 minProfit)
     inner_params = encode(
@@ -310,7 +311,7 @@ def main():
         "⚡ *Kecepatan:* 0-Delay (Langsung Tembak Seketika!)\n"
         "📊 *Target:* DAI/USDT, MATIC/USDT, ETH/USDT, MATIC/USDC, ETH/USDC\n"
         "🛡️ *Shield:* 1RPC Encrypted + Priority Tip 210 Gwei (Top 5% VIP Tier Polygon)\n"
-        "💵 *Target Scalping:* Minimal +$2.00 (~Rp 31.200) Langsung Sikat!\n"
+        "💵 *Target Scalping:* Minimal +$0.90 (~Rp 14.040) Langsung Sikat!\n"
         "📱 *Laporan:* Cuan & Kerugian Bensin Otomatis Dilaporkan ke Telegram!\n"
         "⏰ *Status:* Siaga Nonstop 24 Jam di Cloud!"
     )
@@ -356,15 +357,15 @@ def main():
 
                     print(f"  • {cfg['nama']:<20}: {format_str}")
 
-                    # JIKA SPREAD MENUTUPI BIAYA FEE + TARGET CUAN MINIMAL $2.00 (~Rp 31.200)
+                    # JIKA SPREAD MENUTUPI BIAYA FEE + TARGET CUAN MINIMAL $0.90 (~Rp 14.040)
                     if spread_pct > TOTAL_FEE_PCT:
                         net_profit_pct = spread_pct - TOTAL_FEE_PCT
                         loan = cfg["loan_usd"]
                         est_cuan_usd = (net_profit_pct / 100.0) * loan
                         est_cuan_idr = est_cuan_usd * 15600
 
-                        # Sikat peluang mulai dari $2.00 ke atas!
-                        if est_cuan_usd >= 2.0:
+                        # Sikat peluang mulai dari $0.90 ke atas!
+                        if est_cuan_usd >= 0.90:
                             print(f"    🔥 [PELUANG CUAN!] {arah} | Net: +{net_profit_pct:.2f}% (~Rp {est_cuan_idr:,.0f})")
 
                             # Rancang Calldata Flash Loan
