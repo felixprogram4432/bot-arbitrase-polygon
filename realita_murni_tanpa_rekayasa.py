@@ -32,121 +32,20 @@ TELEGRAM_CHAT_ID = "5124389853"
 SMART_CONTRACT_ADDRESS = os.environ.get("SMART_CONTRACT_ADDRESS", "").strip()
 METAMASK_PRIVATE_KEY = os.environ.get("METAMASK_PRIVATE_KEY", "").strip()
 
-# TARGET PORTOFOLIO 15 KOLAM LIKUIDITAS UTAMA POLYGON (BATCH JSON-RPC TURBO)
+# TARGET PORTOFOLIO 12 KOLAM LIKUIDITAS RAKSASA POLYGON (> $6 JUTA TVL / > RP 108 MILIAR)
 POOLS = {
-    # --- GRUP 1: 5 KOLAM UTAMA STABLE & MATIC ---
-    "DAI_USDT": {
+    # 1. DAI / USDT (Fee 100: 0.01% - Super Efisien)
+    "DAI_USDT_100": {
         "nama": "DAI / USDT (100)",
         "quick": "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88",
         "uni": "0x254aa3a898071d6a2da0db11da73b02b4646078f",
         "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",   # USDT
         "target": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",  # DAI
         "dec0": 18, "dec1": 6, "asset_dec": 6,
-        "loan_usd": 3000.0, "uni_fee": 100, "fee_tot": 0.40
+        "loan_usd": 3000.0, "uni_fee": 100, "fee_tot": 0.40,
+        "min_r0": 1000.0, "min_r1": 1000.0
     },
-    "MATIC_USDT": {
-        "nama": "WMATIC / USDT (500)",
-        "quick": "0x604229c960e5cacf2aaeac8be68ac07ba9df81c3",
-        "uni": "0x9b08288c3be4f62bbf8d1c20ac9c5e6f9467d8b7",
-        "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",   # USDT
-        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
-        "dec0": 18, "dec1": 6, "asset_dec": 6,
-        "loan_usd": 2000.0, "uni_fee": 500, "fee_tot": 0.44
-    },
-    "ETH_USDT": {
-        "nama": "WETH / USDT (500)",
-        "quick": "0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046",
-        "uni": "0xbb98b3d2b18aef63a3178023a920971cf5f29be4",
-        "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",   # USDT
-        "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
-        "dec0": 18, "dec1": 6, "asset_dec": 6,
-        "loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44
-    },
-    "MATIC_USDC": {
-        "nama": "WMATIC / USDC (500)",
-        "quick": "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827",
-        "uni": "0xa374094527e1673A86dE625aa59517c5de346d32",
-        "asset": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",   # USDC
-        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
-        "dec0": 18, "dec1": 6, "asset_dec": 6,
-        "loan_usd": 2500.0, "uni_fee": 500, "fee_tot": 0.44
-    },
-    "ETH_USDC": {
-        "nama": "WETH / USDC (500)",
-        "quick": "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d",
-        "uni": "0x45dda9cb7c25131df268515131f647d726f50608",
-        "asset": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",   # USDC
-        "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
-        "dec0": 6, "dec1": 18, "asset_dec": 6,
-        "loan_usd": 3500.0, "uni_fee": 500, "fee_tot": 0.44
-    },
-
-    # --- GRUP 2: 5 KOLAM STABLECOIN & BLUECHIP GACOR ---
-    "USDCe_USDT": {
-        "nama": "USDC.e / USDT (100)",
-        "quick": "0x2cf7252e74036d1da831d11089d326296e64a728",
-        "uni": "0xdac8a8e6dbf8c690ec6815e0ff03491b2770255d",
-        "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",   # USDT
-        "target": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
-        "dec0": 6, "dec1": 6, "asset_dec": 6,
-        "loan_usd": 4000.0, "uni_fee": 100, "fee_tot": 0.40
-    },
-    "DAI_USDCe": {
-        "nama": "DAI / USDC.e (100)",
-        "quick": "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd",
-        "uni": "0x5645dcb64c059aa11212707fbf4e7f984440a8cf",
-        "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
-        "target": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",  # DAI
-        "dec0": 6, "dec1": 18, "asset_dec": 6,
-        "loan_usd": 3000.0, "uni_fee": 100, "fee_tot": 0.40
-    },
-    "MATIC_WETH": {
-        "nama": "WMATIC / WETH (500)",
-        "quick": "0xadbf1854e5883eb8aa7baf50705338739e558e5b",
-        "uni": "0x86f1d8390222a3691c28938ec7404a1661e618e0",
-        "asset": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",   # WETH
-        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
-        "dec0": 18, "dec1": 18, "asset_dec": 18,
-        "loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44
-    },
-    "DAI_MATIC": {
-        "nama": "DAI / WMATIC (500)",
-        "quick": "0xeef611894ceae652979c9d0dae1deb597790c6ee",
-        "uni": "0x0f663c16dd7c65cf87edb9229464ca77aeea536b",
-        "asset": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",   # DAI
-        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
-        "dec0": 18, "dec1": 18, "asset_dec": 18,
-        "loan_usd": 2500.0, "uni_fee": 500, "fee_tot": 0.44
-    },
-    "MATIC_USDCe_3000": {
-        "nama": "WMATIC / USDC.e (3000)",
-        "quick": "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827",
-        "uni": "0x88f3c15523544835ff6c738ddb30995339ad57d6",
-        "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
-        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
-        "dec0": 18, "dec1": 6, "asset_dec": 6,
-        "loan_usd": 2500.0, "uni_fee": 3000, "fee_tot": 0.69
-    },
-
-    # --- GRUP 3: 5 KOLAM PAUS BITCOIN & HIGH VOLATILITY ---
-    "WBTC_WETH": {
-        "nama": "WBTC / WETH (3000)",
-        "quick": "0xdc9232e2df177d7a12fdff6ecbab114e2231198d",
-        "uni": "0xfe343675878100b344802a6763fd373fdeed07a4",
-        "asset": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",   # WETH
-        "target": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",  # WBTC
-        "dec0": 8, "dec1": 18, "asset_dec": 18,
-        "loan_usd": 4000.0, "uni_fee": 3000, "fee_tot": 0.69
-    },
-    "WBTC_USDCe": {
-        "nama": "WBTC / USDC.e (3000)",
-        "quick": "0xf8889c3b46b26153887de2e5b41331af60d156f1",
-        "uni": "0x847b64f9d3a95e977d157866447a5c0a5dfa0ee5",
-        "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
-        "target": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",  # WBTC
-        "dec0": 8, "dec1": 6, "asset_dec": 6,
-        "loan_usd": 4000.0, "uni_fee": 3000, "fee_tot": 0.69
-    },
+    # 2. DAI / USDT (Fee 500: 0.05%)
     "DAI_USDT_500": {
         "nama": "DAI / USDT (500)",
         "quick": "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88",
@@ -154,30 +53,123 @@ POOLS = {
         "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",   # USDT
         "target": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",  # DAI
         "dec0": 18, "dec1": 6, "asset_dec": 6,
-        "loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44
+        "loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44,
+        "min_r0": 1000.0, "min_r1": 1000.0
     },
-    "CRV_WETH": {
-        "nama": "CRV / WETH (3000)",
-        "quick": "0xab4f7a3199b2cd7a8bfb425941ead08facb6d617",
-        "uni": "0xfc99d1c02d27de07dfe0dcd878cde86ee59c5f6b",
+    # 3. DAI / USDC.e (Fee 100: 0.01% - Likuiditas $301.000)
+    "DAI_USDCe_100": {
+        "nama": "DAI / USDC.e (100)",
+        "quick": "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd",
+        "uni": "0x5645dcb64c059aa11212707fbf4e7f984440a8cf",
+        "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",   # USDC.e
+        "target": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",  # DAI
+        "dec0": 6, "dec1": 18, "asset_dec": 6,
+        "loan_usd": 3500.0, "uni_fee": 100, "fee_tot": 0.40,
+        "min_r0": 10000.0, "min_r1": 10000.0
+    },
+    # 4. USDC.e / USDT (Fee 100: 0.01% - Likuiditas $622.000)
+    "USDCe_USDT_100": {
+        "nama": "USDC.e / USDT (100)",
+        "quick": "0x2cf7252e74036d1da831d11089d326296e64a728",
+        "uni": "0xdac8a8e6dbf8c690ec6815e0ff03491b2770255d",
+        "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",   # USDT
+        "target": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
+        "dec0": 6, "dec1": 6, "asset_dec": 6,
+        "loan_usd": 4000.0, "uni_fee": 100, "fee_tot": 0.40,
+        "min_r0": 10000.0, "min_r1": 10000.0
+    },
+    # 5. WMATIC / USDT (Fee 500)
+    "MATIC_USDT_500": {
+        "nama": "WMATIC / USDT (500)",
+        "quick": "0x604229c960e5cacf2aaeac8be68ac07ba9df81c3",
+        "uni": "0x9b08288c3be4f62bbf8d1c20ac9c5e6f9467d8b7",
+        "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",   # USDT
+        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
+        "dec0": 18, "dec1": 6, "asset_dec": 6,
+        "loan_usd": 2000.0, "uni_fee": 500, "fee_tot": 0.44,
+        "min_r0": 10000.0, "min_r1": 1000.0
+    },
+    # 6. WMATIC / USDC (Fee 500)
+    "MATIC_USDC_500": {
+        "nama": "WMATIC / USDC (500)",
+        "quick": "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827",
+        "uni": "0xa374094527e1673A86dE625aa59517c5de346d32",
+        "asset": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",   # USDC
+        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
+        "dec0": 18, "dec1": 6, "asset_dec": 6,
+        "loan_usd": 2500.0, "uni_fee": 500, "fee_tot": 0.44,
+        "min_r0": 10000.0, "min_r1": 1000.0
+    },
+    # 7. WMATIC / USDC.e (Fee 3000)
+    "MATIC_USDCe_3000": {
+        "nama": "WMATIC / USDC.e (3000)",
+        "quick": "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827",
+        "uni": "0x88f3c15523544835ff6c738ddb30995339ad57d6",
+        "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
+        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
+        "dec0": 18, "dec1": 6, "asset_dec": 6,
+        "loan_usd": 2500.0, "uni_fee": 3000, "fee_tot": 0.69,
+        "min_r0": 10000.0, "min_r1": 1000.0
+    },
+    # 8. WETH / USDT (Fee 500)
+    "ETH_USDT_500": {
+        "nama": "WETH / USDT (500)",
+        "quick": "0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046",
+        "uni": "0xbb98b3d2b18aef63a3178023a920971cf5f29be4",
+        "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",   # USDT
+        "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
+        "dec0": 18, "dec1": 6, "asset_dec": 6,
+        "loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44,
+        "min_r0": 5.0, "min_r1": 5000.0
+    },
+    # 9. WETH / USDC (Fee 500 - Likuiditas $2.2 Juta!)
+    "ETH_USDC_500": {
+        "nama": "WETH / USDC (500)",
+        "quick": "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d",
+        "uni": "0x45dda9cb7c25131df268515131f647d726f50608",
+        "asset": "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",   # USDC
+        "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
+        "dec0": 6, "dec1": 18, "asset_dec": 6,
+        "loan_usd": 3500.0, "uni_fee": 500, "fee_tot": 0.44,
+        "min_r0": 5000.0, "min_r1": 5.0
+    },
+    # 10. WMATIC / WETH (Fee 500 - Likuiditas 2,6 Juta WMATIC)
+    "MATIC_WETH_500": {
+        "nama": "WMATIC / WETH (500)",
+        "quick": "0xadbf1854e5883eb8aa7baf50705338739e558e5b",
+        "uni": "0x86f1d8390222a3691c28938ec7404a1661e618e0",
         "asset": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",   # WETH
-        "target": "0x172370d5Cd63279eFa6d502DAB29171933a610AF",  # CRV
+        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
         "dec0": 18, "dec1": 18, "asset_dec": 18,
-        "loan_usd": 2500.0, "uni_fee": 3000, "fee_tot": 0.69
+        "loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44,
+        "min_r0": 10000.0, "min_r1": 5.0
     },
-    "CRV_WMATIC": {
-        "nama": "CRV / WMATIC (3000)",
-        "quick": "0x634f9d9f8680349b518cb615017c105af46ccfd2",
-        "uni": "0x4d05f2a005e6f36633778416764e82d1d12e7fbb",
-        "asset": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
-        "target": "0x172370d5Cd63279eFa6d502DAB29171933a610AF",  # CRV
+    # 11. DAI / WMATIC (Fee 500)
+    "DAI_MATIC_500": {
+        "nama": "DAI / WMATIC (500)",
+        "quick": "0xeef611894ceae652979c9d0dae1deb597790c6ee",
+        "uni": "0x0f663c16dd7c65cf87edb9229464ca77aeea536b",
+        "asset": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",   # DAI
+        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
         "dec0": 18, "dec1": 18, "asset_dec": 18,
-        "loan_usd": 2000.0, "uni_fee": 3000, "fee_tot": 0.69
+        "loan_usd": 2500.0, "uni_fee": 500, "fee_tot": 0.44,
+        "min_r0": 1000.0, "min_r1": 1000.0
+    },
+    # 12. WBTC / WETH (Fee 3000 - Bitcoin Asli Likuiditas $450.000!)
+    "WBTC_WETH_3000": {
+        "nama": "WBTC / WETH (3000)",
+        "quick": "0xdc9232e2df177d7a12fdff6ecbab114e2231198d",
+        "uni": "0xfe343675878100b344802a6763fd373fdeed07a4",
+        "asset": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",   # WETH
+        "target": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",  # WBTC
+        "dec0": 8, "dec1": 18, "asset_dec": 18,
+        "loan_usd": 4000.0, "uni_fee": 3000, "fee_tot": 0.69,
+        "min_r0": 0.5, "min_r1": 10.0
     }
 }
 
 # Parameter Pertahanan & Eksekusi MEV (TOP 5% VIP TIER POLYGON)
-BASE_PRIORITY_FEE_GWEI = 210.0  # Tip Baseline: Mengalahkan 95% antrean Polygon (~Rp 150 perak)
+BASE_PRIORITY_FEE_GWEI = 210.0  # Tip Baseline: Mengalahkan 95% antrean Polygon (~Rp 140 perak)
 MAX_SLIPPAGE_PCT = 0.50         # Gembok anti-sandwich (batal jika harga bergeser >0.5%)
 FLASHLOAN_SELECTOR = keccak(b"requestFlashLoan(address,uint256,bytes)")[:4]
 KURS_USDT_IDR = 18136
@@ -185,7 +177,7 @@ KURS_USDT_IDR = 18136
 def calculate_adaptive_tip(cuan_idr: float) -> float:
     """
     Priority Tip adaptif berdasarkan potensi profit IDR:
-    - Normal Scalping (< 200rb): 210.0 Gwei (Jawara vs bot lawan yg cm 25-117 Gwei)
+    - Normal Scalping (< 200rb): 210.0 Gwei (~Rp 140 perak gas)
     - Sedang (200rb - 500rb): 380.0 Gwei
     - Paus (500rb - 1.5jt): 550.0 Gwei
     - Monster Paus (> 1.5jt): 750.0 Gwei
@@ -210,7 +202,8 @@ def send_telegram_alert(message):
 def build_flashloan_calldata(pool_key, direction, net_profit_usd):
     cfg = POOLS[pool_key]
     loan_amount_raw = int(cfg["loan_usd"] * (10**cfg["asset_dec"]))
-    min_profit_raw = int(max(net_profit_usd * 0.70, 0.50) * (10**cfg["asset_dec"]))
+    # Proteksi laba on-chain: minimal $0.15 USD (~Rp 2.700) jika tipis, atau 60% dari estimasi
+    min_profit_raw = int(max(net_profit_usd * 0.60, 0.15) * (10**cfg["asset_dec"]))
 
     params_bytes = encode(
         ['uint8', 'address', 'uint24', 'uint256'],
@@ -307,7 +300,7 @@ def monitor_transaction_receipt(tx_hash, pool_name, est_cuan_usd, est_cuan_idr, 
                         f"🪙 *Kolam:* `{pool_name}`\n"
                         f"ℹ️ *Alasan:* Selisih profit berubah di milidetik terakhir.\n"
                         f"🔒 *Modal:* 100% UTUH AMAN ($0 pinjaman Aave dikembalikan).\n"
-                        f"⛽ *Biaya Gas Revert:* ~Rp 150 perak."
+                        f"⛽ *Biaya Gas Revert:* ~Rp 140 perak."
                     )
                     send_telegram_alert(revert_msg)
                     print(f"    🛡️ [TRANSAKSI DIBATALKAN KONTRAK SECARA AMAN (REVERT)]: {tx_hash}", flush=True)
@@ -317,12 +310,14 @@ def monitor_transaction_receipt(tx_hash, pool_name, est_cuan_usd, est_cuan_idr, 
 
 def main():
     print("=" * 86, flush=True)
-    print("  🚀 MESIN ARBITRASE POLYGON TURBO 15 KOLAM - AUTONOMOUS 24/7 (AZURE CLOUD)", flush=True)
-    print(f"  🎯 Target Scalping Minimal: $0.90 USD (~Rp 16.300+) | Tip Adaptif: 210 - 750 Gwei", flush=True)
-    print(f"  ⚡ Scanning Speed         : Batch Multicall (< 0.6s per cycle / 3x per block!)", flush=True)
+    print("  🚀 MESIN ARBITRASE TURBO 12 KOLAM RAKSASA - AUTONOMOUS 24/7 (AZURE CLOUD)", flush=True)
+    print(f"  🎯 Target Scalping Agresif: Minimal $0.28 USD (~Rp 5.000+ Bersih) Masuk Dompet!", flush=True)
+    print(f"  ⚡ Scanning Speed         : Batch Multicall (< 0.5s / 4x per blok Polygon!)", flush=True)
     print("=" * 86, flush=True)
 
     is_live_ready = bool(SMART_CONTRACT_ADDRESS and METAMASK_PRIVATE_KEY)
+    contract_display = f"{SMART_CONTRACT_ADDRESS[:10]}...{SMART_CONTRACT_ADDRESS[-6:]}" if SMART_CONTRACT_ADDRESS else "Belum Diset"
+    
     if is_live_ready:
         print(f"  🔥 STATUS EKSEKUTOR: LIVE ON-CHAIN SNIPER AKTIF!")
         print(f"  📜 Kontrak Pintar   : {SMART_CONTRACT_ADDRESS}")
@@ -331,13 +326,13 @@ def main():
         print("  ⚠️ STATUS EKSEKUTOR: MODE RADAR PENGAMATAN ONLY (Kredensial Belum Terdeteksi)\n")
 
     send_telegram_alert(
-        f"🤖 *RADAR ARBITRASE TURBO 15 KOLAM AKTIF!* 🚀\n\n"
-        f"🌐 *Total Kolam:* `15 Kolam Likuiditas Utama Polygon`\n"
-        f"⚡ *Kecepatan:* `Batch Multicall (< 0.6s / 3x per blok)`\n"
-        f"🎯 *Target Minimal:* `$0.90 USD (~Rp 16.300+)`\n"
+        f"🤖 *RADAR ARBITRASE TURBO 12 KOLAM RAKSASA AKTIF!* 🚀\n\n"
+        f"🌐 *Total Kolam:* `12 Kolam Likuiditas Utama Polygon (> $6 Juta TVL)`\n"
+        f"⚡ *Kecepatan:* `Batch Multicall (< 0.5s / 4x per blok)`\n"
+        f"🎯 *Target Minimal:* `$0.28 USD (~Rp 5.000+ Bersih per Tembakan)`\n"
         f"⛽ *Gas Priority:* `210 - 750 Gwei VIP Tier`\n"
-        f"📜 *Kontrak:* `{SMART_CONTRACT_ADDRESS[:10]}...`\n"
-        f"📡 *Status:* Berburu 24 Jam Nonstop di Cloud Azure!"
+        f"📜 *Kontrak:* `{contract_display}`\n"
+        f"📡 *Status:* {'🔥 LIVE SNIPER ON-CHAIN AKTIF!' if is_live_ready else '🔍 RADAR PENGAMATAN'}"
     )
 
     last_alert_time = {}
@@ -347,7 +342,7 @@ def main():
     while True:
         cycle += 1
         try:
-            # Susun 1 Batch JSON-RPC Request untuk 15 kolam (30 query sekaligus)
+            # Susun 1 Batch JSON-RPC Request untuk 12 kolam (24 query sekaligus)
             batch = []
             req_map = {}
             idx = 0
@@ -383,6 +378,11 @@ def main():
                     q_d = r_q[2:]
                     r0 = int(q_d[0:64], 16) / (10**cfg['dec0'])
                     r1 = int(q_d[64:128], 16) / (10**cfg['dec1'])
+
+                    # FILTER ANTI-KOLAM HANTU: Wajib memenuhi ambang likuiditas minimum nyata
+                    if r0 < cfg.get("min_r0", 1.0) or r1 < cfg.get("min_r1", 1.0):
+                        continue
+
                     p_q = r1 / r0 if r0 > 0 else 0
 
                     u_d = r_u[2:]
@@ -407,10 +407,10 @@ def main():
                             est_cuan_usd = (net_profit_pct / 100.0) * loan
                             est_cuan_idr = est_cuan_usd * KURS_USDT_IDR
 
-                            # SIKAT PELUANG MULAI DARI $0.90 USD (~Rp 16.300) KE ATAS!
-                            if est_cuan_usd >= 0.90:
+                            # TARGET SCALPING AGRESIF: SIKAT MULAI DARI $0.28 USD (~Rp 5.000+) BERSIH!
+                            if est_cuan_usd >= 0.28:
                                 tip_gwei = calculate_adaptive_tip(est_cuan_idr)
-                                print(f"  🔥 [PELUANG CUAN!] {cfg['nama']} | {arah} | Net: +{net_profit_pct:.2f}% (~Rp {est_cuan_idr:,.0f}) | Tip: {tip_gwei:.0f} Gwei", flush=True)
+                                print(f"  🔥 [PELUANG CUAN NYATA!] {cfg['nama']} | {arah} | Net: +{net_profit_pct:.3f}% (~Rp {est_cuan_idr:,.0f}) | Tip: {tip_gwei:.0f} Gwei", flush=True)
 
                                 # Rancang Calldata Flash Loan
                                 calldata_hex, min_profit_raw = build_flashloan_calldata(k, direction, est_cuan_usd)
@@ -436,11 +436,11 @@ def main():
                                     cuan_msg = (
                                         f"🚨 *PELUANG ARBITRASE LAUTAN BIRU!* 🚨\n\n"
                                         f"🪙 *Pasangan:* {cfg['nama']}\n"
-                                        f"📊 *Spread Kotor:* {spread_pct:.2f}%\n"
-                                        f"💰 *Profit Bersih:* +{net_profit_pct:.2f}%\n"
+                                        f"📊 *Spread Kotor:* {spread_pct:.3f}%\n"
+                                        f"💰 *Profit Bersih:* +{net_profit_pct:.3f}%\n"
                                         f"💵 *Estimasi Cuan:* ${est_cuan_usd:.2f} (~Rp {est_cuan_idr:,.0f})\n"
                                         f"🔄 *Jalur:* {arah}\n"
-                                        f"⚡ *Mode:* 0-Delay Sniper (Tip: {tip_gwei:.0f} Gwei)\n"
+                                        f"⚡ *Mode:* {'0-Delay Sniper (Tip: ' + str(tip_gwei) + ' Gwei)' if is_live_ready else 'Radar Pengamatan'}\n"
                                         f"🛡️ *Anti-Frontrunning:* Terenkripsi 1RPC"
                                     )
                                     send_telegram_alert(cuan_msg)
