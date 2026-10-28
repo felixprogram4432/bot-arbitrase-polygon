@@ -223,21 +223,26 @@ def execute_onchain_sniper_instant(contract_address, calldata_hex, active_rpc, p
 
         account = Account.from_key(METAMASK_PRIVATE_KEY)
 
-        # 1. Ambil Nonce Pengirim
-        res_nonce = requests.post(active_rpc, json={
-            "jsonrpc": "2.0", "id": 1, "method": "eth_getTransactionCount",
-            "params": [account.address, "pending"]
-        }, timeout=5).json()
-        nonce = int(res_nonce["result"], 16)
+        # MODE TURBO RAW SPEED (0-DELAY):
+        # Ambil Nonce & Base Fee Sekaligus dalam 1 Batch Request Kilat (Hemat Waktu 150ms!)
+        batch_prep = [
+            {"jsonrpc": "2.0", "id": 1, "method": "eth_getTransactionCount", "params": [account.address, "pending"]},
+            {"jsonrpc": "2.0", "id": 2, "method": "eth_getBlockByNumber", "params": ["latest", False]}
+        ]
+        res_prep = requests.post(active_rpc, json=batch_prep, timeout=4).json()
+        
+        nonce = None
+        base_fee = None
+        for item in res_prep:
+            if item["id"] == 1:
+                nonce = int(item["result"], 16)
+            elif item["id"] == 2:
+                base_fee = int(item["result"]["baseFeePerGas"], 16)
 
-        # 2. Ambil Base Fee Terbaru
-        res_block = requests.post(active_rpc, json={
-            "jsonrpc": "2.0", "id": 2, "method": "eth_getBlockByNumber",
-            "params": ["latest", False]
-        }, timeout=5).json()
-        base_fee = int(res_block["result"]["baseFeePerGas"], 16)
+        if nonce is None or base_fee is None:
+            return False, "Gagal mengambil parameter gas/nonce dari node."
 
-        # Priority Fee & Max Fee Adaptif
+        # Priority Fee & Max Fee Adaptif (VIP Tier Top 5%)
         priority_fee_wei = int(priority_fee_gwei * 1e9)
         max_fee_wei = int(base_fee * 1.5) + priority_fee_wei
 
@@ -255,11 +260,11 @@ def execute_onchain_sniper_instant(contract_address, calldata_hex, active_rpc, p
         signed_tx = account.sign_transaction(tx)
         raw_tx_hex = "0x" + signed_tx.raw_transaction.hex()
 
-        # Kirim Langsung ke Jaringan Validator
+        # TEMBAK SEKETIKA KE MEMPOOL VALIDATOR (0-DELAY RAW SPEED)
         res_send = requests.post(active_rpc, json={
             "jsonrpc": "2.0", "id": 3, "method": "eth_sendRawTransaction",
             "params": [raw_tx_hex]
-        }, timeout=5).json()
+        }, timeout=4).json()
 
         if "error" in res_send:
             return False, res_send["error"]["message"]
@@ -336,6 +341,7 @@ def main():
     )
 
     last_alert_time = {}
+    pool_last_shot = {}
     active_rpc = POLYGON_RPCS[0]
     cycle = 0
 
@@ -415,19 +421,22 @@ def main():
                                 # Rancang Calldata Flash Loan
                                 calldata_hex, min_profit_raw = build_flashloan_calldata(k, direction, est_cuan_usd)
 
-                                # TEMBAK ON-CHAIN LIVE (0-DELAY)!
+                                # TEMBAK ON-CHAIN LIVE (0-DELAY DENGAN JEDA COOLDOWN ANTI-SPAM)!
                                 if is_live_ready:
-                                    print(f"  ⚡ [AGRESIF: TEMBAK ON-CHAIN (Tip: {tip_gwei:.0f} Gwei)!]", flush=True)
-                                    tx_ok, tx_res = execute_onchain_sniper_instant(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc, tip_gwei)
-                                    if tx_ok:
-                                        print(f"  🚀 [SNIPER BERHASIL DIKIRIM!] Tx Hash: {tx_res}", flush=True)
-                                        # Pantau receipt di background thread agar radar utama tidak berhenti sedetik pun!
-                                        threading.Thread(
-                                            target=monitor_transaction_receipt,
-                                            args=(tx_res, cfg['nama'], est_cuan_usd, est_cuan_idr, active_rpc)
-                                        ).start()
-                                    else:
-                                        print(f"  ⚠️ [Gagal Kirim Tx]: {tx_res}", flush=True)
+                                    last_shot = pool_last_shot.get(k, 0)
+                                    if (time.time() - last_shot) >= 20: # Cooldown 20 detik per kolam agar tidak spamming
+                                        pool_last_shot[k] = time.time()
+                                        print(f"  ⚡ [AGRESIF: TEMBAK ON-CHAIN (Tip: {tip_gwei:.0f} Gwei)!]", flush=True)
+                                        tx_ok, tx_res = execute_onchain_sniper_instant(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc, tip_gwei)
+                                        if tx_ok:
+                                            print(f"  🚀 [SNIPER BERHASIL DIKIRIM!] Tx Hash: {tx_res}", flush=True)
+                                            # Pantau receipt di background thread agar radar utama tidak berhenti sedetik pun!
+                                            threading.Thread(
+                                                target=monitor_transaction_receipt,
+                                                args=(tx_res, cfg['nama'], est_cuan_usd, est_cuan_idr, active_rpc)
+                                            ).start()
+                                        else:
+                                            print(f"  ⚠️ [Gagal Kirim Tx]: {tx_res}", flush=True)
 
                                 # Notifikasi Deteksi ke Telegram (Throttle 60 detik per pasangan)
                                 last_t = last_alert_time.get(k, 0)
