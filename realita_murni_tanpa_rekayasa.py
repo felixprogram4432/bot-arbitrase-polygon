@@ -16,8 +16,8 @@ if sys.platform.startswith('win'):
 
 # JALUR VIP ANTI-INTIP (1RPC MEV Shield + Bor Direct Validator)
 POLYGON_RPCS = [
-    "https://1rpc.io/matic",                    # Jalur Utama: Terenkripsi Anti-Frontrunning
-    "https://polygon-bor-rpc.publicnode.com",   # Jalur Cepat: Direct Bor Node
+    "https://polygon-bor-rpc.publicnode.com",   # Jalur Utama Cepat: Direct Bor Node Tanpa Rate Limit
+    "https://1rpc.io/matic",                    # Jalur VIP Terenkripsi
     "https://polygon-rpc.com"                   # Jalur Cadangan
 ]
 
@@ -144,15 +144,15 @@ POOLS = {
         "loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44,
         "min_r0": 10000.0, "min_r1": 5.0
     },
-    # 11. DAI / WMATIC (Fee 500)
-    "DAI_MATIC_500": {
-        "nama": "DAI / WMATIC (500)",
+    # 11. DAI / WMATIC (Fee 3000 - Kolam Resmi Likuiditas Dalam 359 Ribu Liq)
+    "DAI_MATIC_3000": {
+        "nama": "DAI / WMATIC (3000)",
         "quick": "0xeef611894ceae652979c9d0dae1deb597790c6ee",
-        "uni": "0x0f663c16dd7c65cf87edb9229464ca77aeea536b",
+        "uni": "0xfe530931da161232ec76a7c3bea7d36cf3811a0d",
         "asset": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",   # DAI
         "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
         "dec0": 18, "dec1": 18, "asset_dec": 18,
-        "loan_usd": 2500.0, "uni_fee": 500, "fee_tot": 0.44,
+        "loan_usd": 2000.0, "uni_fee": 3000, "fee_tot": 0.69,
         "min_r0": 1000.0, "min_r1": 1000.0
     },
     # 12. WBTC / WETH (Fee 3000 - Bitcoin Asli Likuiditas $450.000!)
@@ -457,6 +457,9 @@ def main():
             time.sleep(0.4)
 
         except Exception as e:
+            # Otomatis rotasi RPC jika terjadi timeout atau rate limit
+            rpc_idx = (POLYGON_RPCS.index(active_rpc) + 1) % len(POLYGON_RPCS)
+            active_rpc = POLYGON_RPCS[rpc_idx]
             time.sleep(1.0)
 
 if __name__ == "__main__":
