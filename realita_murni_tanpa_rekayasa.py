@@ -98,10 +98,28 @@ POOLS = {
 }
 
 # Parameter Pertahanan & Eksekusi MEV (TOP 5% VIP TIER POLYGON)
-PRIORITY_FEE_GWEI = 210.0  # Tip Monster 210 Gwei: Mengalahkan 95% transaksi di Polygon (~Rp 138 perak)
-MAX_SLIPPAGE_PCT = 0.50    # Gembok anti-sandwich (batal jika harga bergeser >0.5%)
-TOTAL_FEE_PCT = 0.44       # Aave 0.09% + DEX 0.35%
+BASE_PRIORITY_FEE_GWEI = 210.0  # Tip Baseline: Mengalahkan 95% antrean Polygon (~Rp 150 perak)
+MAX_SLIPPAGE_PCT = 0.50         # Gembok anti-sandwich (batal jika harga bergeser >0.5%)
+TOTAL_FEE_PCT = 0.44            # Aave 0.09% + DEX 0.35%
 FLASHLOAN_SELECTOR = keccak(b"requestFlashLoan(address,uint256,bytes)")[:4]
+
+def calculate_adaptive_tip(cuan_idr):
+    """
+    Sistem Tip Cerdas Berdasarkan Hasil (Adaptive Gas):
+    - Standar (< Rp 200.000)  : 210 Gwei (~Rp 150 perak) -> Libas 95% antrean receh
+    - Rp 200.000 s/d Rp 500.000: 380 Gwei (~Rp 275 perak) -> Libas bot lawan 100-150 Gwei
+    - Rp 500.000 s/d Rp 1.5 Jt : 550 Gwei (~Rp 400 perak) -> Libas bot lawan 200-300 Gwei
+    - > Rp 1.5 Juta (Jackpot) : 750 Gwei (~Rp 550 perak) -> Masuk nomor 1 di blok validator
+    Biaya bensin selalu < 0.1% dari hasil cuan (Pasti Untung Tebal!)
+    """
+    if cuan_idr >= 1500000:
+        return 750.0
+    elif cuan_idr >= 500000:
+        return 550.0
+    elif cuan_idr >= 200000:
+        return 380.0
+    else:
+        return BASE_PRIORITY_FEE_GWEI
 
 # Durasi Sesi per Runner Cloud: 5 Jam 45 Menit (Sebelum Estafet 30 Detik)
 MAX_RUN_SECONDS = 5 * 3600 + 45 * 60 
@@ -245,7 +263,7 @@ def monitor_transaction_receipt(tx_hash, pool_name, est_cuan_usd, est_cuan_idr, 
         except Exception:
             time.sleep(2.0)
 
-def execute_onchain_sniper_instant(contract_addr, calldata_hex, rpc_url):
+def execute_onchain_sniper_instant(contract_addr, calldata_hex, rpc_url, priority_fee_gwei=210.0):
     """MODE AGRESIF: Langsung Tembak On-Chain (0-Delay) Tanpa Tunggu Simulasi!"""
     try:
         from eth_account import Account
@@ -259,10 +277,10 @@ def execute_onchain_sniper_instant(contract_addr, calldata_hex, rpc_url):
         base_fee_hex = r_block.get("result", {}).get("baseFeePerGas", "0x1dcd6500")
         base_fee = int(base_fee_hex, 16)
         
-        priority_fee = int(PRIORITY_FEE_GWEI * 10**9)
+        priority_fee = int(priority_fee_gwei * 10**9)
         max_fee = int(base_fee * 1.5) + priority_fee
         
-        # 3. Transaksi EIP-1559 VIP 210 Gwei
+        # 3. Transaksi EIP-1559 VIP Adaptive Gas
         tx_dict = {
             "chainId": 137,
             "nonce": nonce,
@@ -310,7 +328,7 @@ def main():
         f"🎯 *Mode:* {'🔥 LIVE INSTANT SNIPER' if is_live_ready else '🔍 RADAR PEMANTAU & ALERT AKTIF'}\n"
         "⚡ *Kecepatan:* 0-Delay (Langsung Tembak Seketika!)\n"
         "📊 *Target:* DAI/USDT, MATIC/USDT, ETH/USDT, MATIC/USDC, ETH/USDC\n"
-        "🛡️ *Shield:* 1RPC Encrypted + Priority Tip 210 Gwei (Top 5% VIP Tier Polygon)\n"
+        "🛡️ *Shield:* 1RPC Encrypted + Tip 210 Gwei (Adaptif Naik s/d 750 Gwei Saat Cuan Besar)\n"
         "💵 *Target Scalping:* Minimal +$0.90 (~Rp 14.040) Langsung Sikat!\n"
         "📱 *Laporan:* Cuan & Kerugian Bensin Otomatis Dilaporkan ke Telegram!\n"
         "⏰ *Status:* Siaga Nonstop 24 Jam di Cloud!"
@@ -366,15 +384,16 @@ def main():
 
                         # Sikat peluang mulai dari $0.90 ke atas!
                         if est_cuan_usd >= 0.90:
-                            print(f"    🔥 [PELUANG CUAN!] {arah} | Net: +{net_profit_pct:.2f}% (~Rp {est_cuan_idr:,.0f})")
+                            tip_gwei = calculate_adaptive_tip(est_cuan_idr)
+                            print(f"    🔥 [PELUANG CUAN!] {arah} | Net: +{net_profit_pct:.2f}% (~Rp {est_cuan_idr:,.0f}) | Tip: {tip_gwei:.0f} Gwei")
 
                             # Rancang Calldata Flash Loan
                             calldata_hex, min_profit_raw = build_flashloan_calldata(k, direction, est_cuan_usd)
 
                             # JIKA LIVE READY -> TEMBAK LANGSUNG ON-CHAIN (0-DELAY)!
                             if is_live_ready:
-                                print(f"    ⚡ [AGRESIF: TEMBAK LANGSUNG ON-CHAIN!]")
-                                tx_ok, tx_res = execute_onchain_sniper_instant(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc)
+                                print(f"    ⚡ [AGRESIF: TEMBAK ON-CHAIN (Tip: {tip_gwei:.0f} Gwei)!]")
+                                tx_ok, tx_res = execute_onchain_sniper_instant(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc, tip_gwei)
                                 if tx_ok:
                                     print(f"    🚀 [SNIPER BERHASIL DIKIRIM!] Tx Hash: {tx_res}")
                                     # Pantau status kemenangan/revert di background thread agar radar tidak berhenti!
@@ -396,7 +415,7 @@ def main():
                                     f"💰 *Profit Bersih:* +{net_profit_pct:.2f}%\n"
                                     f"💵 *Estimasi Cuan:* ${est_cuan_usd:.2f} (~Rp {est_cuan_idr:,.0f})\n"
                                     f"🔄 *Jalur:* {arah}\n"
-                                    f"⚡ *Mode:* 0-Delay Instant Sniper (210 Gwei)\n"
+                                    f"⚡ *Mode:* 0-Delay Sniper (Tip: {tip_gwei:.0f} Gwei)\n"
                                     f"🛡️ *Anti-Frontrunning:* Terenkripsi 1RPC"
                                 )
                                 send_telegram_alert(cuan_msg)
