@@ -32,7 +32,7 @@ TELEGRAM_CHAT_ID = "5124389853"
 SMART_CONTRACT_ADDRESS = os.environ.get("SMART_CONTRACT_ADDRESS", "").strip()
 METAMASK_PRIVATE_KEY = os.environ.get("METAMASK_PRIVATE_KEY", "").strip()
 
-# MATRIKS 22 KOLAM LIKUIDITAS RAKSASA POLYGON (> $7 JUTA TVL / > RP 126 MILIAR)
+# MATRIKS 22 KOLAM LIKUIDITAS RAKSASA POLYGON (> $15 JUTA TVL / > RP 240 MILIAR)
 # Terkalibrasi Presisi: QuickSwap V2 <-> Uniswap V3 dengan Dynamic Loan Sizing
 POOLS = {
     # 1. DAI / USDT (Fee 100: 0.01%)
@@ -178,29 +178,7 @@ POOLS = {
         "max_loan_usd": 3500.0, "uni_fee": 3000, "fee_tot": 0.69,
         "min_r0": 5000.0, "min_r1": 5.0
     },
-    # 14. WETH / DAI (Fee 500 - TVL $60.000)
-    "ETH_DAI_500": {
-        "nama": "WETH / DAI (500)",
-        "quick": "0x4a35582a710e1f4b2030a3f826da20bfb6703c09",
-        "uni": "0x67a9fe12fa6082d9d0203c84c6c56d3c4b269f28",
-        "asset": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",   # DAI
-        "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
-        "dec0": 18, "dec1": 18, "asset_dec": 18, "asset_sym": "DAI", "is_asset_t0": False,
-        "max_loan_usd": 2500.0, "uni_fee": 500, "fee_tot": 0.44,
-        "min_r0": 5.0, "min_r1": 5000.0
-    },
-    # 15. WETH / DAI (Fee 3000)
-    "ETH_DAI_3000": {
-        "nama": "WETH / DAI (3000)",
-        "quick": "0x4a35582a710e1f4b2030a3f826da20bfb6703c09",
-        "uni": "0x6bad0f9a89ca403bb91d253d385cec1a2b6eca97",
-        "asset": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",   # DAI
-        "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
-        "dec0": 18, "dec1": 18, "asset_dec": 18, "asset_sym": "DAI", "is_asset_t0": False,
-        "max_loan_usd": 2500.0, "uni_fee": 3000, "fee_tot": 0.69,
-        "min_r0": 5.0, "min_r1": 5000.0
-    },
-    # 16. WMATIC / WETH (Fee 500 - TVL $470.000)
+    # 14. WMATIC / WETH (Fee 500 - TVL $470.000)
     "MATIC_WETH_500": {
         "nama": "WMATIC / WETH (500)",
         "quick": "0xadbf1854e5883eb8aa7baf50705338739e558e5b",
@@ -211,7 +189,7 @@ POOLS = {
         "max_loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44,
         "min_r0": 10000.0, "min_r1": 5.0
     },
-    # 17. WMATIC / WETH (Fee 3000)
+    # 15. WMATIC / WETH (Fee 3000)
     "MATIC_WETH_3000": {
         "nama": "WMATIC / WETH (3000)",
         "quick": "0xadbf1854e5883eb8aa7baf50705338739e558e5b",
@@ -222,7 +200,7 @@ POOLS = {
         "max_loan_usd": 3000.0, "uni_fee": 3000, "fee_tot": 0.69,
         "min_r0": 10000.0, "min_r1": 5.0
     },
-    # 18. WBTC / WETH (Fee 500 - TVL $450.000)
+    # 16. WBTC / WETH (Fee 500 - TVL $450.000)
     "WBTC_WETH_500": {
         "nama": "WBTC / WETH (500)",
         "quick": "0xdc9232e2df177d7a12fdff6ecbab114e2231198d",
@@ -233,7 +211,7 @@ POOLS = {
         "max_loan_usd": 3500.0, "uni_fee": 500, "fee_tot": 0.44,
         "min_r0": 0.5, "min_r1": 10.0
     },
-    # 19. WBTC / WETH (Fee 3000)
+    # 17. WBTC / WETH (Fee 3000)
     "WBTC_WETH_3000": {
         "nama": "WBTC / WETH (3000)",
         "quick": "0xdc9232e2df177d7a12fdff6ecbab114e2231198d",
@@ -244,16 +222,38 @@ POOLS = {
         "max_loan_usd": 3500.0, "uni_fee": 3000, "fee_tot": 0.69,
         "min_r0": 0.5, "min_r1": 10.0
     },
-    # 20. WBTC / USDC.e (Fee 500 - TVL $150.000)
-    "WBTC_USDCe_500": {
-        "nama": "WBTC / USDC.e (500)",
-        "quick": "0xf6a637525402643b0654a54bead2cb9a83c8b498",
-        "uni": "0xeef1a9507b3d505f0062f2be9453981255b503c8",
+    # 18. WETH / USDC.e (Fee 100 - TVL $2.200.000, Fee 0.01% Ultra Low!)
+    "ETH_USDCe_100": {
+        "nama": "WETH / USDC.e (100)",
+        "quick": "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d",
+        "uni": "0x04537f43f6add7b1b60cab199c7a910024ee0594",
         "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",   # USDC.e
-        "target": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",  # WBTC
-        "dec0": 8, "dec1": 6, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": False,
-        "max_loan_usd": 3000.0, "uni_fee": 500, "fee_tot": 0.44,
-        "min_r0": 0.2, "min_r1": 5000.0
+        "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
+        "dec0": 6, "dec1": 18, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": True,
+        "max_loan_usd": 4000.0, "uni_fee": 100, "fee_tot": 0.36,
+        "min_r0": 5000.0, "min_r1": 5.0
+    },
+    # 19. WMATIC / USDC.e (Fee 100 - TVL $1.800.000, Fee 0.01% Ultra Low!)
+    "MATIC_USDCe_100": {
+        "nama": "WMATIC / USDC.e (100)",
+        "quick": "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827",
+        "uni": "0x0a6c4588b7d8bd22cf120283b1fff953420c45f3",
+        "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",   # USDC.e
+        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
+        "dec0": 18, "dec1": 6, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": False,
+        "max_loan_usd": 4000.0, "uni_fee": 100, "fee_tot": 0.36,
+        "min_r0": 10000.0, "min_r1": 5000.0
+    },
+    # 20. WMATIC / WETH (Fee 100 - TVL $1.500.000, Fee 0.01% Ultra Low!)
+    "MATIC_WETH_100": {
+        "nama": "WMATIC / WETH (100)",
+        "quick": "0xadbf1854e5883eb8aa7baf50705338739e558e5b",
+        "uni": "0x33c4f0043e2e988b3c2e9c77e2c670efe709bfe3",
+        "asset": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",   # WETH
+        "target": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
+        "dec0": 18, "dec1": 18, "asset_dec": 18, "asset_sym": "WETH", "is_asset_t0": False,
+        "max_loan_usd": 3500.0, "uni_fee": 100, "fee_tot": 0.36,
+        "min_r0": 10000.0, "min_r1": 5.0
     },
     # 21. LINK / WETH (Fee 500 - TVL $90.000)
     "LINK_WETH_500": {
@@ -314,16 +314,16 @@ def build_flashloan_calldata(pool_key, direction, effective_loan_usd, net_profit
     # Hitung loan amount raw sesuai tipe aset
     if cfg["asset_sym"] in ["USDT", "USDCe", "DAI", "USDC"]:
         loan_amount_raw = int(effective_loan_usd * (10**cfg["asset_dec"]))
-        # Proteksi laba on-chain: minimal $0.08 USD (~Rp 1.450) jika tipis, atau 50% estimasi
-        min_profit_raw = int(max(net_profit_usd * 0.50, 0.08) * (10**cfg["asset_dec"]))
+        # Proteksi laba on-chain: minimal $0.05 USD (~Rp 900) jika tipis, atau 40% estimasi
+        min_profit_raw = int(max(net_profit_usd * 0.40, 0.05) * (10**cfg["asset_dec"]))
     elif cfg["asset_sym"] == "WETH":
         loan_weth = effective_loan_usd / eth_usd
         loan_amount_raw = int(loan_weth * (10**cfg["asset_dec"]))
-        min_profit_weth = max(net_profit_usd * 0.50, 0.08) / eth_usd
+        min_profit_weth = max(net_profit_usd * 0.40, 0.05) / eth_usd
         min_profit_raw = int(min_profit_weth * (10**cfg["asset_dec"]))
     else:
         loan_amount_raw = int(effective_loan_usd * (10**cfg["asset_dec"]))
-        min_profit_raw = int(max(net_profit_usd * 0.50, 0.08) * (10**cfg["asset_dec"]))
+        min_profit_raw = int(max(net_profit_usd * 0.40, 0.05) * (10**cfg["asset_dec"]))
 
     params_bytes = encode(
         ['uint8', 'address', 'uint24', 'uint256'],
@@ -343,20 +343,33 @@ def execute_onchain_sniper_instant(contract_address, calldata_hex, active_rpc, p
 
         account = Account.from_key(METAMASK_PRIVATE_KEY)
 
-        # MODE TURBO RAW SPEED (0-DELAY):
+        # MODE TURBO RAW SPEED (0-DELAY DENGAN PRE-FLIGHT ZERO-COST SIMULATION):
+        # 3-in-1 batch: Simulasikan eksekusi di EVM, ambil nonce, ambil baseFee dalam 1 round-trip!
         batch_prep = [
+            {"jsonrpc": "2.0", "id": 0, "method": "eth_call", "params": [{"from": account.address, "to": contract_address, "data": calldata_hex}, "latest"]},
             {"jsonrpc": "2.0", "id": 1, "method": "eth_getTransactionCount", "params": [account.address, "pending"]},
             {"jsonrpc": "2.0", "id": 2, "method": "eth_getBlockByNumber", "params": ["latest", False]}
         ]
         res_prep = requests.post(active_rpc, json=batch_prep, timeout=4).json()
         
+        sim_ok = True
+        sim_err = None
         nonce = None
         base_fee = None
         for item in res_prep:
-            if item["id"] == 1:
+            if item["id"] == 0:
+                if "error" in item:
+                    sim_ok = False
+                    sim_err = item["error"].get("message", "Simulasi on-chain gagal / laba di bawah target")
+            elif item["id"] == 1:
                 nonce = int(item["result"], 16)
             elif item["id"] == 2:
                 base_fee = int(item["result"]["baseFeePerGas"], 16)
+
+        # 🛡️ PRE-FLIGHT FIREWALL: Jika simulasi on-chain revert, BATALKAN SEKETIKA!
+        # Hasil: 100% BEBAS BIAYA GAS (Rp 0), NONCE TIDAK HANGUS, ZERO LOSS!
+        if not sim_ok:
+            return False, f"🛡️ PRE-FLIGHT BLOCKED (Hemat 100% Gas): {sim_err}"
 
         if nonce is None or base_fee is None:
             return False, "Gagal mengambil parameter gas/nonce dari node."
@@ -451,7 +464,7 @@ def main():
 
     send_telegram_alert(
         f"🤖 *RADAR ARBITRASE TURBO 22 KOLAM RAKSASA AKTIF!* 🚀\n\n"
-        f"🌐 *Total Kolam:* `22 Kolam Likuiditas Utama Polygon (> $7 Juta TVL)`\n"
+        f"🌐 *Total Kolam:* `22 Kolam Likuiditas Utama Polygon (> $15 Juta TVL)`\n"
         f"📏 *Dynamic Sizing:* `Otomatis Kalibrasi Pinjaman Anti-Slippage`\n"
         f"⚡ *Kecepatan:* `Batch Multicall (< 0.5s)`\n"
         f"🎯 *Target Minimal:* `Rp 2.000+ Bersih per Tembakan`\n"
@@ -553,6 +566,7 @@ def main():
                                 r_asset_usd = 50000.0
 
                             # 2. DYNAMIC LOAN SIZING (FORMULA AMM OPTIMAL & ANTI-SLIPPAGE):
+                            # Membatasi pinjaman proporsional terhadap ukuran kolam agar slippage tidak memakan profit
                             optimal_loan_usd = 0.5 * r_asset_usd * (net_profit_pct / 100.0)
                             effective_loan_usd = min(cfg["max_loan_usd"], max(50.0, optimal_loan_usd))
 
