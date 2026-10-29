@@ -207,9 +207,9 @@ POOLS = {
         "uni": "0x04537f43f6add7b1b60cab199c7a910024ee0594",
         "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
         "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
-        "dec0": 18, "dec1": 6, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": False,
+        "dec0": 6, "dec1": 18, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": True,
         "max_loan_usd": 4000.0, "uni_fee": 100, "fee_tot": 0.36,
-        "min_r0": 5.0, "min_r1": 5000.0
+        "min_r0": 5000.0, "min_r1": 2.0
     },
     # 17. WETH / USDC.e (Fee 500 - TVL $2.2M)
     "ETH_USDCe_500": {
@@ -218,9 +218,9 @@ POOLS = {
         "uni": "0x45dda9cb7c25131df268515131f647d726f50608",
         "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
         "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
-        "dec0": 18, "dec1": 6, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": False,
+        "dec0": 6, "dec1": 18, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": True,
         "max_loan_usd": 3500.0, "uni_fee": 500, "fee_tot": 0.44,
-        "min_r0": 5.0, "min_r1": 5000.0
+        "min_r0": 5000.0, "min_r1": 2.0
     },
     # 18. WETH / USDC.e (Fee 3000 - TVL $1.8M)
     "ETH_USDCe_3000": {
@@ -229,9 +229,9 @@ POOLS = {
         "uni": "0x0e44ceb592acfc5d3f09d996302eb4c499ff8c10",
         "asset": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",  # USDC.e
         "target": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",  # WETH
-        "dec0": 18, "dec1": 6, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": False,
+        "dec0": 6, "dec1": 18, "asset_dec": 6, "asset_sym": "USDCe", "is_asset_t0": True,
         "max_loan_usd": 3500.0, "uni_fee": 3000, "fee_tot": 0.69,
-        "min_r0": 5.0, "min_r1": 5000.0
+        "min_r0": 5000.0, "min_r1": 2.0
     },
     # 19. WBTC / WETH (Fee 500 - TVL $3M)
     "WBTC_WETH_500": {
@@ -306,9 +306,9 @@ POOLS = {
         "uni": "0x0a28c2f5e0e8463e047c203f00f649812ae67e4f",
         "asset": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",  # WMATIC
         "target": "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39", # LINK
-        "dec0": 18, "dec1": 18, "asset_dec": 18, "asset_sym": "WMATIC", "is_asset_t0": False,
+        "dec0": 18, "dec1": 18, "asset_dec": 18, "asset_sym": "WMATIC", "is_asset_t0": True,
         "max_loan_usd": 2000.0, "uni_fee": 500, "fee_tot": 0.44,
-        "min_r0": 500.0, "min_r1": 5000.0
+        "min_r0": 500.0, "min_r1": 5.0
     }
 }
 
@@ -557,7 +557,6 @@ def main():
             raw_bytes = bytes.fromhex(resp_data[2:])
             offset = int.from_bytes(raw_bytes[0:32], 'big')
             count = int.from_bytes(raw_bytes[offset:offset+32], 'big')
-            
             elements = []
             curr_pos = offset + 32
             for _ in range(count):
