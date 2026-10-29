@@ -2,135 +2,148 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radar Arbitrase Polygon VIP - 25 Kolam Raksasa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Arbitrase Polygon Pro - Mas Bayu Live Web V3</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .glow-card { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glow-ready { border-color: rgba(16, 185, 129, 0.6); box-shadow: 0 0 25px rgba(16, 185, 129, 0.25); }
+        .glow-card { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .glow-hot { border-color: rgba(245, 158, 11, 0.5); box-shadow: 0 0 20px rgba(245, 158, 11, 0.15); }
+        .glow-ready { border-color: rgba(16, 185, 129, 0.8); box-shadow: 0 0 25px rgba(16, 185, 129, 0.25); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        .custom-scroll::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.8); border-radius: 4px; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
-    <!-- TOP NOTIFICATION BAR -->
-    <div class="bg-emerald-500/10 border-b border-emerald-500/20 px-4 py-2 text-xs text-center text-emerald-400 flex items-center justify-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span><strong>VIP Private Routing (1RPC) & Zero-Cost Simulation Shield Aktif</strong> — Memantau 25 Kolam Likuiditas Terverifikasi Factory</span>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 py-6">
-        <!-- HEADER -->
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<body class="text-slate-100 min-h-screen p-3 md:p-6 pb-12">
+    <div class="max-w-7xl mx-auto space-y-4">
+        
+        <!-- HEADER UTAMA -->
+        <div class="glow-card rounded-2xl p-4 md:p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
             <div>
-                <div class="flex items-center gap-3">
-                    <h1 class="text-2xl font-black text-white tracking-tight flex items-center gap-2">
-                        <span>⚡</span> RADAR ARBITRASE 25 KOLAM RAKSASA
-                    </h1>
-                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                        POLYGON BOR VIP
-                    </span>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping"></div>
+                    <span class="text-[11px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-950/70 px-2.5 py-0.5 rounded-full border border-emerald-800/60">Live On-Chain V3</span>
+                    <span class="text-[11px] font-semibold text-sky-400 bg-sky-950/60 px-2 py-0.5 rounded-full border border-sky-800/50">Dynamic Loan Sizing</span>
+                    <span class="text-[11px] font-semibold text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-800/50">Direct Bor RPC</span>
                 </div>
-                <p class="text-xs text-slate-400 mt-1 font-mono">
-                    Dompet: <a href="https://polygonscan.com/address/0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36" target="_blank" class="text-indigo-400 hover:underline">0x3cfE...CC36</a>
+                <h1 class="text-xl md:text-2xl font-extrabold text-white mt-1.5 flex items-center gap-2">
+                    <span>⚡</span> Radar Arbitrase 25 Kolam Raksasa
+                </h1>
+                <p class="text-xs text-slate-400 font-mono mt-0.5">
+                    Dompet: <a href="https://polygonscan.com/address/0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36" target="_blank" class="text-sky-400 hover:underline">0x3cfE...CC36</a>
                     | Kontrak: <a href="https://polygonscan.com/address/0x4BAD2a58f6192a097D3bfdf3681F7f5eceade622" target="_blank" class="text-indigo-400 hover:underline">0x4BAD...e622</a>
                 </p>
             </div>
-            <div class="flex items-center gap-3">
-                <button onclick="toggleAudio()" id="btn-audio" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-2">
-                    <span id="audio-icon">🔇</span> <span id="audio-text">Audio Alarm: Nonaktif</span>
+            
+            <!-- HEADER RIGHT: AUDIO TOGGLE + METRICS -->
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <button id="btn-audio" onclick="toggleAudio()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-medium transition-colors text-slate-300">
+                    <span id="audio-icon">🔇</span>
+                    <span id="audio-status">Alarm: OFF</span>
                 </button>
-                <div class="glow-card px-4 py-2 rounded-xl text-right">
-                    <div class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Polygon Bor Blok</div>
-                    <div class="text-sm font-bold text-white font-mono flex items-center justify-end gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span id="block-number">Menghubungkan...</span>
-                    </div>
+                <div class="bg-slate-800/80 border border-slate-700/60 px-3 py-1.5 rounded-xl text-right flex-1 sm:flex-initial">
+                    <div class="text-[10px] text-slate-400 uppercase font-semibold">Bensin Gas POL</div>
+                    <div id="saldo-pol" class="text-sm md:text-base font-extrabold text-white font-mono">-- POL</div>
+                    <div id="saldo-idr" class="text-[10px] text-slate-400">~Rp --</div>
                 </div>
-            </div>
-        </header>
-
-        <!-- KPI SUMMARY CARDS -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            <div class="glow-card rounded-xl p-4">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-medium">Saldo Dompet Eksekusi</div>
-                <div class="text-lg md:text-xl font-black text-white font-mono mt-1" id="saldo-pol">-- POL</div>
-                <div class="text-[11px] text-emerald-400 font-mono mt-0.5" id="saldo-idr">~Rp --</div>
-            </div>
-            <div class="glow-card rounded-xl p-4">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-medium">Status Mesin Cloud</div>
-                <div class="text-xs md:text-sm font-bold text-emerald-400 font-mono mt-1.5 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span>ONLINE 24/7 (AZURE)</span>
+                <div class="bg-slate-800/80 border border-slate-700/60 px-3 py-1.5 rounded-xl text-right flex-1 sm:flex-initial">
+                    <div class="text-[10px] text-slate-400 uppercase font-semibold">Blok & Latensi</div>
+                    <div id="block-num" class="text-sm md:text-base font-extrabold text-cyan-400 font-mono">#------</div>
+                    <div id="ping-ms" class="text-[10px] text-slate-400">Ping: -- ms</div>
                 </div>
-                <div class="text-[10px] text-slate-400 font-mono mt-1">Nonce: <span id="total-tx" class="text-slate-200">#83</span></div>
-            </div>
-            <div class="glow-card rounded-xl p-4">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-medium">Ping RPC VIP</div>
-                <div class="text-lg md:text-xl font-black text-sky-400 font-mono mt-1" id="ping-ms">-- ms</div>
-                <div class="text-[10px] text-slate-400 font-mono mt-0.5" id="last-update">--:--:--</div>
-            </div>
-            <div class="glow-card rounded-xl p-4">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider font-medium">Kolam Siaga Panas</div>
-                <div class="flex items-center gap-2 mt-1">
-                    <span class="text-lg md:text-xl font-black text-amber-400 font-mono" id="count-hot">0</span>
-                    <span class="text-xs text-slate-400 font-medium">mendekati target</span>
-                </div>
-                <div class="text-[10px] text-emerald-400 font-mono mt-0.5"><span id="count-ready">0</span> Siap Tembak</div>
             </div>
         </div>
 
-        <!-- TABEL 25 KOLAM LIKUIDITAS -->
-        <div class="glow-card rounded-2xl overflow-hidden shadow-2xl mb-8">
-            <div class="px-4 py-3 border-b border-slate-800/80 flex justify-between items-center bg-slate-900/60">
-                <h2 class="text-xs md:text-sm font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                    <span>📊</span> Radar 25 Kolam Deep Liquidity (> $20 Juta TVL) + Pre-Flight Shield
-                </h2>
-                <span class="text-[11px] text-slate-400 font-medium hidden sm:inline">Diurutkan otomatis dari yang paling dekat dengan cuan</span>
+        <!-- STATS BAR (PILLS) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3">
+            <div class="glow-card rounded-xl p-3 border-l-4 border-l-emerald-500 flex items-center justify-between">
+                <div>
+                    <div class="text-[11px] text-slate-400 font-medium">Siap Tembak (Cuan)</div>
+                    <div id="cnt-ready" class="text-xl font-black text-emerald-400 font-mono mt-0.5">0</div>
+                </div>
+                <span class="text-xl">🔥</span>
+            </div>
+            <div class="glow-card rounded-xl p-3 border-l-4 border-l-amber-500 flex items-center justify-between">
+                <div>
+                    <div class="text-[11px] text-slate-400 font-medium">Siaga Panas (Selisih &lt;0.15%)</div>
+                    <div id="cnt-hot" class="text-xl font-black text-amber-400 font-mono mt-0.5">0</div>
+                </div>
+                <span class="text-xl">🟡</span>
+            </div>
+            <div class="glow-card rounded-xl p-3 border-l-4 border-l-indigo-500 flex items-center justify-between">
+                <div>
+                    <div class="text-[11px] text-slate-400 font-medium">Mendekati (Selisih &lt;0.25%)</div>
+                    <div id="cnt-warm" class="text-xl font-black text-indigo-400 font-mono mt-0.5">0</div>
+                </div>
+                <span class="text-xl">⏳</span>
+            </div>
+            <div class="glow-card rounded-xl p-3 border-l-4 border-l-sky-500 flex items-center justify-between">
+                <div>
+                    <div class="text-[11px] text-slate-400 font-medium">Total Eksekusi Tx</div>
+                    <div id="cnt-tx" class="text-xl font-black text-sky-400 font-mono mt-0.5">#--</div>
+                </div>
+                <span class="text-xl">⚡</span>
+            </div>
+        </div>
+
+        <!-- MAIN MONITORING TABLE -->
+        <div class="glow-card rounded-2xl overflow-hidden border border-slate-800">
+            <div class="px-4 py-3 bg-slate-900/80 border-b border-slate-800 flex justify-between items-center flex-wrap gap-2">
+                <div class="flex items-center gap-2">
+                    <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>📊</span> Matriks Radar 25 Kolam Likuiditas Raksasa (> $20 Juta TVL)
+                    </h2>
+                </div>
+                <div class="text-[11px] text-slate-400 font-mono flex items-center gap-3">
+                    <span id="last-update">Update: Menghubungkan...</span>
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-left text-xs md:text-sm">
                     <thead>
-                        <tr class="text-[11px] uppercase tracking-wider text-slate-400 bg-slate-900/40 border-b border-slate-800 font-semibold">
+                        <tr class="bg-slate-950/80 text-[11px] text-slate-400 font-semibold uppercase tracking-wider border-b border-slate-800/80">
                             <th class="py-2.5 px-3">#</th>
-                            <th class="py-2.5 px-3">Pasangan Kolam</th>
-                            <th class="py-2.5 px-3">Spread Live</th>
-                            <th class="py-2.5 px-3">Pergerakan</th>
+                            <th class="py-2.5 px-3">Pasangan Token</th>
+                            <th class="py-2.5 px-3">Spread Pasar</th>
+                            <th class="py-2.5 px-3">Trend Delta</th>
                             <th class="py-2.5 px-3">Target Fee</th>
-                            <th class="py-2.5 px-3">Dynamic Loan</th>
-                            <th class="py-2.5 px-4 w-44">Jarak ke Cuan</th>
-                            <th class="py-2.5 px-3 text-right">Status & Aksi</th>
+                            <th class="py-2.5 px-3">Dynamic Loan (USD)</th>
+                            <th class="py-2.5 px-4 w-44">Progres ke Target</th>
+                            <th class="py-2.5 px-3 text-right">Status Radar</th>
                         </tr>
                     </thead>
-                    <tbody id="pool-tbody" class="divide-y divide-slate-800/50">
-                        <tr><td colspan="8" class="text-center py-8 text-slate-400 text-xs">Menghubungkan ke Polygon Bor Node...</td></tr>
+                    <tbody id="pool-tbody" class="divide-y divide-slate-800/40 text-xs">
+                        <!-- 25 Baris Kolam Di-Render Mulus Tanpa Kedip Di Sini -->
                     </tbody>
                 </table>
             </div>
         </div>
 
         <!-- LOG EVENT STREAM -->
-        <div class="glow-card rounded-xl p-4">
-            <div class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                <span>📡</span> Catatan Aktivitas Volatilitas Live
+        <div class="glow-card rounded-2xl p-4 border border-slate-800">
+            <div class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between mb-2">
+                <span class="flex items-center gap-1.5">
+                    <span>📡</span> Log Deteksi Volatilitas On-Chain (Live)
+                </span>
+                <span class="text-[10px] text-slate-500 font-mono font-normal">Auto-scroll aktif</span>
             </div>
-            <div id="event-logs" class="space-y-1 text-xs font-mono max-h-36 overflow-y-auto">
-                <div class="text-slate-500">[00:00:00] Radar aktif memantau 25 kolam raksasa Polygon.</div>
+            <div id="event-logs" class="space-y-1 font-mono text-[11px] max-h-36 overflow-y-auto custom-scroll pr-1">
+                <div class="text-slate-500 italic">Menghubungkan ke Polygon Bor RPC...</div>
             </div>
         </div>
+
     </div>
 
+    <!-- SCRIPT CLIENT-SIDE ON-CHAIN LOGIC -->
     <script>
-        const RPC_LIST = [
-            "https://polygon-bor-rpc.publicnode.com",
-            "https://1rpc.io/matic",
-            "https://polygon-rpc.com"
-        ];
-        let currentRpc = RPC_LIST[0];
-        const MULTICALL2 = "0xcA11bde05977b3631167028862bE2a173976CA11";
+        const RPC_URL = "https://polygon-bor-rpc.publicnode.com";
         const WALLET_ADDR = "0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36";
         const KURS_IDR = 18136;
 
@@ -168,115 +181,171 @@
             { time: new Date().toLocaleTimeString('id-ID'), type: 'info', msg: 'Radar Web Online V4: Monitoring 25 kolam likuiditas raksasa (> $20 Juta TVL) dengan Dynamic Loan Sizing' }
         ];
 
+        let audioActive = false;
+        let lastBeepTime = 0;
+
         function addLog(type, msg) {
             const time = new Date().toLocaleTimeString('id-ID');
             eventLogs.unshift({ time, type, msg });
             if (eventLogs.length > 25) eventLogs.pop();
-            const logBox = document.getElementById('event-logs');
-            logBox.innerHTML = eventLogs.map(l => {
-                let color = "text-slate-400";
-                if (l.type === 'spike') color = "text-emerald-400 font-semibold";
-                if (l.type === 'drop') color = "text-rose-400";
-                if (l.type === 'ready') color = "text-cyan-300 font-bold";
-                return `<div class="py-0.5 ${color}"><span class="text-slate-500">[${l.time}]</span> ${l.msg}</div>`;
-            }).join('');
+            renderLogs();
         }
 
-        let audioEnabled = false;
-        let audioCtx = null;
-        let lastBeepTime = 0;
+        function renderLogs() {
+            const logContainer = document.getElementById('event-logs');
+            let html = '';
+            eventLogs.forEach(l => {
+                let colorClass = 'text-slate-400';
+                if (l.type === 'spike') colorClass = 'text-emerald-400 font-semibold';
+                else if (l.type === 'drop') colorClass = 'text-rose-400';
+                else if (l.type === 'ready') colorClass = 'text-cyan-300 font-bold';
+
+                html += `
+                    <div class="flex items-start gap-1.5 py-0.5 ${colorClass}">
+                        <span class="text-slate-500 shrink-0">[${l.time}]</span>
+                        <span>${l.msg}</span>
+                    </div>
+                `;
+            });
+            logContainer.innerHTML = html;
+        }
+
+        function fmtP(val) {
+            if (!val || isNaN(val)) return "0.00";
+            if (val >= 100) return val.toFixed(2);
+            if (val >= 1) return val.toFixed(4);
+            if (val >= 0.001) return val.toFixed(6);
+            return val.toFixed(8);
+        }
 
         function toggleAudio() {
-            audioEnabled = !audioEnabled;
-            if (audioEnabled && !audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            audioActive = !audioActive;
+            const btn = document.getElementById('btn-audio');
+            const icon = document.getElementById('audio-icon');
+            const status = document.getElementById('audio-status');
+            
+            if (audioActive) {
+                btn.className = "bg-emerald-900/60 hover:bg-emerald-800 border border-emerald-600 text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-medium text-emerald-300 transition-colors";
+                icon.innerText = "🔊";
+                status.innerText = "Alarm: ON";
+                playSynthTone(587, 880, 0.15);
+            } else {
+                btn.className = "bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-medium transition-colors text-slate-300";
+                icon.innerText = "🔇";
+                status.innerText = "Alarm: OFF";
             }
-            document.getElementById('audio-icon').textContent = audioEnabled ? '🔊' : '🔇';
-            document.getElementById('audio-text').textContent = audioEnabled ? 'Audio Alarm: AKTIF' : 'Audio Alarm: Nonaktif';
-            document.getElementById('btn-audio').className = audioEnabled 
-                ? "px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-400 shadow-lg shadow-emerald-500/20 transition flex items-center gap-2"
-                : "px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-2";
-            if (audioEnabled) playSynthTone(880, 1100, 0.2);
         }
 
         function playSynthTone(freq1, freq2, duration) {
-            if (!audioEnabled || !audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(freq1, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(freq2, audioCtx.currentTime + duration);
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
+            if (!audioActive) return;
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq1, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq2, ctx.currentTime + duration);
+                
+                gain.gain.setValueAtTime(0.25, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch(e) {
+                console.error("Audio error:", e);
+            }
         }
 
-        async function fetchBatchData() {
-            const t0 = performance.now();
+        async function pollPolygon() {
             try {
-                // Gunakan backend lokal jika sedang dibuka di localhost, atau fallback ke Direct Bor RPC jika di GitHub Pages
-                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                    const r = await fetch('/api/data');
-                    const d = await r.json();
-                    renderLocalData(d);
-                    return;
+                const t0 = performance.now();
+                const batch = [];
+                const names = [];
+
+                // Susun batch eth_call untuk 25 kolam
+                for (const [k, cfg] of Object.entries(POOLS)) {
+                    batch.push({ jsonrpc: "2.0", id: batch.length, method: "eth_call", params: [{ to: cfg.quick, data: "0x0902f1ac" }, "latest"] });
+                    names.push({ key: k, type: "quick" });
+                    batch.push({ jsonrpc: "2.0", id: batch.length, method: "eth_call", params: [{ to: cfg.uni, data: "0x3850c7bd" }, "latest"] });
+                    names.push({ key: k, type: "uni" });
                 }
 
-                // Batch JSON-RPC ke Polygon Bor Node untuk GitHub Pages
-                const batch = [
-                    { jsonrpc: "2.0", id: 100, method: "eth_blockNumber", params: [] },
-                    { jsonrpc: "2.0", id: 101, method: "eth_getBalance", params: [WALLET_ADDR, "latest"] },
-                    { jsonrpc: "2.0", id: 102, method: "eth_getTransactionCount", params: [WALLET_ADDR, "latest"] }
-                ];
+                // Query Block, Balance, Nonce
+                batch.push({ jsonrpc: "2.0", id: 100, method: "eth_blockNumber", params: [] });
+                batch.push({ jsonrpc: "2.0", id: 101, method: "eth_getBalance", params: [WALLET_ADDR, "latest"] });
+                batch.push({ jsonrpc: "2.0", id: 102, method: "eth_getTransactionCount", params: [WALLET_ADDR, "latest"] });
 
-                const poolKeys = Object.keys(POOLS);
-                let callId = 0;
-                poolKeys.forEach(k => {
-                    batch.push({ jsonrpc: "2.0", id: callId++, method: "eth_call", params: [{ to: POOLS[k].quick, data: "0x0902f1ac" }, "latest"] });
-                    batch.push({ jsonrpc: "2.0", id: callId++, method: "eth_call", params: [{ to: POOLS[k].uni, data: "0x3850c7bd" }, "latest"] });
-                });
-
-                const res = await fetch(currentRpc, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                const res = await fetch(RPC_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(batch)
                 });
                 const data = await res.json();
                 const ping = Math.round(performance.now() - t0);
-                document.getElementById('ping-ms').textContent = `${ping} ms`;
-                document.getElementById('last-update').textContent = new Date().toLocaleTimeString('id-ID');
 
-                const resMap = {};
-                let block = 0, balPol = 0, nonce = 0;
+                let blockNum = 0;
+                let balPol = 0;
+                let nonce = 6;
+                const poolResults = {};
+
                 data.forEach(item => {
-                    if (item.id === 100) block = parseInt(item.result, 16);
-                    else if (item.id === 101) balPol = parseInt(item.result, 16) / 1e18;
-                    else if (item.id === 102) nonce = parseInt(item.result, 16);
-                    else resMap[item.id] = item.result;
+                    const id = item.id;
+                    if (id === 100) {
+                        blockNum = parseInt(item.result, 16);
+                    } else if (id === 101) {
+                        balPol = parseInt(item.result, 16) / 1e18;
+                    } else if (id === 102) {
+                        nonce = parseInt(item.result, 16);
+                    } else if (id < names.length) {
+                        const meta = names[id];
+                        if (!poolResults[meta.key]) poolResults[meta.key] = {};
+                        poolResults[meta.key][meta.type] = item.result;
+                    }
                 });
 
-                if (block > 0) document.getElementById('block-number').textContent = `#${block.toLocaleString()}`;
-                document.getElementById('saldo-pol').textContent = `${balPol.toFixed(4)} POL`;
-                document.getElementById('saldo-idr').textContent = `~Rp ${(balPol * 0.092 * KURS_IDR).toLocaleString('id-ID', {maximumFractionDigits: 0})}`;
-                document.getElementById('total-tx').textContent = `#${nonce}`;
+                // Update UI Header
+                document.getElementById('block-num').innerText = '#' + blockNum;
+                document.getElementById('ping-ms').innerText = 'Ping: ' + ping + ' ms';
+                document.getElementById('saldo-pol').innerText = balPol.toFixed(4) + ' POL';
+                document.getElementById('saldo-idr').innerText = '~Rp ' + Math.round(balPol * 0.092 * KURS_IDR).toLocaleString('id-ID');
+                document.getElementById('cnt-tx').innerText = '#' + nonce;
+                document.getElementById('last-update').innerText = 'Update: ' + new Date().toLocaleTimeString('id-ID') + ' WIB';
 
+                // Hitung spot live WETH
+                let ethUsd = 2350.0;
+                const rEthUsdc = poolResults["ETH_USDCe_500"]?.uni;
+                if (rEthUsdc && rEthUsdc.length >= 66) {
+                    try {
+                        const sqrtP = BigInt("0x" + rEthUsdc.slice(2, 66));
+                        const pRaw = Math.pow(Number(sqrtP) / Math.pow(2, 96), 2) * Math.pow(10, 6 - 18);
+                        if (pRaw > 0) ethUsd = 1.0 / pRaw;
+                    } catch(e) {}
+                }
+
+                // Hitung Spreads 25 Kolam
                 const poolRows = [];
-                let cntReady = 0, cntHot = 0, cntWarm = 0;
+                let cntReady = 0;
+                let cntHot = 0;
+                let cntWarm = 0;
 
-                poolKeys.forEach((k, idx) => {
-                    const cfg = POOLS[k];
-                    const rq = resMap[idx * 2];
-                    const ru = resMap[idx * 2 + 1];
+                for (const [k, cfg] of Object.entries(POOLS)) {
+                    const rq = poolResults[k]?.quick;
+                    const ru = poolResults[k]?.uni;
 
                     if (rq && ru && rq.length >= 130 && ru.length >= 66) {
-                        const r0 = Number(BigInt("0x" + rq.slice(2, 66))) / (10 ** cfg.dec0);
-                        const r1 = Number(BigInt("0x" + rq.slice(66, 130))) / (10 ** cfg.dec1);
+                        const qd = rq.slice(2);
+                        const r0 = Number(BigInt("0x" + qd.slice(0, 64))) / (10 ** cfg.dec0);
+                        const r1 = Number(BigInt("0x" + qd.slice(64, 128))) / (10 ** cfg.dec1);
 
                         if (r0 > 0 && r1 > 0) {
                             const p_q = r1 / r0;
-                            const sqrtP = BigInt("0x" + ru.slice(2, 66));
+                            const ud = ru.slice(2);
+                            const sqrtP = BigInt("0x" + ud.slice(0, 64));
                             const p_u = Math.pow(Number(sqrtP) / Math.pow(2, 96), 2) * Math.pow(10, cfg.dec0 - cfg.dec1);
 
                             if (p_q > 0 && p_u > 0) {
@@ -285,33 +354,51 @@
                                 const jarak = fee - spread;
                                 const grossNet = spread - fee;
 
-                                let rAssetUsd = cfg.is_t0 ? r0 : r1;
-                                if (cfg.asset_sym === "WETH") rAssetUsd *= 2350;
-                                else if (cfg.asset_sym === "WMATIC") rAssetUsd *= 0.09;
+                                // 1. Hitung cadangan aset pinjaman di QuickSwap dalam USD
+                                let rAssetUsd = 50000;
+                                if (["USDT", "USDCe", "DAI", "USDC"].includes(cfg.asset_sym)) {
+                                    rAssetUsd = cfg.is_t0 ? r0 : r1;
+                                } else if (cfg.asset_sym === "WETH") {
+                                    rAssetUsd = (cfg.is_t0 ? r0 : r1) * ethUsd;
+                                }
 
+                                // 2. Dynamic Loan Sizing & Slippage
                                 const optimalLoan = grossNet > 0 ? 0.5 * rAssetUsd * (grossNet / 100) : 50;
                                 const effectiveLoan = Math.min(cfg.max_loan, Math.max(50, optimalLoan));
                                 const slippage = (effectiveLoan / (rAssetUsd + effectiveLoan)) * 100;
                                 const realNet = grossNet > 0 ? grossNet - slippage : 0;
+
                                 const cuanUsd = realNet > 0 ? (realNet / 100) * effectiveLoan : 0;
                                 const cuanIdr = cuanUsd * KURS_IDR;
 
-                                const prevVal = prevSpreads[k] || spread;
-                                const delta = spread - prevVal;
+                                // Delta
+                                const prev = prevSpreads[k] !== undefined ? prevSpreads[k] : spread;
+                                const delta = spread - prev;
                                 prevSpreads[k] = spread;
 
-                                let trend = "flat", trendText = "Stabil";
-                                if (delta > 0.003) { trend = "up"; trendText = `+${delta.toFixed(3)}%`; }
-                                else if (delta < -0.003) { trend = "down"; trendText = `${delta.toFixed(3)}%`; }
+                                let trend = "flat";
+                                let trendText = "Stabil";
+                                if (delta > 0.003) {
+                                    trend = "up";
+                                    trendText = "+" + delta.toFixed(3) + "%";
+                                } else if (delta < -0.003) {
+                                    trend = "down";
+                                    trendText = delta.toFixed(3) + "%";
+                                }
 
-                                if (delta >= 0.04) addLog('spike', `🚀 ${cfg.nama}: Spread melonjak ${trendText} ke ${spread.toFixed(3)}%!`);
+                                if (delta >= 0.04) {
+                                    addLog("spike", `🚀 ${cfg.nama}: Melonjak ${trendText} ke ${spread.toFixed(3)}%!`);
+                                } else if (delta <= -0.06) {
+                                    addLog("drop", `⚠️ ${cfg.nama}: Kempes diserap trader ${trendText} ke ${spread.toFixed(3)}%.`);
+                                }
 
                                 const pctBar = Math.min(Math.max((spread / fee) * 100, 5), 100);
-                                let statusType = "normal", statusLabel = "Memantau";
 
+                                let statusType = "normal";
+                                let statusLabel = "Memantau";
                                 if (jarak <= 0) {
                                     statusType = "ready";
-                                    statusLabel = `TEMBAK! (+Rp ${cuanIdr.toLocaleString('id-ID', {maximumFractionDigits: 0})})`;
+                                    statusLabel = `TEMBAK! (+Rp ${Math.round(cuanIdr).toLocaleString('id-ID')})`;
                                     cntReady++;
                                 } else if (jarak <= 0.15) {
                                     statusType = "hot";
@@ -324,28 +411,55 @@
                                 }
 
                                 poolRows.push({
-                                    key: k, nama: cfg.nama, spread, target: fee, jarak, pctBar,
-                                    p_q, p_u, loan: Math.round(effectiveLoan), slippage, cuanIdr,
-                                    trend, trendText, statusType, statusLabel
+                                    key: k,
+                                    nama: cfg.nama,
+                                    spread: spread,
+                                    target: fee,
+                                    jarak: jarak,
+                                    pctBar: pctBar,
+                                    p_q: p_q,
+                                    p_u: p_u,
+                                    loan: Math.round(effectiveLoan),
+                                    slippage: slippage,
+                                    trend: trend,
+                                    trendText: trendText,
+                                    statusType: statusType,
+                                    statusLabel: statusLabel
                                 });
                             }
                         }
                     }
-                });
+                }
 
+                // Urutkan paling dekat ke target
                 poolRows.sort((a, b) => a.jarak - b.jarak);
-                document.getElementById('count-ready').textContent = cntReady;
-                document.getElementById('count-hot').textContent = cntHot;
+
+                // Update Pills
+                document.getElementById('cnt-ready').innerText = cntReady;
+                document.getElementById('cnt-hot').innerText = cntHot;
+                document.getElementById('cnt-warm').innerText = cntWarm;
+
+                if (cntReady > 0 && Date.now() - lastBeepTime > 3000) {
+                    playSynthTone(880, 1320, 0.4);
+                    lastBeepTime = Date.now();
+                }
 
                 // Render Table TANPA KEDIP (Smooth In-Place DOM Mutation)
                 const tbody = document.getElementById('pool-tbody');
                 
                 poolRows.forEach((p, idx) => {
-                    let cardClass = '', statusBadge = '', barColor = 'bg-slate-600', trendBadge = '';
+                    let cardClass = '';
+                    let statusBadge = '';
+                    let barColor = 'bg-slate-600';
+                    let trendBadge = '';
 
-                    if (p.trend === 'up') trendBadge = `<span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-emerald-400 font-mono">▲ ${p.trendText}</span>`;
-                    else if (p.trend === 'down') trendBadge = `<span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-rose-400 font-mono">▼ ${p.trendText}</span>`;
-                    else trendBadge = `<span class="text-[11px] text-slate-500 font-mono">— Stabil</span>`;
+                    if (p.trend === 'up') {
+                        trendBadge = `<span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-emerald-400 font-mono">▲ ${p.trendText}</span>`;
+                    } else if (p.trend === 'down') {
+                        trendBadge = `<span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-rose-400 font-mono">▼ ${p.trendText}</span>`;
+                    } else {
+                        trendBadge = `<span class="text-[11px] text-slate-500 font-mono">— Stabil</span>`;
+                    }
 
                     if (p.statusType === 'ready') {
                         cardClass = 'bg-emerald-950/40 glow-ready';
@@ -385,7 +499,7 @@
                     row.className = `hover:bg-slate-800/40 transition-colors ${cardClass}`;
                     row.querySelector('.rank-c').textContent = idx + 1;
                     row.querySelector('.name-c').textContent = p.nama;
-                    row.querySelector('.price-c').textContent = `Q: $${p.p_q.toFixed(4)} | U: $${p.p_u.toFixed(4)}`;
+                    row.querySelector('.price-c').textContent = `Q: $${fmtP(p.p_q)} | U: $${fmtP(p.p_u)}`;
                     
                     const spreadEl = row.querySelector('.spread-c');
                     spreadEl.textContent = `${p.spread.toFixed(3)}%`;
@@ -409,92 +523,13 @@
                 });
 
             } catch (err) {
-                console.error("RPC Error:", err);
+                console.error("Gagal polling Polygon RPC:", err);
             }
         }
 
-        function renderLocalData(data) {
-            document.getElementById('block-number').textContent = `#${data.block.toLocaleString()}`;
-            document.getElementById('saldo-pol').textContent = `${data.saldo_pol.toFixed(4)} POL`;
-            document.getElementById('saldo-idr').textContent = `~Rp ${data.saldo_idr.toLocaleString('id-ID')}`;
-            document.getElementById('total-tx').textContent = `#${data.total_tx}`;
-            document.getElementById('ping-ms').textContent = `${data.ping_ms} ms`;
-            document.getElementById('last-update').textContent = data.last_update;
-            document.getElementById('count-hot').textContent = data.counts.hot;
-            document.getElementById('count-ready').textContent = data.counts.ready;
-
-            const tbody = document.getElementById('pool-tbody');
-            data.pools.forEach((p, idx) => {
-                let cardClass = '', statusBadge = '', barColor = 'bg-slate-600', trendBadge = '';
-
-                if (p.trend === 'up') trendBadge = `<span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-emerald-400 font-mono">▲ ${p.trend_text}</span>`;
-                else if (p.trend === 'down') trendBadge = `<span class="inline-flex items-center gap-0.5 text-[11px] font-bold text-rose-400 font-mono">▼ ${p.trend_text}</span>`;
-                else trendBadge = `<span class="text-[11px] text-slate-500 font-mono">— Stabil</span>`;
-
-                if (p.status_type === 'ready') {
-                    cardClass = 'bg-emerald-950/40 glow-ready';
-                    statusBadge = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500 text-slate-950 animate-pulse">🔥 ' + p.status_label + '</span>';
-                    barColor = 'bg-emerald-400';
-                } else if (p.status_type === 'hot') {
-                    cardClass = 'bg-amber-950/20';
-                    statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">🟡 ' + p.status_label + '</span>';
-                    barColor = 'bg-amber-400';
-                } else if (p.status_type === 'warm') {
-                    statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700">⏳ ' + p.status_label + '</span>';
-                    barColor = 'bg-indigo-400';
-                } else {
-                    statusBadge = '<span class="text-xs text-slate-500 font-medium">⚪ ' + p.status_label + '</span>';
-                    barColor = 'bg-slate-700';
-                }
-
-                let row = document.getElementById(`row-${p.key}`);
-                if (!row) {
-                    row = document.createElement('tr');
-                    row.id = `row-${p.key}`;
-                    row.innerHTML = `
-                        <td class="py-2.5 px-3 font-mono text-xs text-slate-400 rank-c"></td>
-                        <td class="py-2.5 px-3">
-                            <div class="font-bold text-white text-xs md:text-sm name-c"></div>
-                            <div class="text-[9px] text-slate-400 font-mono price-c"></div>
-                        </td>
-                        <td class="py-2.5 px-3 font-mono font-bold text-sm md:text-base spread-c"></td>
-                        <td class="py-2.5 px-3 trend-c"></td>
-                        <td class="py-2.5 px-3 font-mono text-xs text-slate-400 target-c"></td>
-                        <td class="py-2.5 px-3 font-mono text-xs text-sky-400 font-semibold loan-c"></td>
-                        <td class="py-2.5 px-4 bar-c"></td>
-                        <td class="py-2.5 px-3 text-right status-c"></td>
-                    `;
-                }
-
-                row.className = `hover:bg-slate-800/40 transition-colors ${cardClass}`;
-                row.querySelector('.rank-c').textContent = idx + 1;
-                row.querySelector('.name-c').textContent = p.nama;
-                row.querySelector('.price-c').textContent = `Q: $${p.p_q} | U: $${p.p_u}`;
-                
-                const spreadEl = row.querySelector('.spread-c');
-                spreadEl.textContent = `${p.spread.toFixed(3)}%`;
-                spreadEl.className = `py-2.5 px-3 font-mono font-bold text-sm md:text-base spread-c ${p.status_type === 'hot' ? 'text-amber-400' : (p.status_type === 'ready' ? 'text-emerald-400' : 'text-slate-100')}`;
-                
-                row.querySelector('.trend-c').innerHTML = trendBadge;
-                row.querySelector('.target-c').textContent = `${p.target.toFixed(2)}%`;
-                row.querySelector('.loan-c').innerHTML = `$${p.loan_usd.toLocaleString()}<div class="text-[9px] text-slate-400">Slip: ${p.slippage.toFixed(3)}%</div>`;
-                row.querySelector('.bar-c').innerHTML = `
-                    <div class="w-full bg-slate-800/90 rounded-full h-1.5 overflow-hidden">
-                        <div class="${barColor} h-1.5 rounded-full transition-all duration-300" style="width: ${p.pct_bar}%"></div>
-                    </div>
-                    <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-1">
-                        <span>${p.pct_bar}% ke target</span>
-                        <span class="${p.jarak <= 0 ? 'text-emerald-400 font-bold' : ''}">${p.jarak <= 0 ? 'JEBOL!' : 'Kurang ' + p.jarak.toFixed(3) + '%'}</span>
-                    </div>
-                `;
-                row.querySelector('.status-c').innerHTML = statusBadge;
-
-                tbody.appendChild(row);
-            });
-        }
-
-        setInterval(fetchBatchData, 1200);
-        fetchBatchData();
+        // Jalankan polling setiap 1.5 detik
+        pollPolygon();
+        setInterval(pollPolygon, 1500);
     </script>
 </body>
 </html>
