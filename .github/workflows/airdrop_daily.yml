@@ -1,0 +1,32 @@
+name: Daily Airdrop Fleet Multi-Chain Runner
+
+on:
+  schedule:
+    # Berjalan otomatis setiap hari pukul 08:00 WIB (01:00 UTC)
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: airdrop-daily-fleet
+  cancel-in-progress: true
+
+jobs:
+  run-daily-airdrop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests eth-account eth-utils eth-abi
+
+      - name: Jalankan Eksekusi Multi-Chain Airdrop Hunter
+        run: |
+          python -u airdrop_autopilot.py auto
