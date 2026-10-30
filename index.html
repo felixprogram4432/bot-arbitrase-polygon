@@ -721,14 +721,21 @@
                                 const rAsset = cfg.is_t0 ? r0 : r1;
                                 const rAssetUsd = rAsset * assetPrice;
 
-                                // Formula AMM Optimum untuk spread surplus
-                                const optimalLoan = grossNet > 0 ? (grossNet / 100) * rAssetUsd * 0.5 : 50;
+                                // Pinjaman Adaptif Otomatis sesuai kedalaman kolam (kolam dangkal s/d kolam danau)
                                 const maxSafe = rAssetUsd * 0.035;
                                 let maxLoanCap = cfg.max_loan;
                                 if (spread >= 2.0) maxLoanCap *= 2.0;
 
-                                const effectiveLoan = Math.max(50, Math.min(optimalLoan, maxSafe, maxLoanCap));
-                                const slippage = (effectiveLoan / (rAssetUsd + effectiveLoan)) * 100;
+                                let effectiveLoan;
+                                if (grossNet > 0.001) {
+                                    const optimalLoan = (grossNet / 100) * rAssetUsd * 0.5;
+                                    effectiveLoan = Math.min(Math.max(optimalLoan, 0.01), maxSafe, maxLoanCap);
+                                } else {
+                                    // Mode standby adaptif: 2% dari cadangan agar slippage selalu aman (<2%)
+                                    effectiveLoan = Math.min(Math.max(rAssetUsd * 0.02, 0.01), maxLoanCap);
+                                }
+
+                                const slippage = rAssetUsd > 0 ? (effectiveLoan / (rAssetUsd + effectiveLoan)) * 100 : 0;
                                 const realNet = grossNet > 0 ? grossNet - slippage : 0;
                                 const cuanUsd = realNet > 0 ? (realNet / 100) * effectiveLoan : 0;
                                 const cuanIdr = cuanUsd * KURS_IDR;
@@ -766,7 +773,11 @@
                                     cntReady++;
                                 } else if (jarak <= 0) {
                                     statusType = "hot";
-                                    statusLabel = `Slippage Membatasi`;
+                                    if (cuanIdr > 0 && cuanIdr < TARGET_CUAN_IDR) {
+                                        statusLabel = `Cuan Mini (+Rp ${Math.round(cuanIdr)} < Rp 350)`;
+                                    } else {
+                                        statusLabel = `Slippage Membatasi`;
+                                    }
                                     cntHot++;
                                 } else if (jarak <= 0.15) {
                                     statusType = "hot";
@@ -912,8 +923,8 @@
                             <div class="${barColor} h-1.5 rounded-full transition-all duration-300" style="width: ${p.pctBar}%"></div>
                         </div>
                         <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-1">
-                            <span>Pinjam: $${p.loan.toLocaleString()} (Slip: ${p.slippage.toFixed(3)}%)</span>
-                            <span class="${p.cuanIdr >= 350 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.cuanIdr >= 350 ? 'CUAN JEBOL!' : (p.jarak <= 0 ? 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)' : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
+                            <span>Pinjam: $${p.loan < 10 ? p.loan.toFixed(2) : Math.round(p.loan).toLocaleString()} (Slip: ${p.slippage.toFixed(3)}%)</span>
+                            <span class="${p.cuanIdr >= 350 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.cuanIdr >= 350 ? 'CUAN JEBOL!' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Kurang Rp ' + Math.max(0, Math.round(350 - p.cuanIdr)) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
                         </div>
                     </div>
                 `;
@@ -980,14 +991,14 @@
                 
                 row.querySelector('.trend-c').innerHTML = trendBadge;
                 row.querySelector('.target-c').textContent = `${p.target.toFixed(2)}%`;
-                row.querySelector('.loan-c').innerHTML = `$${p.loan.toLocaleString()}<div class="text-[9px] text-slate-400">Slip: ${p.slippage.toFixed(3)}%</div>`;
+                row.querySelector('.loan-c').innerHTML = `$${p.loan < 10 ? p.loan.toFixed(2) : Math.round(p.loan).toLocaleString()}<div class="text-[9px] text-slate-400">Slip: ${p.slippage.toFixed(3)}%</div>`;
                 row.querySelector('.bar-c').innerHTML = `
                     <div class="w-full bg-slate-800/90 rounded-full h-1.5 overflow-hidden">
                         <div class="${barColor} h-1.5 rounded-full transition-all duration-300" style="width: ${p.pctBar}%"></div>
                     </div>
                     <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-1">
                         <span>${p.pctBar.toFixed(1)}%</span>
-                        <span class="${p.cuanIdr >= 350 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.cuanIdr >= 350 ? 'CUAN JEBOL!' : (p.jarak <= 0 ? 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)' : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
+                        <span class="${p.cuanIdr >= 350 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.cuanIdr >= 350 ? 'CUAN JEBOL!' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Kurang Rp ' + Math.max(0, Math.round(350 - p.cuanIdr)) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
                     </div>
                 `;
                 row.querySelector('.status-c').innerHTML = statusBadge;

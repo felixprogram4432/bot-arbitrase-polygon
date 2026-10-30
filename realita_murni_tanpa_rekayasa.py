@@ -479,28 +479,29 @@ def get_current_gas_price(active_rpc):
         return 30.0
 
 def calculate_dynamic_loan(pool_cfg, spread_pct, r0_clean, r1_clean):
-    fee_tot = pool_cfg.get("fee_tot", 0.40)
-    gross_net = spread_pct - fee_tot
-    if gross_net <= 0.001:
-        return 50.0
-
     r_asset = r0_clean if pool_cfg["is_asset_t0"] else r1_clean
     price_asset = ASSET_PRICES_USD.get(pool_cfg["asset_sym"], 1.0)
     r_usd = r_asset * price_asset
 
-    # Formula AMM Optimum untuk spread surplus: L* = (gross_net / 100) * R / 2
-    # Dibatasi agar tidak melampaui kedalaman kolam
-    optimal_loan = (gross_net / 100.0) * r_usd * 0.5
-    
-    # Batas keamanan: maksimal 3.5% dari cadangan kolam untuk menjaga slippage tetap tipis
-    max_safe = r_usd * 0.035
-    max_loan_cap = pool_cfg.get("max_loan_usd", 2500.0)
+    fee_tot = pool_cfg.get("fee_tot", 0.40)
+    gross_net = spread_pct - fee_tot
 
+    max_loan_cap = pool_cfg.get("max_loan_usd", 2500.0)
     if spread_pct >= 2.0:
         max_loan_cap *= 2.0
 
-    loan = min(optimal_loan, max_safe, max_loan_cap)
-    return max(loan, 50.0)
+    # Batas keamanan slippage: maksimal 3.5% dari cadangan kolam agar slippage tetap tipis
+    max_safe = r_usd * 0.035
+
+    if gross_net > 0.001:
+        # Formula AMM Optimum untuk spread surplus: L* = (gross_net / 100) * R / 2
+        optimal_loan = (gross_net / 100.0) * r_usd * 0.5
+        loan = min(max(optimal_loan, 0.01), max_safe, max_loan_cap)
+    else:
+        # Standby loan adaptif: 2% dari cadangan kolam agar slippage selalu aman (<2%)
+        loan = min(max(r_usd * 0.02, 0.01), max_loan_cap)
+
+    return loan
 
 def calculate_priority_tip(est_cuan_usd):
     # Tip adaptif: cepat menang lawan bot lain (default bot lain 30 Gwei), tapi tetap hemat
