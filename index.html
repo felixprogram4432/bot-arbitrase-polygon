@@ -1,82 +1,97 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="21-gold-pools-v2">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Radar Arbitrase Polygon Pro - Live Web V4 (24 Kolam Terverifikasi)</title>
+    <meta name="version" content="21-gold-pools-multicall3-v5">
+    <title>Radar Arbitrase 21 Kolam Emas Polygon Pro (Live On-Chain)</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        @keyframes pulse-subtle {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            touch-action: manipulation;
         }
-        .animate-subtle { animation: pulse-subtle 2s infinite ease-in-out; }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
         .glow-card {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(3, 7, 18, 0.95) 100%);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
         }
         .glow-ready {
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
             border-color: rgba(16, 185, 129, 0.6) !important;
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
-        ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.6); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(100, 116, 139, 0.8); }
+        @keyframes pulse-fast {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+        .animate-pulse-fast {
+            animation: pulse-fast 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-2 sm:p-4 md:p-6 pb-20 selection:bg-emerald-500 selection:text-slate-950">
+<body class="min-h-screen p-2 sm:p-4 md:p-6 pb-20 selection:bg-emerald-500 selection:text-black">
 
     <div class="max-w-7xl mx-auto space-y-3 sm:space-y-4">
         
-        <!-- HEADER TOP BAR (RESPONSIF HP-FRIENDLY) -->
-        <div class="glow-card rounded-2xl p-3 sm:p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border border-slate-800">
-            <div>
-                <div class="flex items-center gap-2 flex-wrap">
-                    <div class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping"></div>
-                    <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-950/70 px-2 py-0.5 rounded-full border border-emerald-800/60">Live Turbo 21 Kolam Emas Emas (Factory Verified) (Anti-Trap)</span>
-                    <span class="text-[10px] sm:text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800/50">Target: Cuan Bersih > Gas (Mini s/d Jutaan)</span>
-                    <span class="text-[10px] sm:text-[11px] font-semibold text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-800/50">Bor Node VIP</span>
+        <!-- HEADER TOP BAR -->
+        <div class="glow-card rounded-2xl p-3 sm:p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                <div class="h-9 w-9 sm:h-11 sm:w-11 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0">
+                    <span class="text-lg sm:text-xl">⚡</span>
                 </div>
-                <h1 class="text-lg sm:text-xl md:text-2xl font-black text-white mt-1.5 flex items-center gap-2">
-                    <span>⚡</span> Radar Arbitrase 21 Kolam Emas Terverifikasi
-                </h1>
-                <p class="text-[11px] sm:text-xs text-slate-400 font-mono mt-0.5 break-all">
-                    Dompet: <a href="https://polygonscan.com/address/0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36" target="_blank" class="text-sky-400 hover:underline">0x3cfE...CC36</a>
-                    | Kontrak: <a href="https://polygonscan.com/address/0x4BAD2a58f6192a097D3bfdf3681F7f5eceade622" target="_blank" class="text-indigo-400 hover:underline">0x4BAD...e622</a>
-                </p>
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h1 class="text-base sm:text-lg md:text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                            Radar Arbitrase Polygon Pro
+                        </h1>
+                        <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-950/80 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            21 Kolam Emas Tulen
+                        </span>
+                    </div>
+                    <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5 font-mono">
+                        Multicall3 Direct On-Chain Polling | Bebas Kolam Hantu & Bebas Cache
+                    </p>
+                </div>
             </div>
-            
-            <!-- HEADER RIGHT: AUDIO TOGGLE + METRICS (GRID HP-FRIENDLY) -->
-            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full md:w-auto">
+
+            <!-- ACTION & STATS BUTTONS -->
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full md:w-auto justify-between md:justify-end">
                 <button id="btn-audio" onclick="toggleAudio()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 font-medium transition-colors text-slate-300">
                     <span id="audio-icon">🔇</span>
                     <span id="audio-status">Alarm</span>
                 </button>
-                <div class="bg-slate-800/80 border border-slate-700/60 px-2.5 py-1.5 rounded-xl text-right flex-1 sm:flex-initial min-w-[105px]">
-                    <div class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-semibold">Bensin Gas POL</div>
-                    <div id="saldo-pol" class="text-xs sm:text-sm md:text-base font-extrabold text-white font-mono">18.88 POL</div>
-                    <div id="saldo-idr" class="text-[9px] text-slate-400 font-mono">~Rp 31.500</div>
+
+                <button onclick="hardResetCache()" title="Bersihkan cache browser dan muat ulang matriks segar" class="bg-slate-800 hover:bg-rose-900/60 border border-slate-700 hover:border-rose-500/60 text-xs px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 font-mono text-slate-300 hover:text-rose-200 transition-all">
+                    <span>🔄</span>
+                    <span class="text-[11px]">Hard Reset</span>
+                </button>
+
+                <div class="bg-slate-800/80 border border-slate-700/60 px-2.5 py-1.5 rounded-xl text-right">
+                    <div class="text-[9px] text-slate-400 uppercase font-semibold">Bensin Gas POL</div>
+                    <div id="saldo-pol" class="text-xs sm:text-sm font-extrabold text-white font-mono">18.88 POL</div>
                 </div>
-                <div class="bg-slate-800/80 border border-slate-700/60 px-2.5 py-1.5 rounded-xl text-right flex-1 sm:flex-initial min-w-[95px]">
-                    <div class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-semibold">Blok & Latensi</div>
-                    <div id="block-num" class="text-xs sm:text-sm md:text-base font-extrabold text-cyan-400 font-mono">#96362...</div>
-                    <div id="ping-ms" class="text-[9px] text-slate-400 font-mono">Ping: 350 ms</div>
+
+                <div class="bg-slate-800/80 border border-slate-700/60 px-2.5 py-1.5 rounded-xl text-right">
+                    <div class="text-[9px] text-slate-400 uppercase font-semibold">Blok & Latensi</div>
+                    <div id="block-num" class="text-xs sm:text-sm font-extrabold text-cyan-400 font-mono">#------</div>
+                    <div id="ping-ms" class="text-[9px] text-slate-400 font-mono">Ping: -- ms</div>
                 </div>
             </div>
         </div>
 
-        <!-- STATS BAR (PILLS - 2x2 HP GRID) -->
+        <!-- STATS BAR (4 PILLS GRID) -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
             <div class="glow-card rounded-xl p-2.5 sm:p-3 border-l-4 border-l-emerald-500 flex items-center justify-between">
                 <div>
@@ -87,7 +102,7 @@
             </div>
             <div class="glow-card rounded-xl p-2.5 sm:p-3 border-l-4 border-l-amber-500 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] sm:text-[11px] text-slate-400 font-medium">Siaga Panas (&lt; 0.15%)</div>
+                    <div class="text-[10px] sm:text-[11px] text-slate-400 font-medium">Siaga Panas (&lt; 0.10%)</div>
                     <div id="cnt-hot" class="text-lg sm:text-xl font-black text-amber-400 font-mono mt-0.5">0</div>
                 </div>
                 <span class="text-lg sm:text-xl">🟡</span>
@@ -108,7 +123,7 @@
             </div>
         </div>
 
-        <!-- MAIN CONTAINER DENGAN VIEW SWITCHER (KARTU HP vs TABEL DESKTOP) -->
+        <!-- MAIN CONTAINER -->
         <div class="glow-card rounded-2xl overflow-hidden border border-slate-800">
             <!-- TOOLBAR -->
             <div class="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/80 border-b border-slate-800 flex justify-between items-center flex-wrap gap-2">
@@ -121,7 +136,7 @@
                 <div class="flex items-center gap-2">
                     <!-- VIEW TOGGLE BUTTONS -->
                     <div class="bg-slate-950/80 p-0.5 rounded-lg border border-slate-800 flex items-center text-xs font-medium">
-                        <button id="btn-view-cards" onclick="setViewMode('cards')" class="tab-btn px-2.5 py-1 rounded-md text-[11px] transition-colors text-slate-400 hover:text-white">
+                        <button id="btn-view-cards" onclick="setViewMode('cards')" class="tab-btn px-2.5 py-1 rounded-md text-[11px] transition-colors bg-sky-600 text-white font-bold shadow-sm">
                             📱 Kartu HP
                         </button>
                         <button id="btn-view-table" onclick="setViewMode('table')" class="tab-btn px-2.5 py-1 rounded-md text-[11px] transition-colors text-slate-400 hover:text-white">
@@ -129,8 +144,8 @@
                         </button>
                     </div>
 
-                    <div id="last-update" class="text-[10px] font-mono text-slate-400 hidden sm:inline-block">
-                        Update: Menghubungkan...
+                    <div id="last-update" class="text-[10px] font-mono text-emerald-400 bg-slate-950 px-2 py-1 rounded border border-slate-800">
+                        Update: Sinkron On-Chain...
                     </div>
                 </div>
             </div>
@@ -138,7 +153,7 @@
             <!-- VIEW 1: KARTU KHUSUS LAYAR HP (CARD GRID) -->
             <div id="view-cards" class="p-2 sm:p-3">
                 <div id="view-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                    <!-- 24 Kartu Kolam Di-Render Di Sini -->
+                    <!-- 21 Kartu Kolam Di-Render Di Sini -->
                 </div>
             </div>
 
@@ -158,7 +173,7 @@
                         </tr>
                     </thead>
                     <tbody id="pool-tbody" class="divide-y divide-slate-800/60 font-mono">
-                        <!-- 24 Baris Kolam Di-Render Di Sini -->
+                        <!-- 21 Baris Kolam Di-Render Di Sini -->
                     </tbody>
                 </table>
             </div>
@@ -168,11 +183,11 @@
         <div class="glow-card rounded-2xl p-3 sm:p-4 border border-slate-800">
             <div class="flex items-center justify-between mb-2">
                 <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                    <span>📡</span> Radar Event Log (Deteksi & Tembakan)
+                    <span>📡</span> Radar Event Log (Deteksi On-Chain)
                 </h3>
                 <span class="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
                     <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-                    Sinkron Cloud Runner
+                    Sinkron 100% On-Chain Multicall3
                 </span>
             </div>
             <div id="log-container" class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800/80 font-mono text-[11px] h-32 overflow-y-auto space-y-1 text-slate-300">
@@ -182,19 +197,24 @@
 
     </div>
 
-    <!-- JAVASCRIPT REAL-TIME ENGINE 24 KOLAM (TARGET CUAN RP 350) -->
+    <!-- JAVASCRIPT DIRECT ON-CHAIN MULTICALL3 ENGINE -->
     <script>
+        // 1. Bersihkan Seluruh Cache Browser Lama Secara Tuntas
+        try {
+            localStorage.clear();
+            sessionStorage.clear();
+        } catch(e) {}
+
         const RPCS = [
             "https://polygon-bor-rpc.publicnode.com",
-            "https://1rpc.io/matic",
-            "https://polygon.llamarpc.com",
-            "https://rpc.ankr.com/polygon"
+            "https://1rpc.io/matic"
         ];
         let currentRpcIdx = 0;
         const WALLET_ADDR = "0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36";
+        const MULTICALL3_ADDR = "0xcA11bde05977b3631167028862bE2a173976CA11";
         const KURS_IDR = 18100;
-        const POL_PRICE_USD = 0.32;
-        const BUFFER_BERSIH_MINI_IDR = 50;
+        const POL_PRICE_USD = 0.22;
+        const BUFFER_BERSIH_MINI_IDR = 50.0;
 
         const ASSET_PRICES_USD = {
             "USDT": 1.0,
@@ -204,13 +224,10 @@
             "WMATIC": 0.35,
             "stMATIC": 0.38,
             "WETH": 2500.0,
-            "LINK": 11.5,
-            "AAVE": 150.0,
-            "UNI": 7.5,
             "WBTC": 75000.0
         };
 
-        // 24 Kolam Likuiditas Terverifikasi Resmi (Bebas Kolam Jebakan)
+        // 21 Kolam Emas Terverifikasi Swap On-Chain (Deviasi < 2%, Bebas Kolam Hantu)
         const POOLS = {
     "dai_usdt_100": {
         "asset": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
@@ -612,17 +629,26 @@
         "max_loan_usd": 8000.0
     }
 };
-        let lastBlockNum = 96362100;
-        let lastBalPol = 18.8819;
-        let lastNonce = 83;
+
+        const MULTICALL_CALLDATA = "0xbce38bd700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000002a000000000000000000000000000000000000000000000000000000000000054000000000000000000000000000000000000000000000000000000000000005c0000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000000000006c0000000000000000000000000000000000000000000000000000000000000074000000000000000000000000000000000000000000000000000000000000007c0000000000000000000000000000000000000000000000000000000000000084000000000000000000000000000000000000000000000000000000000000008c0000000000000000000000000000000000000000000000000000000000000094000000000000000000000000000000000000000000000000000000000000009c00000000000000000000000000000000000000000000000000000000000000a400000000000000000000000000000000000000000000000000000000000000ac00000000000000000000000000000000000000000000000000000000000000b400000000000000000000000000000000000000000000000000000000000000bc00000000000000000000000000000000000000000000000000000000000000c400000000000000000000000000000000000000000000000000000000000000cc00000000000000000000000000000000000000000000000000000000000000d400000000000000000000000000000000000000000000000000000000000000dc00000000000000000000000000000000000000000000000000000000000000e400000000000000000000000000000000000000000000000000000000000000ec00000000000000000000000000000000000000000000000000000000000000f400000000000000000000000000000000000000000000000000000000000000fc0000000000000000000000000000000000000000000000000000000000000104000000000000000000000000000000000000000000000000000000000000010c0000000000000000000000000000000000000000000000000000000000000114000000000000000000000000000000000000000000000000000000000000011c0000000000000000000000000000000000000000000000000000000000000124000000000000000000000000000000000000000000000000000000000000012c0000000000000000000000000000000000000000000000000000000000000134000000000000000000000000000000000000000000000000000000000000013c0000000000000000000000000000000000000000000000000000000000000144000000000000000000000000000000000000000000000000000000000000014c0000000000000000000000000000000000000000000000000000000000000154000000000000000000000000000000000000000000000000000000000000015c0000000000000000000000000000000000000000000000000000000000000164000000000000000000000000000000000000000000000000000000000000016c0000000000000000000000000000000000000000000000000000000000000174000000000000000000000000000000000000000000000000000000000000017c0000000000000000000000000000000000000000000000000000000000000184000000000000000000000000000000000000000000000000000000000000018c0000000000000000000000000000000000000000000000000000000000000194000000000000000000000000000000000000000000000000000000000000019c000000000000000000000000059153f27eefe07e5ece4f9304ebba1da6f53ca88000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000254aa3a898071d6a2da0db11da73b02b4646078f000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000f04adbf75cdfc5ed26eea4bbbb991db002036bdd000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac000000000000000000000000000000000000000000000000000000000000000000000000000000005645dcb64c059aa11212707fbf4e7f984440a8cf000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000f04adbf75cdfc5ed26eea4bbbb991db002036bdd000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac000000000000000000000000000000000000000000000000000000000000000000000000000000005f69c2ec01c22843f8273838d570243fd1963014000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd000000000000000000000000000000000000000000000000000000000000000000000000000000002cf7252e74036d1da831d11089d326296e64a728000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000dac8a8e6dbf8c690ec6815e0ff03491b2770255d000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd000000000000000000000000000000000000000000000000000000000000000000000000000000002cf7252e74036d1da831d11089d326296e64a728000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac000000000000000000000000000000000000000000000000000000000000000000000000000000003f5228d0e7d75467366be7de2c31d0d098ba2c23000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000dc9232e2df177d7a12fdff6ecbab114e2231198d000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000960fc6489c9b44da6ba330883dc1898b75a7b27b000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000dc9232e2df177d7a12fdff6ecbab114e2231198d000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000fe343675878100b344802a6763fd373fdeed07a4000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000dc9232e2df177d7a12fdff6ecbab114e2231198d000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac0000000000000000000000000000000000000000000000000000000000000000000000000000000050eaedb835021e4a108b7290636d62e9765cc6d7000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000f6422b997c7f54d1c6a6e103bcb1499eea0a7046000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac000000000000000000000000000000000000000000000000000000000000000000000000000000004ccd010148379ea531d6c587cfdd60180196f9b1000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000f6422b997c7f54d1c6a6e103bcb1499eea0a7046000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000bb98b3d2b18aef63a3178023a920971cf5f29be4000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000eef611894ceae652979c9d0dae1deb597790c6ee000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000fe530931da161232ec76a7c3bea7d36cf3811a0d000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd0000000000000000000000000000000000000000000000000000000000000000000000000000000065752c54d9102bdfd69d351e1838a1be83c924c6000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac0000000000000000000000000000000000000000000000000000000000000000000000000000000059db5ea66958b19641b6891fc373b44b567ea15c000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd000000000000000000000000000000000000000000000000000000000000000000000000000000006e7a5fafcec6bb1e78bae2a1f0b612012bf14827000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac0000000000000000000000000000000000000000000000000000000000000000000000000000000088f3c15523544835ff6c738ddb30995339ad57d6000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd000000000000000000000000000000000000000000000000000000000000000000000000000000006e7a5fafcec6bb1e78bae2a1f0b612012bf14827000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000a374094527e1673a86de625aa59517c5de346d32000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000604229c960e5cacf2aaeac8be68ac07ba9df81c3000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000781067ef296e5c4a4203f81c593274824b7c185d000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000604229c960e5cacf2aaeac8be68ac07ba9df81c3000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac000000000000000000000000000000000000000000000000000000000000000000000000000000009b08288c3be4f62bbf8d1c20ac9c5e6f9467d8b7000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000adbf1854e5883eb8aa7baf50705338739e558e5b000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000167384319b41f7094e62f7506409eb38079abff8000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000adbf1854e5883eb8aa7baf50705338739e558e5b000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac0000000000000000000000000000000000000000000000000000000000000000000000000000000086f1d8390222a3691c28938ec7404a1661e618e0000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000853ee4b2a13f8a742d64c8f088be7ba2131f670d000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac0000000000000000000000000000000000000000000000000000000000000000000000000000000045dda9cb7c25131df268515131f647d726f50608000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd000000000000000000000000000000000000000000000000000000000000000000000000000000007baf833f82bb1971f99a5a5d84bed1d5d0dedd70000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000a4d8c89f0c20efbe54cba9e7e7a7e509056228d9000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000000000000000000000000000f6a637525402643b0654a54bead2cb9a83c8b498000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000040902f1ac00000000000000000000000000000000000000000000000000000000000000000000000000000000eef1a9507b3d505f0062f2be9453981255b503c8000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000043850c7bd00000000000000000000000000000000000000000000000000000000";
+
         let isPolling = false;
         let viewMode = 'cards';
         let audioActive = false;
         let lastBeepTime = 0;
+        const prevSpreads = {};
 
         let eventLogs = [
-            { time: new Date().toLocaleTimeString('id-ID'), type: 'info', msg: 'Radar Web V4: 21 Kolam Emas Emas Likuid Aktif | Target Minimal Rp 350' }
+            { time: new Date().toLocaleTimeString('id-ID'), type: 'info', msg: 'Radar Web V5: 21 Kolam Emas Terverifikasi Swap On-Chain Aktif' }
         ];
+
+        function hardResetCache() {
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+            } catch(e) {}
+            location.reload(true);
+        }
 
         function addLog(type, msg) {
             const timeStr = new Date().toLocaleTimeString('id-ID');
@@ -661,7 +687,6 @@
                 viewTable.classList.remove('hidden');
                 viewCards.classList.add('hidden');
             }
-            try { localStorage.setItem('radar_view_mode', mode); } catch(e) {}
         }
 
         function toggleAudio() {
@@ -706,21 +731,7 @@
             return val.toFixed(6);
         }
 
-        function restoreInstantCache() {
-            try {
-                const savedMode = localStorage.getItem('radar_view_mode') || 'cards';
-                setViewMode(savedMode);
-                const cachedRows = localStorage.getItem('last_rendered_rows');
-                if (cachedRows) {
-                    const parsed = JSON.parse(cachedRows);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        renderAll(parsed);
-                    }
-                }
-            } catch(e) {}
-        }
-
-        // PARALLEL FAST POLLING 24 KOLAM TERVERIFIKASI
+        // SINGLE HIGH-SPEED MULTICALL3 POLLING ENGINE
         async function pollPolygon() {
             if (isPolling) return;
             isPolling = true;
@@ -728,99 +739,64 @@
             const t0 = performance.now();
             const rpcUrl = RPCS[currentRpcIdx];
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3500);
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
 
             try {
-                const poolEntries = Object.entries(POOLS);
-                const mid = Math.ceil(poolEntries.length / 2);
-                const half1 = poolEntries.slice(0, mid);
-                const half2 = poolEntries.slice(mid);
+                const resp = await fetch(rpcUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        jsonrpc: "2.0",
+                        method: "eth_call",
+                        params: [{ to: MULTICALL3_ADDR, data: MULTICALL_CALLDATA }, "latest"],
+                        id: 1
+                    }),
+                    signal: controller.signal
+                }).then(r => r.json());
 
-                const batch1 = [];
-                const names1 = [];
-                half1.forEach(([k, cfg]) => {
-                    batch1.push({ jsonrpc: "2.0", id: batch1.length, method: "eth_call", params: [{ to: cfg.quick, data: "0x0902f1ac" }, "latest"] });
-                    names1.push({ key: k, type: "quick" });
-                    batch1.push({ jsonrpc: "2.0", id: batch1.length, method: "eth_call", params: [{ to: cfg.uni, data: "0x3850c7bd" }, "latest"] });
-                    names1.push({ key: k, type: "uni" });
-                });
-
-                const batch2 = [];
-                const names2 = [];
-                half2.forEach(([k, cfg]) => {
-                    batch2.push({ jsonrpc: "2.0", id: batch2.length, method: "eth_call", params: [{ to: cfg.quick, data: "0x0902f1ac" }, "latest"] });
-                    names2.push({ key: k, type: "quick" });
-                    batch2.push({ jsonrpc: "2.0", id: batch2.length, method: "eth_call", params: [{ to: cfg.uni, data: "0x3850c7bd" }, "latest"] });
-                    names2.push({ key: k, type: "uni" });
-                });
-
-                // Tambahkan query header di batch1
-                batch1.push({ jsonrpc: "2.0", id: 200, method: "eth_blockNumber", params: [] });
-                batch1.push({ jsonrpc: "2.0", id: 201, method: "eth_getBalance", params: [WALLET_ADDR, "latest"] });
-                batch1.push({ jsonrpc: "2.0", id: 202, method: "eth_getTransactionCount", params: [WALLET_ADDR, "latest"] });
-
-                const [res1, res2] = await Promise.all([
-                    fetch(rpcUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(batch1), signal: controller.signal }).then(r => r.json()),
-                    fetch(rpcUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(batch2), signal: controller.signal }).then(r => r.json())
-                ]);
                 clearTimeout(timeoutId);
-
                 const ping = Math.round(performance.now() - t0);
-                const poolResults = {};
+                document.getElementById('ping-ms').innerText = `Ping: ${ping} ms`;
 
-                if (Array.isArray(res1)) {
-                    res1.forEach(item => {
-                        const id = item.id;
-                        if (id === 200 && item.result?.startsWith('0x')) {
-                            const val = parseInt(item.result, 16);
-                            if (val > 0) lastBlockNum = val;
-                        } else if (id === 201 && item.result?.startsWith('0x')) {
-                            const val = parseInt(item.result, 16) / 1e18;
-                            if (val > 0) lastBalPol = val;
-                        } else if (id === 202 && item.result?.startsWith('0x')) {
-                            const val = parseInt(item.result, 16);
-                            if (!isNaN(val)) lastNonce = val;
-                        } else if (id < names1.length && item.result) {
-                            const meta = names1[id];
-                            if (!poolResults[meta.key]) poolResults[meta.key] = {};
-                            poolResults[meta.key][meta.type] = item.result;
-                        }
-                    });
+                if (!resp || !resp.result || resp.result === '0x') {
+                    currentRpcIdx = (currentRpcIdx + 1) % RPCS.length;
+                    return;
                 }
 
-                if (Array.isArray(res2)) {
-                    res2.forEach(item => {
-                        const id = item.id;
-                        if (id < names2.length && item.result) {
-                            const meta = names2[id];
-                            if (!poolResults[meta.key]) poolResults[meta.key] = {};
-                            poolResults[meta.key][meta.type] = item.result;
-                        }
-                    });
+                // Decode Multicall3 result
+                const hex = resp.result.slice(2);
+                const offset = parseInt(hex.slice(0, 64), 16) * 2;
+                const count = parseInt(hex.slice(offset, offset + 64), 16);
+                let currPos = offset + 64;
+                const elements = [];
+                for (let i = 0; i < count; i++) {
+                    const elemOffset = parseInt(hex.slice(currPos, currPos + 64), 16) * 2;
+                    const absElemPos = offset + 64 + elemOffset;
+                    const success = parseInt(hex.slice(absElemPos, absElemPos + 64), 16) === 1;
+                    const dataOffset = parseInt(hex.slice(absElemPos + 64, absElemPos + 128), 16) * 2;
+                    const absDataPos = absElemPos + dataOffset;
+                    const dataLen = parseInt(hex.slice(absDataPos, absDataPos + 64), 16) * 2;
+                    const retData = hex.slice(absDataPos + 64, absDataPos + 64 + dataLen);
+                    elements.push({ success, data: retData });
+                    currPos += 64;
                 }
 
-                // Update UI Header
-                document.getElementById('block-num').innerText = '#' + lastBlockNum;
-                document.getElementById('ping-ms').innerText = 'Ping: ' + ping + ' ms';
-                document.getElementById('saldo-pol').innerText = lastBalPol.toFixed(4) + ' POL';
-                document.getElementById('saldo-idr').innerText = '~Rp ' + Math.round(lastBalPol * 0.35 * KURS_IDR).toLocaleString('id-ID');
-                document.getElementById('cnt-tx').innerText = '#' + lastNonce;
-                document.getElementById('last-update').innerText = 'Update: ' + new Date().toLocaleTimeString('id-ID') + ' WIB';
-
-                // Hitung Spreads 24 Kolam
+                const poolKeys = Object.keys(POOLS);
                 const poolRows = [];
                 let cntReady = 0;
                 let cntHot = 0;
                 let cntWarm = 0;
 
-                for (const [k, cfg] of Object.entries(POOLS)) {
-                    const qData = poolResults[k]?.quick;
-                    const uData = poolResults[k]?.uni;
+                for (let idx = 0; idx < poolKeys.length; idx++) {
+                    const k = poolKeys[idx];
+                    const cfg = POOLS[k];
+                    const eq = elements[idx * 2];
+                    const eu = elements[idx * 2 + 1];
 
-                    if (qData && uData && qData.length >= 130 && uData.length >= 66) {
-                        const r0 = Number(BigInt("0x" + qData.slice(2, 66))) / Math.pow(10, cfg.dec0);
-                        const r1 = Number(BigInt("0x" + qData.slice(66, 130))) / Math.pow(10, cfg.dec1);
-                        const sqrtP = BigInt("0x" + uData.slice(2, 66));
+                    if (eq && eu && eq.success && eu.success && eq.data.length >= 128 && eu.data.length >= 64) {
+                        const r0 = Number(BigInt("0x" + eq.data.slice(0, 64))) / Math.pow(10, cfg.dec0);
+                        const r1 = Number(BigInt("0x" + eq.data.slice(64, 128))) / Math.pow(10, cfg.dec1);
+                        const sqrtP = BigInt("0x" + eu.data.slice(0, 64));
 
                         if (r0 > 0 && r1 > 0) {
                             const pQuick = r1 / r0;
@@ -829,21 +805,19 @@
 
                             if (pQuick > 0 && pUni > 0) {
                                 const spread = (Math.abs(pQuick - pUni) / Math.min(pQuick, pUni)) * 100;
-                                if (spread > 50.0) continue; // Filter anomali kolam kosong
+                                if (spread > 50.0) continue; // Filter anomali
 
                                 const fee = cfg.fee_tot;
                                 const jarak = fee - spread;
                                 const grossNet = spread - fee;
 
-                                // Hitung cadangan aset pinjaman di QuickSwap dalam USD secara presisi
                                 const assetPrice = ASSET_PRICES_USD[cfg.asset_sym] || 1.0;
-                                const isT0 = (cfg.is_asset_t0 !== undefined) ? cfg.is_asset_t0 : (cfg.is_t0 !== undefined ? cfg.is_t0 : true);
+                                const isT0 = cfg.is_asset_t0 !== undefined ? cfg.is_asset_t0 : false;
                                 const rAsset = isT0 ? r0 : r1;
                                 const rAssetUsd = rAsset * assetPrice;
 
-                                // Pinjaman Adaptif Otomatis sesuai kedalaman kolam (kolam dangkal s/d kolam danau)
                                 const maxSafe = rAssetUsd * 0.035;
-                                let maxLoanCap = cfg.max_loan_usd || cfg.max_loan || 2500.0;
+                                let maxLoanCap = cfg.max_loan_usd || 2500.0;
                                 if (spread >= 4.0) maxLoanCap *= 4.0;
                                 else if (spread >= 2.0) maxLoanCap *= 2.0;
 
@@ -852,18 +826,14 @@
                                     const optimalLoan = (grossNet / 100) * rAssetUsd * 0.5;
                                     effectiveLoan = Math.min(Math.max(optimalLoan, 0.01), maxSafe, maxLoanCap);
                                 } else {
-                                    // Mode standby adaptif: 2% dari cadangan agar slippage selalu aman (<2%)
                                     effectiveLoan = Math.min(Math.max(rAssetUsd * 0.02, 0.01), maxLoanCap);
                                 }
-
-                                if (isNaN(effectiveLoan) || effectiveLoan <= 0) effectiveLoan = 10.0;
 
                                 const slippage = rAssetUsd > 0 ? (effectiveLoan / (rAssetUsd + effectiveLoan)) * 100 : 0;
                                 const realNet = grossNet > 0 ? grossNet - slippage : 0;
                                 const cuanUsd = realNet > 0 ? (realNet / 100) * effectiveLoan : 0;
                                 const cuanIdr = cuanUsd * KURS_IDR;
 
-                                // Tip Adaptif Bertingkat & Biaya Gas On-Chain
                                 let tipGwei = 32.0;
                                 if (cuanIdr >= 1000000) tipGwei = 125.0;
                                 else if (cuanIdr >= 200000) tipGwei = 95.0;
@@ -875,7 +845,6 @@
                                 const gasCostIdr = (360000 * (30.0 + tipGwei) / 1e9) * POL_PRICE_USD * KURS_IDR;
                                 const netProfitCleanIdr = cuanIdr - gasCostIdr;
 
-                                // Delta
                                 const prev = prevSpreads[k] !== undefined ? prevSpreads[k] : spread;
                                 const delta = spread - prev;
                                 prevSpreads[k] = spread;
@@ -900,9 +869,9 @@
 
                                 let statusType = "normal";
                                 let statusLabel = "Memantau";
-                                
-                                // AMBANG TEMBAK: ASAL BERSIH DI ATAS BIAYA GAS (CUAN MINI S/D JUTAAN)
-                                if (realNet > 0.001 && netProfitCleanIdr >= BUFFER_BERSIH_MINI_IDR) {
+
+                                // AMBANG TEMBAK PRESISI (Lolos Uji Bersih di Atas Gas)
+                                if (realNet > 0.05 && netProfitCleanIdr >= BUFFER_BERSIH_MINI_IDR) {
                                     statusType = "ready";
                                     if (netProfitCleanIdr >= 1000000) {
                                         statusLabel = `💎 MEGA CUAN (+Rp ${(netProfitCleanIdr / 1e6).toFixed(2)} Jt)`;
@@ -915,10 +884,10 @@
                                     if (cuanIdr > 0 && netProfitCleanIdr < BUFFER_BERSIH_MINI_IDR) {
                                         statusLabel = `Tekor Gas (+Rp ${Math.round(cuanIdr)} < Gas Rp ${Math.round(gasCostIdr)})`;
                                     } else {
-                                        statusLabel = `Slippage Membatasi`;
+                                        statusLabel = `Slippage Membatasi (Belum Cuan)`;
                                     }
                                     cntHot++;
-                                } else if (jarak <= 0.15) {
+                                } else if (jarak <= 0.10) {
                                     statusType = "hot";
                                     statusLabel = `SIAGA PANAS (Kurang ${jarak.toFixed(3)}%)`;
                                     cntHot++;
@@ -938,15 +907,14 @@
                                     p_q: pQuick,
                                     p_u: pUni,
                                     loan: effectiveLoan,
-                                    netProfitCleanIdr: netProfitCleanIdr,
-                                    gasCostIdr: gasCostIdr,
-                                    tipGwei: tipGwei,
                                     slippage: slippage,
+                                    cuanIdr: cuanIdr,
+                                    gasCostIdr: gasCostIdr,
+                                    netProfitCleanIdr: netProfitCleanIdr,
                                     trend: trend,
                                     trendText: trendText,
                                     statusType: statusType,
-                                    statusLabel: statusLabel,
-                                    cuanIdr: cuanIdr
+                                    statusLabel: statusLabel
                                 });
                             }
                         }
@@ -956,7 +924,6 @@
                 if (poolRows.length > 0) {
                     poolRows.sort((a, b) => a.jarak - b.jarak);
 
-                    // Update Pills
                     document.getElementById('cnt-ready').innerText = cntReady;
                     document.getElementById('cnt-hot').innerText = cntHot;
                     document.getElementById('cnt-warm').innerText = cntWarm;
@@ -966,32 +933,34 @@
                         lastBeepTime = Date.now();
                     }
 
+                    // Render Total dan Bersihkan Elemen Lama
                     renderAll(poolRows);
 
-                    try {
-                        localStorage.setItem('last_rendered_rows', JSON.stringify(poolRows));
-                    } catch(e) {}
+                    const now = new Date();
+                    document.getElementById('last-update').innerText = `Update: ${now.toLocaleTimeString('id-ID')} WIB (Multicall3)`;
                 }
 
             } catch (err) {
                 clearTimeout(timeoutId);
-                console.warn("Timeout/Warning polling Polygon RPC:", err.message);
+                console.warn("Polling Warning:", err.message);
                 currentRpcIdx = (currentRpcIdx + 1) % RPCS.length;
             } finally {
                 isPolling = false;
             }
         }
 
-        // RENDER GANDA: KARTU HP (CARDS) + TABEL DESKTOP
+        // RENDER GANDA BERSIH (MEMBERSIHKAN KONTENER AGAR TIDAK ADA SISA ROW LAMA)
         function renderAll(poolRows) {
             renderCards(poolRows);
             renderTable(poolRows);
         }
 
-        // RENDER KHUSUS HP (CARD VIEW)
         function renderCards(poolRows) {
             const container = document.getElementById('view-cards-container');
             if (!container) return;
+
+            // Bersihkan kontener agar kolam lama/hantu tidak nyangkut!
+            container.innerHTML = '';
 
             poolRows.forEach((p, idx) => {
                 let borderClass = 'border-slate-800';
@@ -1023,13 +992,8 @@
                 else if (p.trend === 'down') trendBadge = `<span class="text-[10px] font-bold text-rose-400 font-mono">▼ ${p.trendText}</span>`;
                 else trendBadge = `<span class="text-[10px] text-slate-500 font-mono">— Stabil</span>`;
 
-                let card = document.getElementById(`card-${p.key}`);
-                if (!card) {
-                    card = document.createElement('div');
-                    card.id = `card-${p.key}`;
-                    container.appendChild(card);
-                }
-
+                const card = document.createElement('div');
+                card.id = `card-${p.key}`;
                 card.className = `p-3 rounded-xl border transition-all ${borderClass} bg-slate-900/60 flex flex-col justify-between`;
                 card.innerHTML = `
                     <div class="flex justify-between items-start gap-1.5">
@@ -1066,17 +1030,20 @@
                         </div>
                         <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-1">
                             <span>Pinjam: $${p.loan < 10 ? p.loan.toFixed(2) : Math.round(p.loan).toLocaleString()} (Slip: ${p.slippage.toFixed(3)}%)</span>
-                            <span class="${p.netProfitCleanIdr >= 50 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.netProfitCleanIdr >= 50 ? 'UNTUNG BERSIH (+Rp ' + Math.round(p.netProfitCleanIdr).toLocaleString('id-ID') + ')' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Gas Rp ' + Math.round(p.gasCostIdr) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
+                            <span class="${p.netProfitCleanIdr >= 50 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.netProfitCleanIdr >= 50 ? 'UNTUNG BERSIH (+Rp ' + Math.round(p.netProfitCleanIdr).toLocaleString('id-ID') + ')' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Gas Rp ' + Math.round(gasCostIdr) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
                         </div>
                     </div>
                 `;
+                container.appendChild(card);
             });
         }
 
-        // RENDER KHUSUS DESKTOP (TABLE VIEW)
         function renderTable(poolRows) {
             const tbody = document.getElementById('pool-tbody');
             if (!tbody) return;
+
+            // Bersihkan tbody agar baris kolam lama tidak pernah ada sisa!
+            tbody.innerHTML = '';
 
             poolRows.forEach((p, idx) => {
                 let cardClass = '';
@@ -1103,55 +1070,37 @@
                     statusBadge = '<span class="text-xs text-slate-500 font-medium">⚪ ' + p.statusLabel + '</span>';
                 }
 
-                let row = document.getElementById(`row-${p.key}`);
-                if (!row) {
-                    row = document.createElement('tr');
-                    row.id = `row-${p.key}`;
-                    row.innerHTML = `
-                        <td class="py-2 px-3 font-mono text-xs text-slate-400 rank-c"></td>
-                        <td class="py-2 px-3">
-                            <div class="font-bold text-white text-xs md:text-sm name-c"></div>
-                            <div class="text-[9px] text-slate-400 font-mono price-c"></div>
-                        </td>
-                        <td class="py-2 px-3 font-mono font-bold text-sm md:text-base spread-c"></td>
-                        <td class="py-2 px-3 trend-c"></td>
-                        <td class="py-2 px-3 font-mono text-xs text-slate-400 target-c"></td>
-                        <td class="py-2 px-3 font-mono text-xs text-sky-400 font-semibold loan-c"></td>
-                        <td class="py-2 px-3 bar-c"></td>
-                        <td class="py-2 px-3 text-right status-c"></td>
-                    `;
-                }
-
+                const row = document.createElement('tr');
+                row.id = `row-${p.key}`;
                 row.className = `hover:bg-slate-800/40 transition-colors ${cardClass}`;
-                row.querySelector('.rank-c').textContent = idx + 1;
-                row.querySelector('.name-c').textContent = p.nama;
-                row.querySelector('.price-c').textContent = `Q: $${fmtP(p.p_q)} | U: $${fmtP(p.p_u)}`;
-                
-                const spreadEl = row.querySelector('.spread-c');
-                spreadEl.textContent = `${p.spread.toFixed(3)}%`;
-                spreadEl.className = `py-2 px-3 font-mono font-bold text-sm md:text-base spread-c ${p.statusType === 'hot' ? 'text-amber-400' : (p.statusType === 'ready' ? 'text-emerald-400' : 'text-slate-100')}`;
-                
-                row.querySelector('.trend-c').innerHTML = trendBadge;
-                row.querySelector('.target-c').textContent = `${p.target.toFixed(2)}%`;
-                row.querySelector('.loan-c').innerHTML = `$${p.loan < 10 ? p.loan.toFixed(2) : Math.round(p.loan).toLocaleString()}<div class="text-[9px] text-slate-400">Slip: ${p.slippage.toFixed(3)}%</div>`;
-                row.querySelector('.bar-c').innerHTML = `
-                    <div class="w-full bg-slate-800/90 rounded-full h-1.5 overflow-hidden">
-                        <div class="${barColor} h-1.5 rounded-full transition-all duration-300" style="width: ${p.pctBar}%"></div>
-                    </div>
-                    <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-1">
-                        <span>${p.pctBar.toFixed(1)}%</span>
-                        <span class="${p.netProfitCleanIdr >= 50 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.netProfitCleanIdr >= 50 ? 'UNTUNG BERSIH (+Rp ' + Math.round(p.netProfitCleanIdr).toLocaleString('id-ID') + ')' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Gas Rp ' + Math.round(p.gasCostIdr) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
-                    </div>
+                row.innerHTML = `
+                    <td class="py-2 px-3 font-mono text-xs text-slate-400">${idx + 1}</td>
+                    <td class="py-2 px-3">
+                        <div class="font-bold text-white text-xs md:text-sm">${p.nama}</div>
+                        <div class="text-[9px] text-slate-400 font-mono">Q: $${fmtP(p.p_q)} | U: $${fmtP(p.p_u)}</div>
+                    </td>
+                    <td class="py-2 px-3 font-mono font-bold text-sm md:text-base ${p.statusType === 'hot' ? 'text-amber-400' : (p.statusType === 'ready' ? 'text-emerald-400' : 'text-slate-100')}">${p.spread.toFixed(3)}%</td>
+                    <td class="py-2 px-3">${trendBadge}</td>
+                    <td class="py-2 px-3 font-mono text-xs text-slate-400">${p.target.toFixed(2)}%</td>
+                    <td class="py-2 px-3 font-mono text-xs text-sky-400 font-semibold">$${p.loan < 10 ? p.loan.toFixed(2) : Math.round(p.loan).toLocaleString()}<div class="text-[9px] text-slate-400">Slip: ${p.slippage.toFixed(3)}%</div></td>
+                    <td class="py-2 px-3">
+                        <div class="w-full bg-slate-800/90 rounded-full h-1.5 overflow-hidden">
+                            <div class="${barColor} h-1.5 rounded-full transition-all duration-300" style="width: ${p.pctBar}%"></div>
+                        </div>
+                        <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-1">
+                            <span>${p.pctBar.toFixed(1)}%</span>
+                            <span class="${p.netProfitCleanIdr >= 50 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.netProfitCleanIdr >= 50 ? 'UNTUNG BERSIH (+Rp ' + Math.round(p.netProfitCleanIdr).toLocaleString('id-ID') + ')' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Gas Rp ' + Math.round(p.gasCostIdr) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
+                        </div>
+                    </td>
+                    <td class="py-2 px-3 text-right">${statusBadge}</td>
                 `;
-                row.querySelector('.status-c').innerHTML = statusBadge;
-
                 tbody.appendChild(row);
             });
         }
 
-        restoreInstantCache();
+        // Eksekusi Polling Langsung Tanpa Cache Mati
         pollPolygon();
-        setInterval(pollPolygon, 1800);
+        setInterval(pollPolygon, 1600);
 
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
@@ -1165,12 +1114,6 @@
                 pollPolygon();
             }
         });
-
-        setInterval(() => {
-            if (isPolling) {
-                isPolling = false;
-            }
-        }, 4000);
     </script>
 </body>
 </html>
