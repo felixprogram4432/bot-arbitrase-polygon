@@ -39,12 +39,12 @@
             <div>
                 <div class="flex items-center gap-2 flex-wrap">
                     <div class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping"></div>
-                    <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-950/70 px-2 py-0.5 rounded-full border border-emerald-800/60">Live Turbo 24 (Anti-Trap)</span>
+                    <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-950/70 px-2 py-0.5 rounded-full border border-emerald-800/60">Live Turbo 26 (Factory Verified) (Anti-Trap)</span>
                     <span class="text-[10px] sm:text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800/50">Target Cuan &ge; Rp 350</span>
                     <span class="text-[10px] sm:text-[11px] font-semibold text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-800/50">Bor Node VIP</span>
                 </div>
                 <h1 class="text-lg sm:text-xl md:text-2xl font-black text-white mt-1.5 flex items-center gap-2">
-                    <span>⚡</span> Radar Arbitrase 24 Kolam Terverifikasi
+                    <span>⚡</span> Radar Arbitrase 26 Kolam Terverifikasi
                 </h1>
                 <p class="text-[11px] sm:text-xs text-slate-400 font-mono mt-0.5 break-all">
                     Dompet: <a href="https://polygonscan.com/address/0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36" target="_blank" class="text-sky-400 hover:underline">0x3cfE...CC36</a>
@@ -109,7 +109,7 @@
             <div class="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/80 border-b border-slate-800 flex justify-between items-center flex-wrap gap-2">
                 <div class="flex items-center gap-2">
                     <h2 class="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>📊</span> Matriks 24 Kolam Terverifikasi (Bebas Kolam Jebakan)
+                        <span>📊</span> Matriks 26 Kolam Likuiditas Terverifikasi (Bebas Kolam Jebakan)
                     </h2>
                 </div>
                 
@@ -206,31 +206,293 @@
 
         // 24 Kolam Likuiditas Terverifikasi Resmi (Bebas Kolam Jebakan)
         const POOLS = {
-            "DAI_USDT_100": { nama: "DAI / USDT (100)", quick: "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88", uni: "0x254aa3a898071d6a2da0db11da73b02b4646078f", dec0: 18, dec1: 6, fee_tot: 0.36, max_loan: 2500, asset_sym: "USDT", is_t0: false },
-            "DAI_USDT_500": { nama: "DAI / USDT (500)", quick: "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88", uni: "0x42f0530351471dab7ec968476d19bd36af9ec52d", dec0: 18, dec1: 6, fee_tot: 0.40, max_loan: 2500, asset_sym: "USDT", is_t0: false },
-            "DAI_USDCe_100": { nama: "DAI / USDC.e (100)", quick: "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd", uni: "0x5645dcb64c059aa11212707fbf4e7f984440a8cf", dec0: 6, dec1: 18, fee_tot: 0.36, max_loan: 2500, asset_sym: "USDCe", is_t0: true },
-            "DAI_USDCe_500": { nama: "DAI / USDC.e (500)", quick: "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd", uni: "0x00cdbe40db63d91c7a5255dc765a0c64a38aaeb2", dec0: 6, dec1: 18, fee_tot: 0.40, max_loan: 2500, asset_sym: "USDCe", is_t0: true },
-            "USDCe_USDT_100": { nama: "USDC.e / USDT (100)", quick: "0x2cf7252e74036d1da830d11089d326296e64a728", uni: "0x875a5e378c5443210eb70ca4465df93a40498717", dec0: 6, dec1: 6, fee_tot: 0.36, max_loan: 3000, asset_sym: "USDT", is_t0: false },
-            "USDCe_USDT_500": { nama: "USDC.e / USDT (500)", quick: "0x2cf7252e74036d1da830d11089d326296e64a728", uni: "0x4b31a4a1599813c9e6ce208575a7cce69b2d87e0", dec0: 6, dec1: 6, fee_tot: 0.40, max_loan: 2500, asset_sym: "USDT", is_t0: false },
-            "MATIC_USDT_500": { nama: "WMATIC / USDT (500)", quick: "0x604229c960e5cacf2aaeac8be68ac07ba9df81c3", uni: "0x9b08288c3be4f62bbf8d1c20ac9c5e6f9467d8b7", dec0: 18, dec1: 6, fee_tot: 0.40, max_loan: 2000, asset_sym: "USDT", is_t0: false },
-            "MATIC_USDCe_500": { nama: "WMATIC / USDC.e (500)", quick: "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827", uni: "0xa374094527e1673A86dE625aa59517c5de346d32", dec0: 18, dec1: 6, fee_tot: 0.40, max_loan: 2500, asset_sym: "USDCe", is_t0: false },
-            "MATIC_USDCe_3000": { nama: "WMATIC / USDC.e (3000)", quick: "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827", uni: "0x88f3c15720448e838e12b73f5f540f1d0313552c", dec0: 18, dec1: 6, fee_tot: 0.65, max_loan: 2000, asset_sym: "USDCe", is_t0: false },
-            "MATIC_DAI_500": { nama: "WMATIC / DAI (500)", quick: "0xe7a24ef0c5e95ffb0f6684b813a78f2a3ad7d171", uni: "0xd3959c9d9633e7215c0e0c0ab0cb99bb0982cbe1", dec0: 18, dec1: 18, fee_tot: 0.40, max_loan: 1500, asset_sym: "DAI", is_t0: false },
-            "MATIC_DAI_3000": { nama: "WMATIC / DAI (3000)", quick: "0xe7a24ef0c5e95ffb0f6684b813a78f2a3ad7d171", uni: "0xa6f849ffb89d4ca9d5eb659c2354784a7e937d7a", dec0: 18, dec1: 18, fee_tot: 0.65, max_loan: 1500, asset_sym: "DAI", is_t0: false },
-            "MATIC_WETH_500": { nama: "WMATIC / WETH (500)", quick: "0xadb27230d33e8ee810923f1f04f4254a44c4c106", uni: "0x167384319b41f7094e62470b379737f9577d9da7", dec0: 18, dec1: 18, fee_tot: 0.40, max_loan: 2500, asset_sym: "WETH", is_t0: false },
-            "MATIC_WETH_3000": { nama: "WMATIC / WETH (3000)", quick: "0xadb27230d33e8ee810923f1f04f4254a44c4c106", uni: "0x86f1d8390222a3691c28938ec7404a1661e618e0", dec0: 18, dec1: 18, fee_tot: 0.65, max_loan: 2000, asset_sym: "WETH", is_t0: false },
-            "ETH_USDT_500": { nama: "WETH / USDT (500)", quick: "0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046", uni: "0xbb98b3d2b18aef63a3178023a920971cf5f29be4", dec0: 18, dec1: 6, fee_tot: 0.40, max_loan: 3000, asset_sym: "USDT", is_t0: false },
-            "ETH_USDT_3000": { nama: "WETH / USDT (3000)", quick: "0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046", uni: "0x9815038c119565507740263303d7c35e3860bb77", dec0: 18, dec1: 6, fee_tot: 0.65, max_loan: 2500, asset_sym: "USDT", is_t0: false },
-            "ETH_USDCe_500": { nama: "WETH / USDC.e (500)", quick: "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d", uni: "0x45dda9cb7c25131df268515131f647d726f50608", dec0: 6, dec1: 18, fee_tot: 0.40, max_loan: 3000, asset_sym: "USDCe", is_t0: true },
-            "ETH_USDCe_3000": { nama: "WETH / USDC.e (3000)", quick: "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d", uni: "0x50eaedb835021e4a108b7290636d62e9765cc6d7", dec0: 6, dec1: 18, fee_tot: 0.65, max_loan: 2500, asset_sym: "USDCe", is_t0: true },
-            "LINK_WETH_500": { nama: "LINK / WETH (500)", quick: "0xdc9232e2df177d7a12fdff6ecbab114e2231198d", uni: "0x98bb7e4871927d6d5eb5b018fb5f09faecb68421", dec0: 18, dec1: 18, fee_tot: 0.40, max_loan: 2000, asset_sym: "WETH", is_t0: false },
-            "LINK_WETH_3000": { nama: "LINK / WETH (3000)", quick: "0xdc9232e2df177d7a12fdff6ecbab114e2231198d", uni: "0x93206be63364f3d2f9ef2bf8bfef576ad486ca91", dec0: 18, dec1: 18, fee_tot: 0.65, max_loan: 1500, asset_sym: "WETH", is_t0: false },
-            "LINK_MATIC_500": { nama: "LINK / WMATIC (500)", quick: "0x576595562d10332f7ec31889a244fe0bf03e05a8", uni: "0x39a1ca83424cb476c596ff1758ee6ba649c25983", dec0: 18, dec1: 18, fee_tot: 0.40, max_loan: 1500, asset_sym: "WMATIC", is_t0: false },
-            "stMATIC_MATIC_500": { nama: "stMATIC / WMATIC (500)", quick: "0x5ef034293fe5f98cfba804be8c8cb69d5fb38cfa", uni: "0x83f064858bc166e2c418a0acb73bbdb446bfb05b", dec0: 18, dec1: 18, fee_tot: 0.40, max_loan: 2000, asset_sym: "WMATIC", is_t0: false },
-            "AAVE_WETH_500": { nama: "AAVE / WETH (500)", quick: "0xa6f8a41767e7216a75a7cce69b2d87e008f1b131", uni: "0x17c0934ebf32b1fffe5d2f6fbf4e5692ce03a7a2", dec0: 18, dec1: 18, fee_tot: 0.40, max_loan: 2000, asset_sym: "WETH", is_t0: false },
-            "AAVE_WETH_3000": { nama: "AAVE / WETH (3000)", quick: "0xa6f8a41767e7216a75a7cce69b2d87e008f1b131", uni: "0x717906d2a45a201c70e28f73117540ea674b01e3", dec0: 18, dec1: 18, fee_tot: 0.65, max_loan: 1500, asset_sym: "WETH", is_t0: false },
-            "UNI_MATIC_3000": { nama: "UNI / WMATIC (3000)", quick: "0xc45092e7e73951c6668f6c46acfca9f2b1c69aef", uni: "0x7f9121b4f4e040fd066e9dc5c250cf9b4338d5bc", dec0: 18, dec1: 18, fee_tot: 0.65, max_loan: 1500, asset_sym: "WMATIC", is_t0: true }
-        };
+            "AAVE_WETH_500": {
+                        "nama": "AAVE / WETH (500)",
+                        "quick": "0x90bc3e68ba8393a3bf2d79309365089975341a43",
+                        "uni": "0x25fb97799f80433e422f47e75173314e54dae174",
+                        "dec0": 18,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 2000,
+                        "asset_sym": "WETH",
+                        "is_t0": true
+            },
+            "DAI_USDCe_100": {
+                        "nama": "DAI / USDCe (100)",
+                        "quick": "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd",
+                        "uni": "0x5645dcb64c059aa11212707fbf4e7f984440a8cf",
+                        "dec0": 6,
+                        "dec1": 18,
+                        "fee_tot": 0.36,
+                        "max_loan": 2500,
+                        "asset_sym": "USDCe",
+                        "is_t0": true
+            },
+            "DAI_USDCe_500": {
+                        "nama": "DAI / USDCe (500)",
+                        "quick": "0xf04adbf75cdfc5ed26eea4bbbb991db002036bdd",
+                        "uni": "0x5f69c2ec01c22843f8273838d570243fd1963014",
+                        "dec0": 6,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 2500,
+                        "asset_sym": "USDCe",
+                        "is_t0": true
+            },
+            "DAI_USDT_100": {
+                        "nama": "DAI / USDT (100)",
+                        "quick": "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88",
+                        "uni": "0x254aa3a898071d6a2da0db11da73b02b4646078f",
+                        "dec0": 18,
+                        "dec1": 6,
+                        "fee_tot": 0.36,
+                        "max_loan": 2500,
+                        "asset_sym": "USDT",
+                        "is_t0": false
+            },
+            "DAI_USDT_500": {
+                        "nama": "DAI / USDT (500)",
+                        "quick": "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88",
+                        "uni": "0x42f0530351471dab7ec968476d19bd36af9ec52d",
+                        "dec0": 18,
+                        "dec1": 6,
+                        "fee_tot": 0.4,
+                        "max_loan": 2500,
+                        "asset_sym": "USDT",
+                        "is_t0": false
+            },
+            "LINK_WETH_500": {
+                        "nama": "LINK / WETH (500)",
+                        "quick": "0x5ca6ca6c3709e1e6cfe74a50cf6b2b6ba2dadd67",
+                        "uni": "0x3dc10d7bfb94eeb009203e84a653e5764f71771d",
+                        "dec0": 18,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 2000,
+                        "asset_sym": "WETH",
+                        "is_t0": false
+            },
+            "LINK_WMATIC_500": {
+                        "nama": "LINK / WMATIC (500)",
+                        "quick": "0x3c986748414a812e455dcd5418246b8fded5c369",
+                        "uni": "0x0a28c2f5e0e8463e047c203f00f649812ae67e4f",
+                        "dec0": 18,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 1500,
+                        "asset_sym": "WMATIC",
+                        "is_t0": true
+            },
+            "UNI_WMATIC_3000": {
+                        "nama": "UNI / WMATIC (3000)",
+                        "quick": "0xc45092e7e73951c6668f6c46acfca9f2b1c69aef",
+                        "uni": "0x7f9121b4f4e040fd066e9dc5c250cf9b4338d5bc",
+                        "dec0": 18,
+                        "dec1": 18,
+                        "fee_tot": 0.65,
+                        "max_loan": 1500,
+                        "asset_sym": "WMATIC",
+                        "is_t0": true
+            },
+            "USDC_USDCe_100": {
+                        "nama": "USDC / USDCe (100)",
+                        "quick": "0x2fb3b855fb2e3f668de6fc82f026a7ab56f6b067",
+                        "uni": "0xd36ec33c8bed5a9f7b6630855f1533455b98a418",
+                        "dec0": 6,
+                        "dec1": 6,
+                        "fee_tot": 0.36,
+                        "max_loan": 3000,
+                        "asset_sym": "USDCe",
+                        "is_t0": true
+            },
+            "USDC_USDT_100": {
+                        "nama": "USDC / USDT (100)",
+                        "quick": "0xe43ab6540c0929ef29d216a34ab1f0eacc5c3825",
+                        "uni": "0x31083a78e11b18e450fd139f9abea98cd53181b7",
+                        "dec0": 6,
+                        "dec1": 6,
+                        "fee_tot": 0.36,
+                        "max_loan": 3000,
+                        "asset_sym": "USDT",
+                        "is_t0": false
+            },
+            "USDCe_USDT_100": {
+                        "nama": "USDCe / USDT (100)",
+                        "quick": "0x2cf7252e74036d1da831d11089d326296e64a728",
+                        "uni": "0xdac8a8e6dbf8c690ec6815e0ff03491b2770255d",
+                        "dec0": 6,
+                        "dec1": 6,
+                        "fee_tot": 0.36,
+                        "max_loan": 3000,
+                        "asset_sym": "USDT",
+                        "is_t0": false
+            },
+            "USDCe_USDT_500": {
+                        "nama": "USDCe / USDT (500)",
+                        "quick": "0x2cf7252e74036d1da831d11089d326296e64a728",
+                        "uni": "0x3f5228d0e7d75467366be7de2c31d0d098ba2c23",
+                        "dec0": 6,
+                        "dec1": 6,
+                        "fee_tot": 0.4,
+                        "max_loan": 2500,
+                        "asset_sym": "USDT",
+                        "is_t0": false
+            },
+            "WBTC_USDCe_500": {
+                        "nama": "WBTC / USDCe (500)",
+                        "quick": "0xf6a637525402643b0654a54bead2cb9a83c8b498",
+                        "uni": "0xeef1a9507b3d505f0062f2be9453981255b503c8",
+                        "dec0": 8,
+                        "dec1": 6,
+                        "fee_tot": 0.4,
+                        "max_loan": 2500,
+                        "asset_sym": "USDCe",
+                        "is_t0": false
+            },
+            "WBTC_WETH_500": {
+                        "nama": "WBTC / WETH (500)",
+                        "quick": "0xdc9232e2df177d7a12fdff6ecbab114e2231198d",
+                        "uni": "0x50eaedb835021e4a108b7290636d62e9765cc6d7",
+                        "dec0": 8,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 2000,
+                        "asset_sym": "WETH",
+                        "is_t0": false
+            },
+            "WETH_USDC_500": {
+                        "nama": "WETH / USDC (500)",
+                        "quick": "0x7baf833f82bb1971f99a5a5d84bed1d5d0dedd70",
+                        "uni": "0xa4d8c89f0c20efbe54cba9e7e7a7e509056228d9",
+                        "dec0": 6,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 3000,
+                        "asset_sym": "USDC",
+                        "is_t0": true
+            },
+            "WETH_USDCe_500": {
+                        "nama": "WETH / USDCe (500)",
+                        "quick": "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d",
+                        "uni": "0x45dda9cb7c25131df268515131f647d726f50608",
+                        "dec0": 6,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 3000,
+                        "asset_sym": "USDCe",
+                        "is_t0": true
+            },
+            "WETH_USDT_3000": {
+                        "nama": "WETH / USDT (3000)",
+                        "quick": "0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046",
+                        "uni": "0x4ccd010148379ea531d6c587cfdd60180196f9b1",
+                        "dec0": 18,
+                        "dec1": 6,
+                        "fee_tot": 0.65,
+                        "max_loan": 2500,
+                        "asset_sym": "USDT",
+                        "is_t0": false
+            },
+            "WETH_USDT_500": {
+                        "nama": "WETH / USDT (500)",
+                        "quick": "0xf6422b997c7f54d1c6a6e103bcb1499eea0a7046",
+                        "uni": "0xbb98b3d2b18aef63a3178023a920971cf5f29be4",
+                        "dec0": 18,
+                        "dec1": 6,
+                        "fee_tot": 0.4,
+                        "max_loan": 3000,
+                        "asset_sym": "USDT",
+                        "is_t0": false
+            },
+            "WMATIC_DAI_3000": {
+                        "nama": "WMATIC / DAI (3000)",
+                        "quick": "0xeef611894ceae652979c9d0dae1deb597790c6ee",
+                        "uni": "0xfe530931da161232ec76a7c3bea7d36cf3811a0d",
+                        "dec0": 18,
+                        "dec1": 18,
+                        "fee_tot": 0.65,
+                        "max_loan": 1500,
+                        "asset_sym": "DAI",
+                        "is_t0": false
+            },
+            "WMATIC_DAI_500": {
+                        "nama": "WMATIC / DAI (500)",
+                        "quick": "0xeef611894ceae652979c9d0dae1deb597790c6ee",
+                        "uni": "0x0f663c16dd7c65cf87edb9229464ca77aeea536b",
+                        "dec0": 18,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 1500,
+                        "asset_sym": "DAI",
+                        "is_t0": false
+            },
+            "WMATIC_USDC_500": {
+                        "nama": "WMATIC / USDC (500)",
+                        "quick": "0x6d9e8dbb2779853db00418d4dcf96f3987cfc9d2",
+                        "uni": "0xb6e57ed85c4c9dbfef2a68711e9d6f36c56e0fcb",
+                        "dec0": 18,
+                        "dec1": 6,
+                        "fee_tot": 0.4,
+                        "max_loan": 2500,
+                        "asset_sym": "USDC",
+                        "is_t0": false
+            },
+            "WMATIC_USDCe_3000": {
+                        "nama": "WMATIC / USDCe (3000)",
+                        "quick": "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827",
+                        "uni": "0x88f3c15523544835ff6c738ddb30995339ad57d6",
+                        "dec0": 18,
+                        "dec1": 6,
+                        "fee_tot": 0.65,
+                        "max_loan": 2000,
+                        "asset_sym": "USDCe",
+                        "is_t0": false
+            },
+            "WMATIC_USDCe_500": {
+                        "nama": "WMATIC / USDCe (500)",
+                        "quick": "0x6e7a5fafcec6bb1e78bae2a1f0b612012bf14827",
+                        "uni": "0xa374094527e1673a86de625aa59517c5de346d32",
+                        "dec0": 18,
+                        "dec1": 6,
+                        "fee_tot": 0.4,
+                        "max_loan": 2500,
+                        "asset_sym": "USDCe",
+                        "is_t0": false
+            },
+            "WMATIC_USDT_500": {
+                        "nama": "WMATIC / USDT (500)",
+                        "quick": "0x604229c960e5cacf2aaeac8be68ac07ba9df81c3",
+                        "uni": "0x9b08288c3be4f62bbf8d1c20ac9c5e6f9467d8b7",
+                        "dec0": 18,
+                        "dec1": 6,
+                        "fee_tot": 0.4,
+                        "max_loan": 2000,
+                        "asset_sym": "USDT",
+                        "is_t0": false
+            },
+            "WMATIC_WETH_3000": {
+                        "nama": "WMATIC / WETH (3000)",
+                        "quick": "0xadbf1854e5883eb8aa7baf50705338739e558e5b",
+                        "uni": "0x167384319b41f7094e62f7506409eb38079abff8",
+                        "dec0": 18,
+                        "dec1": 18,
+                        "fee_tot": 0.65,
+                        "max_loan": 2000,
+                        "asset_sym": "WMATIC",
+                        "is_t0": true
+            },
+            "WMATIC_WETH_500": {
+                        "nama": "WMATIC / WETH (500)",
+                        "quick": "0xadbf1854e5883eb8aa7baf50705338739e558e5b",
+                        "uni": "0x86f1d8390222a3691c28938ec7404a1661e618e0",
+                        "dec0": 18,
+                        "dec1": 18,
+                        "fee_tot": 0.4,
+                        "max_loan": 2500,
+                        "asset_sym": "WMATIC",
+                        "is_t0": true
+            }
+};
 
         let prevSpreads = {};
         let lastBlockNum = 96362100;
