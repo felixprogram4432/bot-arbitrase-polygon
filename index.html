@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Radar Arbitrase Polygon Pro - Mas Bayu Live Web V3</title>
+    <title>Radar Arbitrase Polygon Pro - Mas Bayu Live Web V3 (32 Kolam)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
                     <span class="text-[11px] font-semibold text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-800/50">Direct Bor RPC</span>
                 </div>
                 <h1 class="text-xl md:text-2xl font-extrabold text-white mt-1.5 flex items-center gap-2">
-                    <span>⚡</span> Radar Arbitrase 25 Kolam Raksasa
+                    <span>⚡</span> Radar Arbitrase 32 Kolam Raksasa
                 </h1>
                 <p class="text-xs text-slate-400 font-mono mt-0.5">
                     Dompet: <a href="https://polygonscan.com/address/0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36" target="_blank" class="text-sky-400 hover:underline">0x3cfE...CC36</a>
@@ -96,7 +96,7 @@
             <div class="px-4 py-3 bg-slate-900/80 border-b border-slate-800 flex justify-between items-center flex-wrap gap-2">
                 <div class="flex items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>📊</span> Matriks Radar 25 Kolam Likuiditas Raksasa (> $20 Juta TVL)
+                        <span>📊</span> Matriks Radar 32 Kolam Likuiditas Raksasa (> $25 Juta TVL)
                     </h2>
                 </div>
                 <div class="text-[11px] text-slate-400 font-mono flex items-center gap-3">
@@ -120,7 +120,7 @@
                         </tr>
                     </thead>
                     <tbody id="pool-tbody" class="divide-y divide-slate-800/40 text-xs">
-                        <!-- 25 Baris Kolam Di-Render Mulus Tanpa Kedip Di Sini -->
+                        <!-- 32 Baris Kolam Di-Render Mulus Tanpa Kedip Di Sini -->
                     </tbody>
                 </table>
             </div>
@@ -147,7 +147,7 @@
         const WALLET_ADDR = "0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36";
         const KURS_IDR = 18136;
 
-        // 25 Kolam Likuiditas Raksasa Resmi Terverifikasi (> $20 Juta TVL)
+        // 32 Kolam Likuiditas Raksasa Resmi Terverifikasi (> $25 Juta TVL)
         const POOLS = {
             "DAI_USDT_100": { nama: "DAI / USDT (100)", quick: "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88", uni: "0x254aa3a898071d6a2da0db11da73b02b4646078f", dec0: 18, dec1: 6, fee_tot: 0.40, max_loan: 3000, asset_sym: "USDT", is_t0: false },
             "DAI_USDT_500": { nama: "DAI / USDT (500)", quick: "0x59153f27eefe07e5ece4f9304ebba1da6f53ca88", uni: "0x42f0530351471dab7ec968476d19bd36af9ec52d", dec0: 18, dec1: 6, fee_tot: 0.44, max_loan: 3000, asset_sym: "USDT", is_t0: false },
@@ -173,20 +173,27 @@
             "WBTC_USDCe_3000": { nama: "WBTC / USDC.e (3000)", quick: "0xf6a637525402643b0654a54bead2cb9a83c8b498", uni: "0x847b64f9d3a95e977d157866447a5c0a5dfa0ee5", dec0: 8, dec1: 6, fee_tot: 0.69, max_loan: 4000, asset_sym: "USDCe", is_t0: false },
             "LINK_WETH_500": { nama: "LINK / WETH (500)", quick: "0x5ca6ca6c3709e1e6cfe74a50cf6b2b6ba2dadd67", uni: "0x3dc10d7bfb94eeb009203e84a653e5764f71771d", dec0: 18, dec1: 18, fee_tot: 0.44, max_loan: 2000, asset_sym: "WETH", is_t0: false },
             "LINK_WETH_3000": { nama: "LINK / WETH (3000)", quick: "0x5ca6ca6c3709e1e6cfe74a50cf6b2b6ba2dadd67", uni: "0x3e31ab7f37c048fc6574189135d108df80f0ea26", dec0: 18, dec1: 18, fee_tot: 0.69, max_loan: 2000, asset_sym: "WETH", is_t0: false },
-            "LINK_MATIC_500": { nama: "LINK / WMATIC (500)", quick: "0x3c986748414a812e455dcd5418246b8fded5c369", uni: "0x0a28c2f5e0e8463e047c203f00f649812ae67e4f", dec0: 18, dec1: 18, fee_tot: 0.44, max_loan: 2000, asset_sym: "WMATIC", is_t0: true }
+            "LINK_MATIC_500": { nama: "LINK / WMATIC (500)", quick: "0x3c986748414a812e455dcd5418246b8fded5c369", uni: "0x0a28c2f5e0e8463e047c203f00f649812ae67e4f", dec0: 18, dec1: 18, fee_tot: 0.44, max_loan: 2000, asset_sym: "WMATIC", is_t0: true },
+            "STMATIC_MATIC_500": { nama: "stMATIC / WMATIC (500)", quick: "0x65752c54d9102bdfd69d351e1838a1be83c924c6", uni: "0x6065e615a101cad51c990adbb841b01a9509d919", dec0: 18, dec1: 18, fee_tot: 0.44, max_loan: 2500, asset_sym: "WMATIC", is_t0: true },
+            "STMATIC_MATIC_3000": { nama: "stMATIC / WMATIC (3000)", quick: "0x65752c54d9102bdfd69d351e1838a1be83c924c6", uni: "0x335ca485542df99dc3d6ac4f36420609715a401c", dec0: 18, dec1: 18, fee_tot: 0.69, max_loan: 2500, asset_sym: "WMATIC", is_t0: true },
+            "AAVE_WETH_500": { nama: "AAVE / WETH (500)", quick: "0x90bc3e68ba8393a3bf2d79309365089975341a43", uni: "0x25fb97799f80433e422f47e75173314e54dae174", dec0: 18, dec1: 18, fee_tot: 0.44, max_loan: 3000, asset_sym: "WETH", is_t0: true },
+            "AAVE_WETH_3000": { nama: "AAVE / WETH (3000)", quick: "0x90bc3e68ba8393a3bf2d79309365089975341a43", uni: "0x2aceda63b5e958c45bd27d916ba701bc1dc08f7a", dec0: 18, dec1: 18, fee_tot: 0.69, max_loan: 3000, asset_sym: "WETH", is_t0: true },
+            "AAVE_MATIC_3000": { nama: "AAVE / WMATIC (3000)", quick: "0x0554059d42e26f35cc958581c71fdfd92405d02f", uni: "0xa9077cdb3d13f45b8b9d87c43e11bce0e73d8631", dec0: 18, dec1: 18, fee_tot: 0.69, max_loan: 1500, asset_sym: "WMATIC", is_t0: true },
+            "UNI_WETH_3000": { nama: "UNI / WETH (3000)", quick: "0xf7135272a5584eb116f5a77425118a8b4a2ddfdb", uni: "0x357faf5843c7fd7fb4e34fbeabdac16eabe8a5bc", dec0: 18, dec1: 18, fee_tot: 0.69, max_loan: 2500, asset_sym: "WETH", is_t0: true },
+            "UNI_MATIC_3000": { nama: "UNI / WMATIC (3000)", quick: "0xc45092e7e73951c6668f6c46acfca9f2b1c69aef", uni: "0x7f9121b4f4e040fd066e9dc5c250cf9b4338d5bc", dec0: 18, dec1: 18, fee_tot: 0.69, max_loan: 1500, asset_sym: "WMATIC", is_t0: true }
         };
 
         let prevSpreads = {};
         let eventLogs = [
-            { time: new Date().toLocaleTimeString('id-ID'), type: 'info', msg: 'Radar Web Online V4: Monitoring 25 kolam likuiditas raksasa (> $20 Juta TVL) dengan Dynamic Loan Sizing' }
+            { time: new Date().toLocaleTimeString('id-ID'), type: 'info', msg: 'Radar Web Online V4: Monitoring 32 kolam likuiditas raksasa (> $25 Juta TVL) dengan Dynamic Loan Sizing' }
         ];
 
         let audioActive = false;
         let lastBeepTime = 0;
 
         function addLog(type, msg) {
-            const time = new Date().toLocaleTimeString('id-ID');
-            eventLogs.unshift({ time, type, msg });
+            const timeStr = new Date().toLocaleTimeString('id-ID');
+            eventLogs.unshift({ time: timeStr, type: type, msg: msg });
             if (eventLogs.length > 25) eventLogs.pop();
             renderLogs();
         }
@@ -267,7 +274,7 @@
                 const batch = [];
                 const names = [];
 
-                // Susun batch eth_call untuk 25 kolam
+                // Susun batch eth_call untuk 32 kolam
                 for (const [k, cfg] of Object.entries(POOLS)) {
                     batch.push({ jsonrpc: "2.0", id: batch.length, method: "eth_call", params: [{ to: cfg.quick, data: "0x0902f1ac" }, "latest"] });
                     names.push({ key: k, type: "quick" });
@@ -327,7 +334,7 @@
                     } catch(e) {}
                 }
 
-                // Hitung Spreads 25 Kolam
+                // Hitung Spreads 32 Kolam
                 const poolRows = [];
                 let cntReady = 0;
                 let cntHot = 0;
@@ -360,6 +367,8 @@
                                     rAssetUsd = cfg.is_t0 ? r0 : r1;
                                 } else if (cfg.asset_sym === "WETH") {
                                     rAssetUsd = (cfg.is_t0 ? r0 : r1) * ethUsd;
+                                } else if (cfg.asset_sym === "WMATIC") {
+                                    rAssetUsd = (cfg.is_t0 ? r0 : r1) * 0.090;
                                 }
 
                                 // 2. Dynamic Loan Sizing & Slippage
