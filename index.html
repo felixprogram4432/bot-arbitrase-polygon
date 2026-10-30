@@ -6,8 +6,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="39-gold-pools-multicall3-v6">
-    <title>Radar Arbitrase 39 Kolam Emas Tulen Polygon Pro (Live On-Chain)</title>
+    <meta name="version" content="21-gold-pools-multicall3-v5">
+    <title>Radar Arbitrase 21 Kolam Emas Polygon Pro (Live On-Chain)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -57,7 +57,7 @@
                         </h1>
                         <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-950/80 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
                             <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            39 Kolam Emas Tulen Tulen
+                            21 Kolam Emas Tulen
                         </span>
                     </div>
                     <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5 font-mono">
@@ -129,7 +129,7 @@
             <div class="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/80 border-b border-slate-800 flex justify-between items-center flex-wrap gap-2">
                 <div class="flex items-center gap-2">
                     <h2 class="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>📊</span> Matriks 39 Kolam Emas Tulen Terverifikasi (Bebas Kolam Hantu & Bebas Jebakan Ilikuid)
+                        <span>📊</span> Matriks 21 Kolam Emas Terverifikasi (Bebas Kolam Hantu & Bebas Jebakan Ilikuid)
                     </h2>
                 </div>
                 
@@ -227,7 +227,7 @@
             "WBTC": 75000.0
         };
 
-        // 39 Kolam Emas Tulen Terverifikasi Swap On-Chain (Deviasi < 2%, Bebas Kolam Hantu)
+        // 21 Kolam Emas Terverifikasi Swap On-Chain (Deviasi < 2%, Bebas Kolam Hantu)
         const POOLS = {
     "wmatic_weth_500": {
         "nama": "WETH / WMATIC (500)",
@@ -1020,7 +1020,7 @@
         const prevSpreads = {};
 
         let eventLogs = [
-            { time: new Date().toLocaleTimeString('id-ID'), type: 'info', msg: 'Radar Web V5: 39 Kolam Emas Tulen Terverifikasi Swap On-Chain Aktif' }
+            { time: new Date().toLocaleTimeString('id-ID'), type: 'info', msg: 'Radar Web V5: 21 Kolam Emas Terverifikasi Swap On-Chain Aktif' }
         ];
 
         function hardResetCache() {
@@ -1123,15 +1123,17 @@
             const timeoutId = setTimeout(() => controller.abort(), 4000);
 
             try {
-                const resp = await fetch(rpcUrl, {
+                const batchReq = [
+                    { jsonrpc: "2.0", method: "eth_call", params: [{ to: MULTICALL3_ADDR, data: MULTICALL_CALLDATA }, "latest"], id: 1 },
+                    { jsonrpc: "2.0", method: "eth_getTransactionCount", params: [WALLET_ADDR, "latest"], id: 2 },
+                    { jsonrpc: "2.0", method: "eth_getBalance", params: [WALLET_ADDR, "latest"], id: 3 },
+                    { jsonrpc: "2.0", method: "eth_blockNumber", params: [], id: 4 }
+                ];
+
+                const batchRes = await fetch(rpcUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        jsonrpc: "2.0",
-                        method: "eth_call",
-                        params: [{ to: MULTICALL3_ADDR, data: MULTICALL_CALLDATA }, "latest"],
-                        id: 1
-                    }),
+                    body: JSON.stringify(batchReq),
                     signal: controller.signal
                 }).then(r => r.json());
 
@@ -1139,13 +1141,36 @@
                 const ping = Math.round(performance.now() - t0);
                 document.getElementById('ping-ms').innerText = `Ping: ${ping} ms`;
 
-                if (!resp || !resp.result || resp.result === '0x') {
+                if (!Array.isArray(batchRes) || batchRes.length === 0) {
+                    currentRpcIdx = (currentRpcIdx + 1) % RPCS.length;
+                    return;
+                }
+
+                const respMulticall = batchRes.find(x => x.id === 1);
+                const respNonce = batchRes.find(x => x.id === 2);
+                const respBal = batchRes.find(x => x.id === 3);
+                const respBlock = batchRes.find(x => x.id === 4);
+
+                if (respNonce?.result?.startsWith('0x')) {
+                    const txCount = parseInt(respNonce.result, 16);
+                    document.getElementById('cnt-tx').innerText = '#' + txCount;
+                }
+                if (respBal?.result?.startsWith('0x')) {
+                    const polBal = parseInt(respBal.result, 16) / 1e18;
+                    document.getElementById('saldo-pol').innerText = polBal.toFixed(2) + ' POL';
+                }
+                if (respBlock?.result?.startsWith('0x')) {
+                    const bNum = parseInt(respBlock.result, 16);
+                    document.getElementById('block-num').innerText = '#' + bNum;
+                }
+
+                if (!respMulticall || !respMulticall.result || respMulticall.result === '0x') {
                     currentRpcIdx = (currentRpcIdx + 1) % RPCS.length;
                     return;
                 }
 
                 // Decode Multicall3 result
-                const hex = resp.result.slice(2);
+                const hex = respMulticall.result.slice(2);
                 const offset = parseInt(hex.slice(0, 64), 16) * 2;
                 const count = parseInt(hex.slice(offset, offset + 64), 16);
                 let currPos = offset + 64;
