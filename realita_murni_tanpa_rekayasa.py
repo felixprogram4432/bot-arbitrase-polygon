@@ -61,7 +61,7 @@ ASSET_PRICES_USD = {
 }
 
 # =====================================================================
-# MATRIKS 36 KOLAM LIKUIDITAS TERVERIFIKASI (BEBAS KOLAM JEBAKAN)
+# MATRIKS 34 KOLAM LIKUIDITAS TERVERIFIKASI (BEBAS KOLAM JEBAKAN)
 # Hanya menyaring kolam dengan Likuiditas Nyata di QuickSwap V2 & Uniswap V3
 # =====================================================================
 POOLS = {   'crv_usdce_3000': {   'asset': '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
@@ -404,23 +404,6 @@ POOLS = {   'crv_usdce_3000': {   'asset': '0x2791Bca1f2de4661ED88A30C99A7a9449A
                          'target_sym': 'WETH',
                          'uni': '0xbb98b3d2b18aef63a3178023a920971cf5f29be4',
                          'uni_fee': 500},
-    'wmatic_aave_500': {   'asset': '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-                           'asset_dec': 18,
-                           'asset_sym': 'WMATIC',
-                           'dec0': 18,
-                           'dec1': 18,
-                           'fee_tot': 0.4,
-                           'is_asset_t0': True,
-                           'is_t0': True,
-                           'max_loan': 2500.0,
-                           'max_loan_usd': 2500.0,
-                           'nama': 'WMATIC / AAVE (500)',
-                           'quick': '0x0554059d42e26f35cc958581c71fdfd92405d02f',
-                           'target': '0xd6df932a45c0f255f85145f286ea0b292b21c90b',
-                           'target_dec': 18,
-                           'target_sym': 'AAVE',
-                           'uni': '0xb3866eb993e1aef93f219c3da0a71c3f11becbf2',
-                           'uni_fee': 500},
     'wmatic_dai_3000': {   'asset': '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
                            'asset_dec': 18,
                            'asset_sym': 'DAI',
@@ -438,23 +421,6 @@ POOLS = {   'crv_usdce_3000': {   'asset': '0x2791Bca1f2de4661ED88A30C99A7a9449A
                            'target_sym': 'WMATIC',
                            'uni': '0xfe530931da161232ec76a7c3bea7d36cf3811a0d',
                            'uni_fee': 3000},
-    'wmatic_dai_500': {   'asset': '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
-                          'asset_dec': 18,
-                          'asset_sym': 'DAI',
-                          'dec0': 18,
-                          'dec1': 18,
-                          'fee_tot': 0.4,
-                          'is_asset_t0': False,
-                          'is_t0': False,
-                          'max_loan': 2500.0,
-                          'max_loan_usd': 2500.0,
-                          'nama': 'WMATIC / DAI (500)',
-                          'quick': '0xeef611894ceae652979c9d0dae1deb597790c6ee',
-                          'target': '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
-                          'target_dec': 18,
-                          'target_sym': 'WMATIC',
-                          'uni': '0x0f663c16dd7c65cf87edb9229464ca77aeea536b',
-                          'uni_fee': 500},
     'wmatic_link_3000': {   'asset': '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
                             'asset_dec': 18,
                             'asset_sym': 'WMATIC',
@@ -884,7 +850,7 @@ def execute_onchain_sniper_instant(contract_address, calldata_hex, active_rpc, t
 
 def main():
     print("=" * 88, flush=True)
-    print("  🚀 MESIN ARBITRASE TURBO 36 KOLAM TERVERIFIKASI - AUTONOMOUS 24/7", flush=True)
+    print("  🚀 MESIN ARBITRASE TURBO 34 KOLAM TERVERIFIKASI - AUTONOMOUS 24/7", flush=True)
     print(f"  🎯 Target Finansial: Bersih di Atas Biaya Gas (Rp 50 s/d Jutaan Rupiah)", flush=True)
     print(f"  💼 Dompet Penerima Cuan: {DOMPET_ANDA}", flush=True)
     print("=" * 88, flush=True)
@@ -898,7 +864,7 @@ def main():
         print("  ⚠️ STATUS EKSEKUTOR: MODE RADAR PENGAMATAN ONLY (Kredensial Belum Terdeteksi)\n", flush=True)
 
     send_telegram_alert(
-        f"🤖 *RADAR ARBITRASE TURBO 36 KOLAM AKTIF!* 🚀\n\n"
+        f"🤖 *RADAR ARBITRASE TURBO 34 KOLAM EMAS AKTIF!* 🚀\n\n"
         f"🎯 *Target Finansial:* `Laba Bersih > Biaya Gas (Rp 50 s/d Jutaan Rupiah)`\n"
         f"🌐 *Total Kolam:* `36 Kolam Terverifikasi Factory (Bebas Kolam Jebakan)`\n"
         f"⚡ *Mode:* `{'0-Delay Flash Loan Sniper' if is_live_ready else 'Radar Pengamatan'}`\n"
