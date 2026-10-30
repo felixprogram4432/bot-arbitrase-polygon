@@ -6,8 +6,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="version" content="21-gold-pools-multicall3-v5">
-    <title>Radar Arbitrase 21 Kolam Emas Polygon Pro (Live On-Chain)</title>
+    <meta name="version" content="39-gold-pools-multicall3-v6">
+    <title>Radar Arbitrase 39 Kolam Emas Polygon Pro (Live On-Chain)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -57,7 +57,7 @@
                         </h1>
                         <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-950/80 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1">
                             <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                            21 Kolam Emas Tulen
+                            39 Kolam Emas Tulen
                         </span>
                     </div>
                     <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5 font-mono">
@@ -129,7 +129,7 @@
             <div class="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/80 border-b border-slate-800 flex justify-between items-center flex-wrap gap-2">
                 <div class="flex items-center gap-2">
                     <h2 class="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>📊</span> Matriks 21 Kolam Emas Terverifikasi (Bebas Kolam Hantu & Bebas Jebakan Ilikuid)
+                        <span>📊</span> Matriks 39 Kolam Emas Terverifikasi (Bebas Kolam Hantu & Bebas Jebakan Ilikuid)
                     </h2>
                 </div>
                 
@@ -1213,7 +1213,8 @@
                                 const spread = (Math.abs(pQuick - pUni) / Math.min(pQuick, pUni)) * 100;
                                 if (spread > 50.0) continue; // Filter anomali
 
-                                const fee = cfg.fee_tot;
+                                const AAVE_FLASHLOAN_FEE = 0.05;
+                                const fee = +(cfg.fee_tot + AAVE_FLASHLOAN_FEE).toFixed(3);
                                 const jarak = fee - spread;
                                 const grossNet = spread - fee;
 
@@ -1288,7 +1289,11 @@
                                 } else if (jarak <= 0) {
                                     statusType = "hot";
                                     if (cuanIdr > 0 && netProfitCleanIdr < BUFFER_BERSIH_MINI_IDR) {
-                                        statusLabel = `Tekor Gas (+Rp ${Math.round(cuanIdr)} < Gas Rp ${Math.round(gasCostIdr)})`;
+                                        if (netProfitCleanIdr > 0) {
+                                            statusLabel = `Buffer Cuan Tipis (+Rp ${Math.round(netProfitCleanIdr)})`;
+                                        } else {
+                                            statusLabel = `Tekor Gas (+Rp ${Math.round(cuanIdr)} < Gas Rp ${Math.round(gasCostIdr)})`;
+                                        }
                                     } else {
                                         statusLabel = `Slippage Membatasi (Belum Cuan)`;
                                     }
