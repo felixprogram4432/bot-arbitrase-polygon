@@ -40,7 +40,7 @@
                 <div class="flex items-center gap-2 flex-wrap">
                     <div class="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping"></div>
                     <span class="text-[10px] sm:text-[11px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-950/70 px-2 py-0.5 rounded-full border border-emerald-800/60">Live Turbo 26 (Factory Verified) (Anti-Trap)</span>
-                    <span class="text-[10px] sm:text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800/50">Target Cuan &ge; Rp 350</span>
+                    <span class="text-[10px] sm:text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800/50">Target: Cuan Bersih > Gas (Mini s/d Jutaan)</span>
                     <span class="text-[10px] sm:text-[11px] font-semibold text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-800/50">Bor Node VIP</span>
                 </div>
                 <h1 class="text-lg sm:text-xl md:text-2xl font-black text-white mt-1.5 flex items-center gap-2">
@@ -75,7 +75,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
             <div class="glow-card rounded-xl p-2.5 sm:p-3 border-l-4 border-l-emerald-500 flex items-center justify-between">
                 <div>
-                    <div class="text-[10px] sm:text-[11px] text-slate-400 font-medium">Siap Tembak (&ge; Rp 350)</div>
+                    <div class="text-[10px] sm:text-[11px] text-slate-400 font-medium">Siap Tembak (Laba Bersih)</div>
                     <div id="cnt-ready" class="text-lg sm:text-xl font-black text-emerald-400 font-mono mt-0.5">0</div>
                 </div>
                 <span class="text-lg sm:text-xl">🔥</span>
@@ -188,7 +188,8 @@
         let currentRpcIdx = 0;
         const WALLET_ADDR = "0x3cfEabd2bBcF45Aa26afd62b8d5629B376f5CC36";
         const KURS_IDR = 18100;
-        const TARGET_CUAN_IDR = 350;
+        const POL_PRICE_USD = 0.32;
+        const BUFFER_BERSIH_MINI_IDR = 50;
 
         const ASSET_PRICES_USD = {
             "USDT": 1.0,
@@ -724,7 +725,8 @@
                                 // Pinjaman Adaptif Otomatis sesuai kedalaman kolam (kolam dangkal s/d kolam danau)
                                 const maxSafe = rAssetUsd * 0.035;
                                 let maxLoanCap = cfg.max_loan;
-                                if (spread >= 2.0) maxLoanCap *= 2.0;
+                                if (spread >= 4.0) maxLoanCap *= 4.0;
+                                else if (spread >= 2.0) maxLoanCap *= 2.0;
 
                                 let effectiveLoan;
                                 if (grossNet > 0.001) {
@@ -739,6 +741,18 @@
                                 const realNet = grossNet > 0 ? grossNet - slippage : 0;
                                 const cuanUsd = realNet > 0 ? (realNet / 100) * effectiveLoan : 0;
                                 const cuanIdr = cuanUsd * KURS_IDR;
+
+                                // Tip Adaptif Bertingkat & Biaya Gas On-Chain
+                                let tipGwei = 32.0;
+                                if (cuanIdr >= 1000000) tipGwei = 125.0;
+                                else if (cuanIdr >= 200000) tipGwei = 95.0;
+                                else if (cuanIdr >= 50000) tipGwei = 65.0;
+                                else if (cuanIdr >= 10000) tipGwei = 48.0;
+                                else if (cuanIdr >= 2000) tipGwei = 38.0;
+                                else tipGwei = 32.0;
+
+                                const gasCostIdr = (360000 * (30.0 + tipGwei) / 1e9) * POL_PRICE_USD * KURS_IDR;
+                                const netProfitCleanIdr = cuanIdr - gasCostIdr;
 
                                 // Delta
                                 const prev = prevSpreads[k] !== undefined ? prevSpreads[k] : spread;
@@ -766,15 +780,19 @@
                                 let statusType = "normal";
                                 let statusLabel = "Memantau";
                                 
-                                // AMBANG TARGET MINIMAL RP 350 BERSIH
-                                if (realNet > 0.001 && cuanIdr >= TARGET_CUAN_IDR) {
+                                // AMBANG TEMBAK: ASAL BERSIH DI ATAS BIAYA GAS (CUAN MINI S/D JUTAAN)
+                                if (realNet > 0.001 && netProfitCleanIdr >= BUFFER_BERSIH_MINI_IDR) {
                                     statusType = "ready";
-                                    statusLabel = `SIAP TEMBAK (+Rp ${Math.round(cuanIdr).toLocaleString('id-ID')})`;
+                                    if (netProfitCleanIdr >= 1000000) {
+                                        statusLabel = `💎 MEGA CUAN (+Rp ${(netProfitCleanIdr / 1e6).toFixed(2)} Jt)`;
+                                    } else {
+                                        statusLabel = `SIAP TEMBAK (+Rp ${Math.round(netProfitCleanIdr).toLocaleString('id-ID')} Bersih)`;
+                                    }
                                     cntReady++;
                                 } else if (jarak <= 0) {
                                     statusType = "hot";
-                                    if (cuanIdr > 0 && cuanIdr < TARGET_CUAN_IDR) {
-                                        statusLabel = `Cuan Mini (+Rp ${Math.round(cuanIdr)} < Rp 350)`;
+                                    if (cuanIdr > 0 && netProfitCleanIdr < BUFFER_BERSIH_MINI_IDR) {
+                                        statusLabel = `Tekor Gas (+Rp ${Math.round(cuanIdr)} < Gas Rp ${Math.round(gasCostIdr)})`;
                                     } else {
                                         statusLabel = `Slippage Membatasi`;
                                     }
@@ -798,7 +816,10 @@
                                     pctBar: pctBar,
                                     p_q: pQuick,
                                     p_u: pUni,
-                                    loan: Math.round(effectiveLoan),
+                                    loan: effectiveLoan,
+                                    netProfitCleanIdr: netProfitCleanIdr,
+                                    gasCostIdr: gasCostIdr,
+                                    tipGwei: tipGwei,
                                     slippage: slippage,
                                     trend: trend,
                                     trendText: trendText,
@@ -924,7 +945,7 @@
                         </div>
                         <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-1">
                             <span>Pinjam: $${p.loan < 10 ? p.loan.toFixed(2) : Math.round(p.loan).toLocaleString()} (Slip: ${p.slippage.toFixed(3)}%)</span>
-                            <span class="${p.cuanIdr >= 350 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.cuanIdr >= 350 ? 'CUAN JEBOL!' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Kurang Rp ' + Math.max(0, Math.round(350 - p.cuanIdr)) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
+                            <span class="${p.netProfitCleanIdr >= 50 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.netProfitCleanIdr >= 50 ? 'UNTUNG BERSIH (+Rp ' + Math.round(p.netProfitCleanIdr).toLocaleString('id-ID') + ')' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Gas Rp ' + Math.round(p.gasCostIdr) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
                         </div>
                     </div>
                 `;
@@ -998,7 +1019,7 @@
                     </div>
                     <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-1">
                         <span>${p.pctBar.toFixed(1)}%</span>
-                        <span class="${p.cuanIdr >= 350 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.cuanIdr >= 350 ? 'CUAN JEBOL!' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Kurang Rp ' + Math.max(0, Math.round(350 - p.cuanIdr)) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
+                        <span class="${p.netProfitCleanIdr >= 50 ? 'text-emerald-400 font-bold' : (p.jarak <= 0 ? 'text-amber-400 font-semibold' : '')}">${p.netProfitCleanIdr >= 50 ? 'UNTUNG BERSIH (+Rp ' + Math.round(p.netProfitCleanIdr).toLocaleString('id-ID') + ')' : (p.jarak <= 0 ? (p.cuanIdr > 0 ? '+Rp ' + Math.round(p.cuanIdr) + ' (Gas Rp ' + Math.round(p.gasCostIdr) + ')' : 'Fee Tembus (Slip ' + p.slippage.toFixed(2) + '%)') : 'Kurang ' + p.jarak.toFixed(3) + '%')}</span>
                     </div>
                 `;
                 row.querySelector('.status-c').innerHTML = statusBadge;

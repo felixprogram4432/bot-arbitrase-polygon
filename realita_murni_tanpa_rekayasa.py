@@ -37,11 +37,11 @@ if not SMART_CONTRACT_ADDRESS:
 METAMASK_PRIVATE_KEY = os.environ.get("METAMASK_PRIVATE_KEY", "").strip()
 
 # =====================================================================
-# KONFIGURASI AMBANG TARGET FINANSIAL (MINIMAL CUAN RP 350 BERSIH)
+# KONFIGURASI AMBANG TARGET FINANSIAL: CUAN MINI BERSIH S/D JUTAAN RUPIAH
 # =====================================================================
 KURS_USD_IDR = 18100.0
-TARGET_MIN_CUAN_IDR = 350.0                 # Target Laba Bersih Minimal Rp 350
-MIN_CUAN_USD = TARGET_MIN_CUAN_IDR / KURS_USD_IDR  # ~$0.01934 USD
+POL_PRICE_USD = 0.32                        # Estimasi Harga POL ~$0.32 USD (~Rp 5.800)
+BUFFER_CUAN_MINI_IDR = 50.0                 # Minimal Laba Bersih MURNI Rp 50 di atas SELURUH Biaya Gas
 
 # Peta Estimasi Harga Aset USD (Untuk kalkulasi kedalaman cadangan & slippage presisi)
 ASSET_PRICES_USD = {
@@ -487,8 +487,11 @@ def calculate_dynamic_loan(pool_cfg, spread_pct, r0_clean, r1_clean):
     gross_net = spread_pct - fee_tot
 
     max_loan_cap = pool_cfg.get("max_loan_usd", 2500.0)
-    if spread_pct >= 2.0:
-        max_loan_cap *= 2.0
+    # Skala Pinjaman Bertingkat: Jika spread meledak lebar, pinjam s/d $10,000 jika kolam danau mampu!
+    if spread_pct >= 4.0:
+        max_loan_cap *= 4.0      # s/d $10,000 USD (potensi cuan jutaan rupiah)
+    elif spread_pct >= 2.0:
+        max_loan_cap *= 2.0      # s/d $5,000 USD
 
     # Batas keamanan slippage: maksimal 3.5% dari cadangan kolam agar slippage tetap tipis
     max_safe = r_usd * 0.035
@@ -503,18 +506,29 @@ def calculate_dynamic_loan(pool_cfg, spread_pct, r0_clean, r1_clean):
 
     return loan
 
-def calculate_priority_tip(est_cuan_usd):
-    # Tip adaptif: cepat menang lawan bot lain (default bot lain 30 Gwei), tapi tetap hemat
-    if est_cuan_usd >= 10.0:     # Cuan > Rp 180.000
-        return 95.0              # Super kilat masuk blok pertama
-    elif est_cuan_usd >= 2.0:    # Cuan > Rp 36.000
-        return 70.0
-    elif est_cuan_usd >= 0.5:    # Cuan > Rp 9.000
-        return 52.0
-    elif est_cuan_usd >= 0.1:    # Cuan > Rp 1.800
-        return 42.0
-    else:                        # Cuan Rp 350 - Rp 1.800
-        return 36.0              # 36 Gwei mengalahkan bot standar 30 Gwei, hemat gas (~Rp 60 perak)
+def calculate_priority_tip_and_gas(est_cuan_usd):
+    # Tip Adaptif Bertingkat: Efisien untuk Cuan Mini, Agresif untuk Mega Cuan Jutaan
+    cuan_idr = est_cuan_usd * KURS_USD_IDR
+    if cuan_idr >= 1000000.0:    # Cuan > 1 Juta Rupiah (Mega Arbitrase!)
+        tip_gwei = 125.0         # Super agresif, kalahkan semua MEV rival di urutan pertama
+    elif cuan_idr >= 200000.0:   # Cuan > Rp 200.000
+        tip_gwei = 95.0
+    elif cuan_idr >= 50000.0:    # Cuan > Rp 50.000
+        tip_gwei = 65.0
+    elif cuan_idr >= 10000.0:    # Cuan > Rp 10.000
+        tip_gwei = 48.0
+    elif cuan_idr >= 2000.0:     # Cuan > Rp 2.000
+        tip_gwei = 38.0
+    else:                        # Cuan Mini Bersih (Rp 150 - Rp 2.000)
+        tip_gwei = 32.0          # Super hemat (~Rp 120 gas) agar cuan mini tidak kemakan gas
+
+    # Estimasi biaya gas on-chain
+    gas_units = 360000.0
+    total_gwei = 30.0 + tip_gwei
+    gas_usd = (gas_units * total_gwei / 1e9) * POL_PRICE_USD
+    gas_idr = gas_usd * KURS_USD_IDR
+    
+    return tip_gwei, gas_usd, gas_idr
 
 def send_telegram_alert(message):
     try:
@@ -647,7 +661,7 @@ def execute_onchain_sniper_instant(contract_address, calldata_hex, active_rpc, t
 def main():
     print("=" * 88, flush=True)
     print("  🚀 MESIN ARBITRASE TURBO 26 KOLAM TERVERIFIKASI - AUTONOMOUS 24/7", flush=True)
-    print(f"  🎯 Target Cuan Minimal: Rp {TARGET_MIN_CUAN_IDR:,.0f} IDR (${MIN_CUAN_USD:.4f} USD)", flush=True)
+    print(f"  🎯 Target Finansial: Bersih di Atas Biaya Gas (Rp 50 s/d Jutaan Rupiah)", flush=True)
     print(f"  💼 Dompet Penerima Cuan: {DOMPET_ANDA}", flush=True)
     print("=" * 88, flush=True)
     
@@ -770,31 +784,36 @@ def main():
                         price_impact_pct = (effective_loan_usd / (reserve_depth_usd + effective_loan_usd)) * 100.0 if reserve_depth_usd > 0 else 999.0
                         real_net_pct = spread_pct - fee_total - price_impact_pct
                         
-                        # Target: Minimal Rp 350 IDR Bersih
+                        # Hitung estimasi cuan kotor dari DEX
                         est_cuan_usd = (effective_loan_usd * max(0.0, real_net_pct)) / 100.0
                         est_cuan_idr = est_cuan_usd * KURS_USD_IDR
                         
-                        if real_net_pct > 0.001 and est_cuan_idr >= TARGET_MIN_CUAN_IDR:
-                            tip_gwei = calculate_priority_tip(est_cuan_usd)
-                            
+                        # Hitung tip bertingkat dan estimasi biaya gas on-chain
+                        tip_gwei, gas_cost_usd, gas_cost_idr = calculate_priority_tip_and_gas(est_cuan_usd)
+                        net_profit_clean_idr = est_cuan_idr - gas_cost_idr
+                        net_profit_clean_usd = est_cuan_usd - gas_cost_usd
+
+                        # AMBANG TEMBAK: Asal hasil bersih murni >= Rp 50 di atas gas (Cuan mini s/d Jutaan!)
+                        if real_net_pct > 0.001 and net_profit_clean_idr >= BUFFER_CUAN_MINI_IDR:
                             # Logika Direction Presisi: Memperhitungkan posisi token dasar (is_asset_t0)
                             is_t0 = cfg["is_asset_t0"]
                             direction = (0 if p_quick < p_uni else 1) if not is_t0 else (1 if p_quick < p_uni else 0)
                             
                             arah = "QuickSwap ➔ Uniswap V3" if direction == 0 else "Uniswap V3 ➔ QuickSwap"
                             
-                            print(f"\n⚡ [{waktu}] ARBITRASE VALID: {cfg['nama']} | Net: +{real_net_pct:.3f}% | Loan: ${effective_loan_usd:.0f} | Cuan: +${est_cuan_usd:.4f} (~Rp {est_cuan_idr:,.0f})", flush=True)
+                            print(f"\n⚡ [{waktu}] ARBITRASE VALID: {cfg['nama']} | Net: +{real_net_pct:.3f}% | Loan: ${effective_loan_usd:.2f} | Bersih: +${net_profit_clean_usd:.4f} (~Rp {net_profit_clean_idr:,.0f}) [Gas: Rp {gas_cost_idr:,.0f} | Tip: {tip_gwei} Gwei]", flush=True)
 
                             # Eksekusi Sniper On-Chain (0-Delay)
                             if is_live_ready:
-                                # Hitung loan_amount_raw dan min_profit_raw (Ambang Minimum Rp 350 Bersih)
+                                # Hitung loan_amount_raw dan min_profit_raw (70% dari estimasi laba bersih sebagai batas pengaman on-chain)
+                                min_profit_usd_safe = max(0.001, net_profit_clean_usd * 0.7)
                                 if cfg["asset_sym"] in ["USDT", "USDCe", "DAI"]:
                                     loan_amount_raw = int(effective_loan_usd * (10 ** cfg["asset_dec"]))
-                                    min_profit_raw = int(MIN_CUAN_USD * (10 ** cfg["asset_dec"]))
+                                    min_profit_raw = max(1, int(min_profit_usd_safe * (10 ** cfg["asset_dec"])))
                                 else:
                                     token_price = ASSET_PRICES_USD.get(cfg["asset_sym"], 1.0)
                                     token_loan = effective_loan_usd / token_price
-                                    token_min_profit = MIN_CUAN_USD / token_price
+                                    token_min_profit = min_profit_usd_safe / token_price
                                     loan_amount_raw = int(token_loan * (10 ** cfg["asset_dec"]))
                                     min_profit_raw = max(1, int(token_min_profit * (10 ** cfg["asset_dec"])))
                                 
