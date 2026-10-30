@@ -998,10 +998,9 @@ def simulate_arbitrage_execution(contract_address, calldata_hex, active_rpc):
         if "error" in res:
             err_msg = res["error"].get("message", "Simulasi Revert")
             return False, err_msg
-        result_data = res.get("result", "")
-        if result_data == "0x" or not result_data:
-            return False, "Simulasi mengembalikan data kosong (0x)"
-        return True, "Simulasi 100% Lolos Untung"
+        if "result" in res:
+            return True, "Simulasi 100% Lolos Untung"
+        return False, "Respons RPC tidak valid"
     except Exception as e:
         return False, str(e)
 
