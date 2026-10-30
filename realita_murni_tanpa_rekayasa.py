@@ -1084,6 +1084,7 @@ def main():
     )
 
     last_alert_time = {}
+    last_shot_time = {}
     cycle = 0
 
     while True:
@@ -1209,6 +1210,9 @@ def main():
 
                             # Eksekusi Sniper On-Chain (0-Delay)
                             if is_live_ready:
+                                # Cooldown Anti-Spam (15 Detik per Kolam): Mencegah tembakan beruntun sebelum blok terkonfirmasi
+                                if (time.time() - last_shot_time.get(k, 0)) < 15.0:
+                                    continue
                                 # GEMBOK ANTI-RUGI & PRESISI NYANGKUT ON-CHAIN:
                                 # Smart contract FlashLoanArbitragePolygonV2 memiliki invariant:
                                 # require(currentBalance >= totalDebt + minProfit, "Arbitrase tidak menghasilkan laba target!");
@@ -1253,6 +1257,7 @@ def main():
                                     print(f"  🚀 [SIMULASI 100% LOLOS]: Menembakkan Flash Loan ${effective_loan_usd:.0f} USD (Tip: {tip_gwei:.0f} Gwei)...", flush=True)
                                     tx_ok, tx_res = execute_onchain_sniper_instant(SMART_CONTRACT_ADDRESS, calldata_hex, active_rpc, tip_gwei)
                                     if tx_ok:
+                                        last_shot_time[k] = time.time()
                                         print(f"  🚀 [SNIPER BERHASIL DIKIRIM!] Tx Hash: {tx_res}", flush=True)
                                         shoot_msg = (
                                             f"🚀 *SNIPER ARBITRASE DITEMBAKKAN ON-CHAIN!* ⚡\n\n"
