@@ -42,6 +42,8 @@ METAMASK_PRIVATE_KEY = os.environ.get("METAMASK_PRIVATE_KEY", "").strip()
 KURS_USD_IDR = 18100.0
 POL_PRICE_USD = 0.32                        # Estimasi Harga POL ~$0.32 USD (~Rp 5.800)
 BUFFER_CUAN_MINI_IDR = 50.0                 # Minimal Laba Bersih MURNI Rp 50 di atas SELURUH Biaya Gas
+TARGET_MIN_CUAN_IDR = BUFFER_CUAN_MINI_IDR  # Alias kompatibilitas
+MIN_CUAN_USD = BUFFER_CUAN_MINI_IDR / KURS_USD_IDR
 
 # Peta Estimasi Harga Aset USD (Untuk kalkulasi kedalaman cadangan & slippage presisi)
 ASSET_PRICES_USD = {
@@ -896,9 +898,9 @@ def main():
         print("  ⚠️ STATUS EKSEKUTOR: MODE RADAR PENGAMATAN ONLY (Kredensial Belum Terdeteksi)\n", flush=True)
 
     send_telegram_alert(
-        f"🤖 *RADAR ARBITRASE TURBO 26 KOLAM AKTIF!* 🚀\n\n"
-        f"🎯 *Target Minimal:* `Rp {TARGET_MIN_CUAN_IDR:,.0f} IDR`\n"
-        f"🌐 *Total Kolam:* `26 Kolam Terverifikasi Factory Likuiditas Terverifikasi (Bebas Kolam Jebakan)`\n"
+        f"🤖 *RADAR ARBITRASE TURBO 36 KOLAM AKTIF!* 🚀\n\n"
+        f"🎯 *Target Finansial:* `Laba Bersih > Biaya Gas (Rp 50 s/d Jutaan Rupiah)`\n"
+        f"🌐 *Total Kolam:* `36 Kolam Terverifikasi Factory (Bebas Kolam Jebakan)`\n"
         f"⚡ *Mode:* `{'0-Delay Flash Loan Sniper' if is_live_ready else 'Radar Pengamatan'}`\n"
         f"🛡️ *Anti-Frontrunning:* `1RPC VIP Private Routing`\n"
         f"🛡️ *Pre-Flight Firewall:* `Zero-Cost EVM Simulation Shield (Aktif)`\n"
